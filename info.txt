@@ -1,0 +1,60 @@
+Kalendarz:
+2   XII (0pkt)  Wprowadzenie M1
+9   XII (6pkt)  Prezentacja modelu
+16  XII (12pkt) Review M1
+22  XII (0pkt)  Wprowadzenie M2
+13  I   (0pkt)  Konsultacje M2
+20  I   (12pkt) Review M2
+27  I   (0pkt)  Prezentacja końcowa
+
+Review:
+    -> nie musimy przychodzić na zajęcia
+    -> pull request
+    -> dostajemy komentarze kodu
+    
+Tips:
+    -> potrzebujemy repo
+        - BitBucket
+    -> komunikacja
+        - Teams (jeden duży kanał na całą grupę)
+    -> dokumentacja
+        - raczej changelog jako README.MD
+            * piszemy co zostało zrobione przez ostatni tydzień
+            * na prezentacji dodatkowo rysunki, schematy, diagramy itd.
+
+Temat:
+    klasyczna client-server
+    grupa znajomych, każdy wydaje cash, trzeba się rozliczać :(
+    trackujemy kto komu ile zapłacił :)
+       $10
+    X  -->  Y (masło)
+       $5
+    Y  -->  X (bilet)
+       $20
+    X  -->  Z (obiad)
+        .
+        .
+        .
+    Podsumowanie:
+    X -> wiszę Y: [kwota], wiszę Z: [kwota]
+    Y -> wiszę X: [kwota]
+    Z -> wiszę X: [kwota]
+    Uwaga możliwa sytuacja:
+      $100
+    X  --> Y,Z,A,B,C (lub prościej jedna osoba wszystkim)
+
+Dodatkowe info:
+    Wszystko dzieje się na serwerze, który udostępnia endpoint
+    Do klienta polecany jest Retrofit
+    Baza danych obojętna
+    Bez uwierzytelniania jakiejkolwiek
+    Po prostu wybieramy którą osobą jesteśmy, do której grupy należymy itd.
+    Wizualizacja w/e
+    Bez przechodniości w rozliczeniach (!)
+    Jako uczestnik grupy widzimy wszystkich
+    Bez funkcji "rozlicz" (resetowanie balansu do 0)
+    
+
+    ^^^
+    Cel na Milestone 1
+    Szczegóły Milestona 2
