@@ -3,7 +3,7 @@
 ## Contributors
 
 * Barbara Gaweł-Kucab
-* Jędrzej Ziębura
+* Jędrzej Ziebura
 * Mikołaj Wielgos
 
 ## Changelog
