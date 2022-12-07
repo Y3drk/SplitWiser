@@ -12,7 +12,7 @@
 
 ## Architecture
 
-![Overview](./docs/resources/overview.svg)
+![Overview](./docs/resources/overview.jfif)
 
 ### Model
 
@@ -21,7 +21,11 @@
 ### Views
 
 ![Login view](./docs/resources/views/login-view.svg)
+
 ![Create user view](./docs/resources/views/create-user-view.svg)
+
 ![Create group view](./docs/resources/views/create-group-view.svg)
+
 ![Summary view](./docs/resources/views/summary-view.svg)
+
 ![Create transaction view](./docs/resources/views/create-transaction-view.svg)

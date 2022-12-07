@@ -3,9 +3,10 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="508"
      height="313" viewBox="-0.5 -0.5 508 313"
-     content="&lt;mxfile host=&quot;app.diagrams.net&quot; modified=&quot;2022-12-07T20:18:57.261Z&quot; agent=&quot;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36&quot; version=&quot;17.4.0&quot; etag=&quot;mm4AOgr4WIMdBiVXmkny&quot; type=&quot;google&quot;&gt;&lt;diagram id=&quot;0R6a-uLXKXcWcasp0Kcj&quot;&gt;7VrNc+IgHP1rnNk9bCeEEPXY2o897J6cnT2j0IQpCQ7BVfvXL0TyJbE6NbF2ai+SBwnhvcdLftoBnCTrJ4kX8W9BKB/4HlkP4P3A98HY9/SHQTYW0dAWiSQjFquAKXulFrQnRktGaNYYqITgii2a4FykKZ2rBoalFKvmsGfBm7MucEQdYDrH3EX/MqLiLTpCXoX/pCyKi5mBZ3sSXAy2QBZjIlY1CD4M4EQKobatZD2h3LBX8LI973FPb3ljkqbqmBMs7/8wX9q12ftSm2Kx+hYXpknX+op3RCxneQ/QB1IsU0LNpTx9tIqZotMFnpvulZZeY7FKuB1sZ6JS0fXeuwUlB9o9VCRUyY0eUpwAoOXNOgeG9nhVyYAKsuOaBNBDVn4rfVRevGJHNyxB7WRBh6yJpFhRjS0zKh3maosvdTZEEZzFJWsFvck6MrvlZqa1z5Ru3kiZe/dO2g2AzGglxQudCC6kRlKR0hIsnGime2acF4MGevHeCD1ODC5SVcMf87890mHOolQfzrU4enHwzkjH9Ca4tR0JI4Tn8+sTWRr9os/KLsrMM7VElMfbVYCwOsMuqgtnBGHYcAYahTfI8QZALd4IvNOtEbTso5Ab9Wa6EZlG6ZVIb5tF0a0vXI64GugDDfTuaAnA6fZBh2O4By/URW44oabwOP+rqclzkWoCALSjT+D6JJwMw+F9V0oFTaWC0N3oELY+BE5XKnSUetpuZy/FCXVUO0ixBXfY3aWzE9rQDm2+S5sf9pSPQ4e2W0LsczPTn9/EQjGRYv79U1E49lseMr2ROHJI/JO/dnjAfWlrMMTSmEqmdrZ8heqwIIxWO7bqKQJFZ0iaFUztyQIb32A3r303DyCcIdpZcu+ogqCb3KMWSUAp3imijA9Hd79iHEXhqJ3CTSPUTqGhKM3OwoPzuvKuhyNOiRSMOI9GM1bSjL3iWfn+cRTJ4zd9WrrNkv6jLTuQa9MOPArAvuQ4t1kvPDmCNk1A2KJKN+EBjqm/Pz49wB4eO4wPt7b+LPExj+n8ZSbWXSTI1g8XGSFuhWsjBF4jpB4h6LwBckTleAkBEvQeIG5h9iUDBF1sgLgloA2Q4Bog9QAJhy2a9Fe/ALeqvMgEGfaeIOes5C60ggF76sSPjw/frS+vX360xcfonF9++G5heYnhUftptafwKNb9lcPjgFXPFx76sPoFPe+r/SMCfPgP&lt;/diagram&gt;&lt;/mxfile&gt;"
+     content="&lt;mxfile host=&quot;app.diagrams.net&quot; modified=&quot;2022-12-07T21:08:24.476Z&quot; agent=&quot;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36&quot; version=&quot;17.4.0&quot; etag=&quot;GDomw44VTsfad8LN0kp2&quot; type=&quot;google&quot;&gt;&lt;diagram id=&quot;S5TzY2BBhddckUGwwV51&quot;&gt;7VrNc6IwHP1rnNk9bIcQgnps7ccedk/Ozp7RpJBpIE6Iq/av3wTCZ7A6Fayd6kXykgB57+XhTx3BWbx9EsEq+s0xYSPXwdsRvB+5Lpi6jnrTyM4gCsqRUFBssAqY01diQDMxXFNM0sZAyTmTdNUElzxJyFI2sEAIvmkOe+asedVVEBILmC8DZqN/KZZRjk6QU+E/CQ2j4srAMT1xUAw2QBoFmG9qEHwYwZngXOZH8XZGmGav4CWf97int7wxQRJ5zATD+7+Arc3azH3JXbFYdYsrfUi26ox3mK8XWQ9QDcHXCSb6VI5qbSIqyXwVLHX3RkmvsEjGzAw2VyJCku3euwUlB8o9hMdEip0aUkwA0PBmnAN9095UMqCC7KgmAXSQkd9IH5Ynr9hRB4agbrKgRdZMkECSzKd8vbKoq62+FFozhYM0Kmkr+I23od4uNwslfirV4Y0QmXnvhNkBSI+Wgr+QGWdcKCThCSnBwor6cs+UsWLQSK3emaDHmcZ5Imv4Y/bao13AaJio5lKpQ9SEO60dVbvg1nTEFGOWXV9NpEn4izxLsyh9nbkhomznqwB+NcMsqg9reL7fsAaa+DfIMgdAHebwnNO94XVsJJ9p9RbqINQHbbPk3erE5YirgT7QQO/OFg+cbh90OIcH8EJd5IYTagpPs1dNTZaJVBMAoJY+nu0Tfzb2x/d9KeU1lfJ8e6ND2PkUOF0p31LqKd/OThLExFLtIMUGbLHbprMX2lCLNtemzfUHysexRdstxgpYp0Sk6v0bX0nKk4B9/1QUTt2Oh8xgJE4sEv8o+hQC7E9tDYZoEhFBZWvLV6gKC0xJtWOrniJQVIYkacHUniww8Q3aee3aeQDhApHekrulCoJ2ck86JAGleKeIMj0c3cOKcRSFk24Kd41QO4WGojY7Cw/Wx5V3PRyDBAtOsfVo1GMFSelrsCg/fxxF8vRNn5ZuM6T/6MoOZNu0B48CsC85zm3WC08Or0sT4Heo0k94gGMK8I9PD7CHxx7jwy6uP0t8LCOyfFnwbR8JkvvhIiPErnBNhMBrhNQjBJ03QI6oHC8hQLzBA8QuzL5kgKCLDRC7BDQB4l0DpB4g/rhDk+HqF2BXlReZIOPBE+ScldyFVjBgT5348fHh2vXl9cuPrviYnPPLD9cuLC8xPGq/rQ4UHsW6v3J4HLDq+cJDNauf0LO+2j8R4MN/&lt;/diagram&gt;&lt;/mxfile&gt;"
      style="background-color: rgb(255, 255, 255);">
     <defs>
+        <style type="text/css">@import url(https://fonts.googleapis.com/css?family=Poppins);&#xa;</style>
         <filter id="dropShadow">
             <feGaussianBlur in="SourceAlpha" stdDeviation="1.7" result="blur"/>
             <feOffset in="blur" dx="3" dy="3" result="offsetBlur"/>
@@ -30,13 +31,13 @@
                         <div data-drawio-colors="color: #FFFFFF; "
                              style="box-sizing: border-box; font-size: 0px; text-align: center;">
                             <div style="display: inline-block; font-size: 16px; font-family: Helvetica; color: rgb(255, 255, 255); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">
-                                Create user
+                                Create group
                             </div>
                         </div>
                     </div>
                 </foreignObject>
                 <text x="411" y="251" fill="#FFFFFF" font-family="Helvetica" font-size="16px" text-anchor="middle">
-                    Create user
+                    Create group
                 </text>
             </switch>
         </g>
