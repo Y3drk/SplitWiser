@@ -8,7 +8,7 @@
 
 ## Changelog
 
-[Available here.](./docs/changelog.md)
+[Available here](./docs/changelog.md)
 
 ## Architecture
 
@@ -21,11 +21,9 @@
 ### Views
 
 ![Login view](./docs/resources/views/login-view.svg)
-
 ![Create user view](./docs/resources/views/create-user-view.svg)
 
 ![Create group view](./docs/resources/views/create-group-view.svg)
-
 ![Summary view](./docs/resources/views/summary-view.svg)
 
 ![Create transaction view](./docs/resources/views/create-transaction-view.svg)
