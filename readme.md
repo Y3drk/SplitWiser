@@ -10,6 +10,18 @@
 
 [Available here.](./docs/changelog.md)
 
-## How to run
+## Architecture
 
-[steps to run project]
+![Overview](./docs/resources/overview.svg)
+
+### Model
+
+![Model](./docs/resources/model/model.svg)
+
+### Views
+
+![Login view](./docs/resources/views/login-view.svg)
+![Create user view](./docs/resources/views/create-user-view.svg)
+![Create group view](./docs/resources/views/create-group-view.svg)
+![Summary view](./docs/resources/views/summary-view.svg)
+![Create transaction view](./docs/resources/views/create-transaction-view.svg)
