@@ -1,6 +1,5 @@
-package com.splitwiser.SplitWiser.Group;
+package com.splitwiser.SplitWiser.group;
 
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

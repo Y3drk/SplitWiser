@@ -1,7 +1,7 @@
-package com.splitwiser.SplitWiser.Group;
+package com.splitwiser.SplitWiser.group;
 
-import com.splitwiser.SplitWiser.Payment.Payment;
-import com.splitwiser.SplitWiser.User.User;
+import com.splitwiser.SplitWiser.payment.Payment;
+import com.splitwiser.SplitWiser.user.User;
 import jakarta.persistence.*;
 
 import java.util.List;

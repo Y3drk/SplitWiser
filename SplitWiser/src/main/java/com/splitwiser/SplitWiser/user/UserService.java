@@ -1,4 +1,4 @@
-package com.splitwiser.SplitWiser.User;
+package com.splitwiser.SplitWiser.user;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
