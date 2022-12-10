@@ -27,3 +27,7 @@
 ![Summary view](./docs/resources/views/summary-view.svg)
 
 ![Create transaction view](./docs/resources/views/create-transaction-view.svg)
+
+### Server endpoints
+
+![Endpoints](./docs/resources/endpoints.svg)
