@@ -43,4 +43,8 @@ public class Group {
     public void addUser(User user){
         this.members.add(user);
     }
+
+    public void setName(String newName){
+        this.name = new SimpleStringProperty(newName);
+    }
 }
