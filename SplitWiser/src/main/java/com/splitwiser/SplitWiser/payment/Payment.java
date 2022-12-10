@@ -1,7 +1,7 @@
-package com.splitwiser.SplitWiser.Payment;
+package com.splitwiser.SplitWiser.payment;
 
-import com.splitwiser.SplitWiser.Group.Group;
-import com.splitwiser.SplitWiser.User.User;
+import com.splitwiser.SplitWiser.group.Group;
+import com.splitwiser.SplitWiser.user.User;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;

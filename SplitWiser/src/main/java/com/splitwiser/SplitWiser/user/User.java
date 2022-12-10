@@ -1,7 +1,7 @@
-package com.splitwiser.SplitWiser.User;
+package com.splitwiser.SplitWiser.user;
 
 
-import com.splitwiser.SplitWiser.Group.Group;
+import com.splitwiser.SplitWiser.group.Group;
 import jakarta.persistence.*;
 
 @Entity

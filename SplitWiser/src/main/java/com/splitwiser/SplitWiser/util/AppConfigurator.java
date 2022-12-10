@@ -1,12 +1,12 @@
-package com.splitwiser.SplitWiser.Util;
+package com.splitwiser.SplitWiser.util;
 
 
-import com.splitwiser.SplitWiser.Group.Group;
-import com.splitwiser.SplitWiser.Group.GroupRepository;
-import com.splitwiser.SplitWiser.Group.GroupService;
-import com.splitwiser.SplitWiser.User.User;
-import com.splitwiser.SplitWiser.User.UserRepository;
-import com.splitwiser.SplitWiser.User.UserService;
+import com.splitwiser.SplitWiser.group.Group;
+import com.splitwiser.SplitWiser.group.GroupRepository;
+import com.splitwiser.SplitWiser.group.GroupService;
+import com.splitwiser.SplitWiser.user.User;
+import com.splitwiser.SplitWiser.user.UserRepository;
+import com.splitwiser.SplitWiser.user.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

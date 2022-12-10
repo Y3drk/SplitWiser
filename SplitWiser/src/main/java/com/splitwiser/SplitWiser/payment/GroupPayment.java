@@ -1,4 +1,4 @@
-package com.splitwiser.SplitWiser.Payment;
+package com.splitwiser.SplitWiser.payment;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;

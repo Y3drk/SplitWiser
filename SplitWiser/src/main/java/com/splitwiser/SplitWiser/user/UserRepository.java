@@ -1,11 +1,9 @@
-package com.splitwiser.SplitWiser.Group;
+package com.splitwiser.SplitWiser.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-public interface GroupRepository extends JpaRepository<Group, Long> {
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
     // define queries here
-
-
-
 }
