@@ -4,6 +4,7 @@ import com.splitwiser.SplitWiser.Group.Group;
 import com.splitwiser.SplitWiser.User.User;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
@@ -17,7 +18,7 @@ public abstract class Payment {
     @OneToOne
     private Group group;
 
-    private int amount;
+    private BigDecimal amount;
 
     @OneToOne
     private User payer;
