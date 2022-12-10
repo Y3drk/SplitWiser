@@ -1,5 +1,13 @@
 ## Changelog
 
+### 10.12.2022
+
+* first model implementation
+* changed Person to User
+* changed Value in Person(now User) to be Amount
+* merged 2 configurators to be 1 now
+* added endpoints list for backend
+ 
 ### 08.12.2022
 
 * client project init
