@@ -1,6 +1,7 @@
 package com.splitwiser.SplitWiser.user;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.splitwiser.SplitWiser.group.Group;
 import jakarta.persistence.*;
 
@@ -14,7 +15,9 @@ public class User {
     private String firstName;
     private String lastName;
 
-    @OneToOne
+    // without ignore - infinite loop
+    @ManyToOne
+    @JsonIgnoreProperties("members")
     private Group group;
 
     protected User() {
