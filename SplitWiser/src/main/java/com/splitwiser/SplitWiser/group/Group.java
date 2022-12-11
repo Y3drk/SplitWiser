@@ -25,6 +25,7 @@ public class Group {
 
     @OneToMany
     @JoinColumn(name="GROUP_ID")
+    @JsonIgnoreProperties("group")
     private List<Payment> payments;
 
 

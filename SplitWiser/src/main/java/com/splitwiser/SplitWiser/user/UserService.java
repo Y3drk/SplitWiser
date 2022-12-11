@@ -3,9 +3,12 @@ package com.splitwiser.SplitWiser.user;
 
 import com.splitwiser.SplitWiser.group.Group;
 import com.splitwiser.SplitWiser.group.GroupRepository;
+import com.splitwiser.SplitWiser.payment.Payment;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -26,6 +29,19 @@ public class UserService {
     public User getUserById(Long id) {
         Optional<User> user = this.userRepository.findById(id);
         return user.orElse(null);
+    }
+
+    public List<Payment> getUserPayments(Long id) {
+        User user = getUserById(id);
+        List<Payment> allPayments =  user.getGroup().getPayments();
+        List<Payment> userPayments = new ArrayList<>();
+        for (Payment payment: allPayments) {
+            if (payment.getReceiver() == null || (payment.getReceiver() != null &&
+                    (Objects.equals(payment.getPayer().getId(), id) || Objects.equals(payment.getReceiver().getId(), id)))) {
+                userPayments.add(payment);
+            }
+        }
+        return userPayments;
     }
 
     public void postUser(String firstName, String lastName, Long groupId) {
