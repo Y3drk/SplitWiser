@@ -1,52 +1,79 @@
 package com.splitwiser.splitwiserclient.controllers;
 
+import com.splitwiser.splitwiserclient.auxiliary.UserCellFactory;
 import com.splitwiser.splitwiserclient.mockData.MockDataProvider;
+import com.splitwiser.splitwiserclient.model.group.Group;
 import com.splitwiser.splitwiserclient.model.user.User;
+import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.scene.control.Label;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
+import javafx.scene.control.SelectionMode;
 
 public class LoginController {
-
     private AppController appController;
+
+    private ObservableList<Group> groups;
 
     @FXML
     private ListView<User> usersList; //is list view better than dynamically spawning buttons? -> prolly yes
 
+    @FXML
+    public Button loginButton;
+
 
     @FXML
     private void initialize() {
+        usersList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
+        usersList.setCellFactory(new UserCellFactory());
+
+        loginButton.disableProperty().bind(Bindings.isEmpty(usersList.getSelectionModel().getSelectedItems()));
+
+        this.groups = FXCollections.observableArrayList();
     }
 
     @FXML
-    protected void onHelloButtonClick() {
-        this.appController.initSummaryLayout();
+    protected void onLoginButtonClick() {
+        User selectedUser = usersList.getSelectionModel().getSelectedItem();
+        System.out.println(selectedUser.getFirstName());
+        this.appController.initSummaryLayout(selectedUser);
     }
 
     @FXML
     public void onCreateUserButtonClick(ActionEvent actionEvent) {
-        appController.showCreateUserDialog();
+        User newUser = new User("", "", null);
+        boolean isCreated = appController.showCreateUserDialog(newUser, this.groups);
+        if (isCreated) {
+            this.usersList.getItems().add(newUser);
+        }
     }
 
     @FXML
     public void onCreateGroupButtonClick(ActionEvent actionEvent) {
-        appController.showCreateGroupDialog();
+        Group newGroup = new Group("");
+        boolean isCreated = appController.showCreateGroupDialog(newGroup);
+        if (isCreated) {
+            this.groups.add(newGroup);
+        }
+
     }
 
     public void setAppController(AppController appController) {
         this.appController = appController;
     }
 
-    public void setUsersList(){
+    public void setUsersList() {
         usersList.setItems(MockDataProvider.getMockUsers());
+        for (User user : usersList.getItems()
+        ) {
+            Group usersGroup = user.getGroup();
+            if (!groups.contains(usersGroup)) {
+                groups.add(usersGroup);
+            }
+        }
     }
 }

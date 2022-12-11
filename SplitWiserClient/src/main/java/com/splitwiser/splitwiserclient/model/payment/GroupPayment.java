@@ -1,5 +1,5 @@
 package com.splitwiser.splitwiserclient.model.payment;
 
-public class GroupPayment {
+public class GroupPayment extends Payment {
 
 }

@@ -8,7 +8,12 @@
 .actionDescriptors {
     -fx-border-color: black;
     -fx-padding: 5;
-    -fx-border-radius: 5%;
-    -fx-background-radius: 5%;
     -fx-background-color: grey;
+}
+
+.cancelButton {
+    -fx-text-fill: white;
+    -fx-background-color: red;
+    -fx-background-radius: 5%;
+    -fx-cursor: hand;
 }

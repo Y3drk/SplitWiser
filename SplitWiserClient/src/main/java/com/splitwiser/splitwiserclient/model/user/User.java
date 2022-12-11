@@ -42,4 +42,16 @@ public class User {
     public ObjectProperty<Group> groupProperty() {
         return group;
     }
+
+    public void setFirstName(String firstName) {
+        this.firstName.set(firstName);
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName.set(lastName);
+    }
+
+    public void setGroup(Group group) {
+        this.group.set(group);
+    }
 }

@@ -1,9 +1,10 @@
 package com.splitwiser.splitwiserclient.controllers;
 
-import javafx.fxml.FXML;
+import com.splitwiser.splitwiserclient.model.group.Group;
+import com.splitwiser.splitwiserclient.model.user.User;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -44,14 +45,16 @@ public class AppController {
 
     //TODO: (order is important)
     // 1. Set up a draft of client-side model -> done (but it's not picture perfect)
-    // 2. Create createUserController and createGroupController
-    // 3. Create fxml files for group and user creation
-    // 4. Connect it all
+    // 2. Create createUserController and createGroupController -> done (but only simple placeholders)
+    // 2.1 prepare createUserController
+    // 3. Create fxml files for group and user creation -> done (again simple placeholders)
+    // 4. Connect it all -> not there completely
 
-    //done super quickly -> doesn't work
 
-    public void initSummaryLayout(){
+    public void initSummaryLayout(User currentlyLoggedUser) {
         try {
+
+            primaryStage.setTitle(currentlyLoggedUser.getFirstName() + " " + currentlyLoggedUser.getLastName() + "; " + currentlyLoggedUser.getGroup().getName() + " summary");
 
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(AppController.class.getResource("summary-view.fxml"));
@@ -60,6 +63,7 @@ public class AppController {
             // set initial data into controller
             SummaryController controller = loader.getController();
             controller.setAppController(this);
+            controller.setCurrentUser(currentlyLoggedUser);
 
 
             Scene scene = new Scene(summaryLayout);
@@ -70,12 +74,13 @@ public class AppController {
             throw new RuntimeException(e);
         }
     }
-    public boolean showCreateUserDialog() {
+
+    public boolean showCreateUserDialog(User newUser, ObservableList<Group> groups) {
         try {
             // Load the fxml file and create a new stage for the dialog
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(AppController.class.getResource("create-user-dialog.fxml"));
-            VBox page = loader.load();
+            BorderPane page = loader.load();
 
             // Create the dialog Stage.
             Stage dialogStage = new Stage();
@@ -85,30 +90,27 @@ public class AppController {
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
 
-            // Set the transaction into the presenter.
 
-            // here should be createUserController
             CreateUserController controller = loader.getController();
             controller.setDialogStage(dialogStage);
-//            presenter.setData(transaction);
+            controller.setUser(newUser);
+            controller.setGroupsList(groups);
 
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();
-//            return presenter.isApproved();
-            return true;
+            return controller.isApproved();
 
         } catch (IOException e) {
-            e.printStackTrace(); //this probably should just throw new exception
-            return false;
+            throw new RuntimeException(e);
         }
     }
 
-    public boolean showCreateGroupDialog() {
+    public boolean showCreateGroupDialog(Group group) {
         try {
             // Load the fxml file and create a new stage for the dialog
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(AppController.class.getResource("create-group-dialog.fxml"));
-            VBox page = loader.load();
+            BorderPane page = loader.load();
 
             // Create the dialog Stage.
             Stage dialogStage = new Stage();
@@ -118,21 +120,17 @@ public class AppController {
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
 
-            // Set the transaction into the presenter.
-
-            // here should be createUserController
+            // Set the group into the controller.
             CreateGroupController controller = loader.getController();
             controller.setDialogStage(dialogStage);
-//            presenter.setData(transaction);
+            controller.setGroup(group);
 
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();
-//            return presenter.isApproved();
-            return true;
+            return controller.isApproved();
 
         } catch (IOException e) {
-            e.printStackTrace(); //this probably should just throw new exception
-            return false;
+            throw new RuntimeException(e);
         }
     }
 }
