@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.ListView?>
+<BorderPane BorderPane.alignment="CENTER" prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.splitwiser.splitwiserclient.controllers.LoginController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+    <left>
+        <VBox alignment="CENTER_RIGHT" spacing="20.0">
+            <children>
+            <HBox alignment="CENTER" styleClass="actionDescriptors" stylesheets="css/guiStyles.css">
+                <Label style="-fx-text-fill: white">Select User</Label>
+            </HBox>
+            <ListView fx:id="usersList" prefHeight="150.0" prefWidth="100.0"/>
+            </children>
+        </VBox>
+    </left>
+    <right>
+        <VBox alignment="CENTER_LEFT" spacing="20.0">
+            <children>
+<!--            additional temporary stuff-->
+            <Button text="Hello!" onAction="#onHelloButtonClick"/>
+<!--            additional temporary stuff-->
+            <HBox alignment="CENTER" styleClass="actionDescriptors" stylesheets="css/guiStyles.css">
+                <Label style="-fx-text-fill: white">Select Action</Label>
+            </HBox>
+            <Button text="Create user" onAction="#onCreateUserButtonClick" styleClass="clickableButton" stylesheets="css/guiStyles.css" />
+            <Button text="Create Group" onAction="#onCreateGroupButtonClick" styleClass="clickableButton" stylesheets="css/guiStyles.css"/>
+            </children>
+        </VBox>
+    </right>
+</BorderPane>

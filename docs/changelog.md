@@ -1,5 +1,11 @@
 ## Changelog
 
+### 09-11.12.2022
+#### Jędrzej Ziebura:
+* client model draft
+* fxml files
+* simple controllers
+
 ### 08.12.2022
 
 * client project init
