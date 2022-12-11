@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Configuration;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Configuration
 public class AppConfigurator {
@@ -36,19 +37,22 @@ public class AppConfigurator {
                 groupService.postGroup("Beer trip");
             }
             if (userRepository.count() == 0) {
-                userService.postUser("Mikołaj", "Wielgos", 1L);
-                userService.postUser("Santa", "Claus", 1L);
-                userService.postUser("Rudolph", "Reindeer", 1L);
-                userService.postUser("Lord", "Vader", 3L);
-                userService.postUser("Luke", "Skywalker", 3L);
+                userService.postUser("Mikołaj", "Wielgos", 1);
+                userService.postUser("Santa", "Claus", 1);
+                userService.postUser("Rudolph", "Reindeer", 1);
+                userService.postUser("Lord", "Vader", 3);
+                userService.postUser("Luke", "Skywalker", 3);
+                userService.postUser("Han", "Solo", 3);
             }
 
             if (paymentRepository.count() == 0) {
-                paymentService.postGroupPayment(1L, BigDecimal.valueOf(100), new Date(), "dinner bill", 1L);
-                paymentService.postGroupPayment(1L, BigDecimal.valueOf(200), new Date(), "Coliseum tickets", 1L);
-                paymentService.postSinglePayment(1L, BigDecimal.valueOf(50), new Date(), "souvenirs", 2L, 3L);
+                paymentService.postPayment(1, BigDecimal.valueOf(100), new Date(), "dinner bill", 1, java.util.Optional.empty());
+                paymentService.postPayment(1, BigDecimal.valueOf(200), new Date(), "Coliseum tickets", 1, java.util.Optional.empty());
+                paymentService.postPayment(1, BigDecimal.valueOf(50), new Date(), "souvenirs", 2, Optional.of(3));
 
-
+                paymentService.postPayment(3, BigDecimal.valueOf(30), new Date(), "perełka", 4, Optional.empty());
+                paymentService.postPayment(3, BigDecimal.valueOf(50), new Date(), "litovel", 5, Optional.empty());
+                paymentService.postPayment(3, BigDecimal.valueOf(60), new Date(), "litovel v2", 6, Optional.of(5));
             }
 
 

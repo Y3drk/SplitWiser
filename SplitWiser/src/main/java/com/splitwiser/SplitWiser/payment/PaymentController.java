@@ -1,7 +1,5 @@
 package com.splitwiser.SplitWiser.payment;
 
-import com.splitwiser.SplitWiser.group.Group;
-import com.splitwiser.SplitWiser.user.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -25,12 +23,8 @@ public class PaymentController {
 
 
     @PostMapping("/{groupId}")
-    public void postPayment(@PathVariable String groupId, BigDecimal amount, Date date, String description, Long payer, Optional<Long> receiver) {
-        if (receiver.isEmpty()) {
-            paymentService.postGroupPayment(Long.parseLong(groupId), amount, date, description, payer);
-        } else {
-            paymentService.postSinglePayment(Long.parseLong(groupId), amount, date, description, payer, receiver.get());
-        }
+    public void postPayment(@PathVariable int groupId, BigDecimal amount, Date date, String description, int payerId, Optional<Integer> receiverId) {
+        paymentService.postPayment(groupId, amount, date, description, payerId, receiverId);
     }
 
 }

@@ -26,12 +26,13 @@ public class UserService {
         return this.userRepository.findAll();
     }
 
-    public User getUserById(Long id) {
+    public User getUserById(int id) {
         Optional<User> user = this.userRepository.findById(id);
         return user.orElse(null);
     }
 
-    public List<Payment> getUserPayments(Long id) {
+//   take all user group payments without receiver && single payments if user is payer or receiver
+    public List<Payment> getUserPayments(int id) {
         User user = getUserById(id);
         List<Payment> allPayments =  user.getGroup().getPayments();
         List<Payment> userPayments = new ArrayList<>();
@@ -44,7 +45,7 @@ public class UserService {
         return userPayments;
     }
 
-    public void postUser(String firstName, String lastName, Long groupId) {
+    public void postUser(String firstName, String lastName, int groupId) {
         Optional<Group> group = groupRepository.findById(groupId);
         if (group.isPresent()) {
             User user = new User(firstName,lastName, group.get());

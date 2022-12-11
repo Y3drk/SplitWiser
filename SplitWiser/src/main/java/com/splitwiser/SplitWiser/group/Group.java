@@ -13,7 +13,7 @@ public class Group {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     private String name;
 
@@ -44,7 +44,7 @@ public class Group {
         this.members.add(user);
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -52,7 +52,7 @@ public class Group {
         this.name = name;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 

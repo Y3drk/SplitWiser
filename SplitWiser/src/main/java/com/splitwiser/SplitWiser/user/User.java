@@ -1,6 +1,5 @@
 package com.splitwiser.SplitWiser.user;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.splitwiser.SplitWiser.group.Group;
 import jakarta.persistence.*;
@@ -11,7 +10,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
     private String firstName;
     private String lastName;
 
@@ -29,7 +28,7 @@ public class User {
         this.group = group;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -45,7 +44,7 @@ public class User {
         this.group = group;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 

@@ -21,18 +21,18 @@ public class GroupController {
     }
 
     @GetMapping("/{id}")
-    public Group getGroup(@PathVariable String id) {
-        return groupService.getGroup(Long.parseLong(id));
+    public Group getGroup(@PathVariable int id) {
+        return groupService.getGroup(id);
     }
 
     @GetMapping("/{id}/members")
-    public List<User> getGroupMembers(@PathVariable String id) {
-        return groupService.getGroupMembers(Long.parseLong(id));
+    public List<User> getGroupMembers(@PathVariable int id) {
+        return groupService.getGroupMembers(id);
     }
 
     @GetMapping("/{id}/payments")
-    public List<Payment> getGroupPayments(@PathVariable String id) {
-        return groupService.getGroupPayments(Long.parseLong(id));
+    public List<Payment> getGroupPayments(@PathVariable int id) {
+        return groupService.getGroupPayments(id);
     }
 
     @PostMapping("/{name}")

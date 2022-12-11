@@ -13,7 +13,7 @@ import java.util.Date;
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
     @ManyToOne
     @JsonIgnoreProperties("payments")
@@ -33,6 +33,7 @@ public class Payment {
 
     private String description;
 
+//    group payment
     public Payment(Group group, BigDecimal amount, Date date, String description, User payer) {
         this.group = group;
         this.amount = amount;
@@ -41,6 +42,7 @@ public class Payment {
         this.payer = payer;
     }
 
+//    single payment
     public Payment(Group group, BigDecimal amount, Date date, String description, User payer, User receiver) {
         this.group = group;
         this.amount = amount;
@@ -69,7 +71,7 @@ public class Payment {
         return description;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
@@ -81,4 +83,31 @@ public class Payment {
         return receiver;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    public void setPayer(User payer) {
+        this.payer = payer;
+    }
+
+    public void setReceiver(User receiver) {
+        this.receiver = receiver;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

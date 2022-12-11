@@ -20,17 +20,17 @@ public class GroupService {
         return groupRepository.findAll();
     }
 
-    public Group getGroup(Long id) {
+    public Group getGroup(int id) {
         Optional<Group> result =  this.groupRepository.findById(id);
         return result.orElse(null);
     }
 
-    public List<User> getGroupMembers(Long id) {
+    public List<User> getGroupMembers(int id) {
         Group group =  getGroup(id);
         return group.getMembers();
     }
 
-    public List<Payment> getGroupPayments(Long id) {
+    public List<Payment> getGroupPayments(int id) {
         Group group =  getGroup(id);
         return group.getPayments();
     }
@@ -39,6 +39,4 @@ public class GroupService {
         Group group = new Group(name);
         groupRepository.save(group);
     }
-
-
 }

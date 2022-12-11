@@ -28,22 +28,23 @@ public class PaymentService {
         return paymentRepository.findAll();
     }
 
-    public void postGroupPayment(Long groupId, BigDecimal amount, Date date, String description, Long payerId) {
-        Optional<Group> group = groupRepository.findById(groupId);
-        Optional<User> payer = userRepository.findById(payerId);
-        if (group.isPresent() && payer.isPresent()) {
-            Payment groupPayment = new Payment(group.get(), amount, date, description, payer.get());
-            paymentRepository.save(groupPayment);
-        }
-    }
 
-    public void postSinglePayment(Long groupId, BigDecimal amount, Date date, String description, Long payerId, Long receiverId) {
+    public void postPayment(int groupId, BigDecimal amount, Date date, String description, int payerId, Optional<Integer> receiverId) {
         Optional<Group> group = groupRepository.findById(groupId);
         Optional<User> payer = userRepository.findById(payerId);
-        Optional<User> receiver = userRepository.findById(receiverId);
-        if (group.isPresent() && payer.isPresent() && receiver.isPresent()) {
-            Payment singlePayment = new Payment(group.get(), amount, date, description, payer.get(), receiver.get());
-            this.paymentRepository.save(singlePayment);
+
+        if (group.isPresent() && payer.isPresent()) {
+            if (receiverId.isEmpty()) {
+                Payment groupPayment = new Payment(group.get(), amount, date, description, payer.get());
+                paymentRepository.save(groupPayment);
+            } else {
+                Optional<User> receiver = userRepository.findById(receiverId.get());
+
+                if (receiver.isPresent()) {
+                    Payment singlePayment = new Payment(group.get(), amount, date, description, payer.get(), receiver.get());
+                    paymentRepository.save(singlePayment);
+                }
+            }
         }
     }
 }

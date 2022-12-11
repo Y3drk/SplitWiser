@@ -1,6 +1,6 @@
 package com.splitwiser.SplitWiser.user;
 
-import com.splitwiser.SplitWiser.group.GroupService;
+
 import com.splitwiser.SplitWiser.payment.Payment;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,17 +22,17 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User getUser(@PathVariable String id) {
-        return userService.getUserById(Long.parseLong(id));
+    public User getUser(@PathVariable int id) {
+        return userService.getUserById(id);
     }
 
     @GetMapping("/{id}/payments")
-    public List<Payment> getUserPayments(@PathVariable String id) {
-        return userService.getUserPayments(Long.parseLong(id));
+    public List<Payment> getUserPayments(@PathVariable int id) {
+        return userService.getUserPayments(id);
     }
 
     @PostMapping("/{firstName}/{lastName}/{groupId}")
-    public void postUser(@PathVariable String firstName, @PathVariable  String lastName, @PathVariable Long groupId) {
+    public void postUser(@PathVariable String firstName, @PathVariable  String lastName, @PathVariable int groupId) {
         userService.postUser(firstName, lastName, groupId);
     }
 
