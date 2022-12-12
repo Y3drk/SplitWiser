@@ -22,6 +22,10 @@ import java.util.Date;
 public class SummaryController {
 
     @FXML
+    private ListView<String> totalSummaryList;
+    @FXML
+    private Label groupLabel;
+    @FXML
     private Label userInvolvedLabel;
 
     @FXML
@@ -47,6 +51,9 @@ public class SummaryController {
 
         this.otherPaymentList.setCellFactory(new PaymentCellFactory());
         this.userInvolvedPaymentsList.setCellFactory(new PaymentCellFactory());
+
+        this.totalSummaryList.setFocusTraversable(false);
+
     }
 
     @FXML
@@ -57,6 +64,8 @@ public class SummaryController {
             //probably necessary to check if user is really involved
             this.userInvolvedPaymentsList.getItems().add(newPayment);
             MockDataProvider.addPayment(newPayment);
+            //update balance
+            //update summaries
         }
     }
 
@@ -80,6 +89,7 @@ public class SummaryController {
         this.currentUser.set(currentUser);
         this.userInvolvedLabel.setText("with "+ this.currentUser.get().getFirstName() + " :");
         this.userInvolvedBalanceLabel.setText(this.currentUser.get().getFirstName() + " " + this.currentUser.get().getLastName() + " balance: ");
+        this.groupLabel.setText(this.currentUser.get().getGroup().getName() + " balance");
     }
 
     public void setPaymentsList(){
@@ -87,7 +97,7 @@ public class SummaryController {
         ObservableList<Payment> userInvolvedPayments = MockDataProvider.getAllUserInvolvedPayments(this.currentUser.get(), allPayments);
         userInvolvedPaymentsList.setItems(userInvolvedPayments);
         otherPaymentList.setItems(allPayments.filtered((payment) -> !userInvolvedPayments.contains(payment)));
-
+        totalSummaryList.setItems(MockDataProvider.calculateBalanceBetweenAll(this.currentUser.get(), allPayments));
 
         this.currentUsersBalance = new SimpleObjectProperty<>(MockDataProvider.getUsersBalance(this.currentUser.get(), this.userInvolvedPaymentsList.getItems()));
         this.userInvolvedBalanceValueLabel.setText(this.currentUsersBalance.get().toString());

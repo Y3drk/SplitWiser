@@ -47,4 +47,8 @@ public class Group {
     public void setName(String newName){
         this.name = new SimpleStringProperty(newName);
     }
+
+    public int getAmountOfMembers(){
+        return this.members.size();
+    }
 }

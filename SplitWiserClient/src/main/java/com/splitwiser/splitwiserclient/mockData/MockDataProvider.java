@@ -7,10 +7,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.math.MathContext;
+import java.math.RoundingMode;
+import java.util.*;
 
 public class MockDataProvider {
 
@@ -20,7 +19,7 @@ public class MockDataProvider {
 
     private static List<Payment> payments = new ArrayList<>();
 
-    public static void init(){
+    public static void init() {
         Group group1 = new Group("G1");
         Group group2 = new Group("G2");
 
@@ -31,7 +30,13 @@ public class MockDataProvider {
         User user2 = new User("Adam", "Nowak", group1);
         User user3 = new User("Jane", "Doe", group1);
         User user4 = new User("John", "Doe", group1);
+        group1.addUser(user1);
+        group1.addUser(user2);
+        group1.addUser(user3);
+        group1.addUser(user4);
+
         User user5 = new User("Mark", "Smith", group2);
+        group2.addUser(user5);
 
         users.add(user1);
         users.add(user2);
@@ -69,9 +74,19 @@ public class MockDataProvider {
         payments.add(payment8);
         payments.add(payment9);
 
+        group1.addPayment(payment1);
+        group1.addPayment(payment2);
+        group1.addPayment(payment3);
+        group1.addPayment(payment4);
+        group1.addPayment(payment5);
+        group1.addPayment(payment6);
+        group1.addPayment(payment7);
+        group1.addPayment(payment8);
+        group1.addPayment(payment9);
+
     }
 
-    public static ObservableList<User> getMockUsers(){
+    public static ObservableList<User> getMockUsers() {
 
         ObservableList<User> passedUsers = FXCollections.observableArrayList();
 
@@ -80,7 +95,7 @@ public class MockDataProvider {
         return passedUsers;
     }
 
-    public static ObservableList<Payment> getMockPayments(){
+    public static ObservableList<Payment> getMockPayments() {
         ObservableList<Payment> passedPayments = FXCollections.observableArrayList();
 
         passedPayments.addAll(payments);
@@ -88,28 +103,34 @@ public class MockDataProvider {
         return passedPayments;
     }
 
-    public static void addGroup(Group group){
+    public static void addGroup(Group group) {
         groups.add(group);
     }
 
-    public static void addUser(User user){
+    public static void addUser(User user) {
         users.add(user);
+        Group group = user.getGroup();
+        group.addUser(user);
+        groups.add(group);
     }
 
-    public static void addPayment(Payment payment){
+    public static void addPayment(Payment payment) {
         payments.add(payment);
+        Group group = payment.getGroup();
+
+        group.addPayment(payment);
+        groups.add(group);
     }
 
     //some methods that simulate operations that would be done on the servers side
-    public static ObservableList<Payment> getAllUserInvolvedPayments(User user, ObservableList<Payment> allPayments){
+    public static ObservableList<Payment> getAllUserInvolvedPayments(User user, ObservableList<Payment> allPayments) {
         ObservableList<Payment> userInvolvedPayments = FXCollections.observableArrayList();
 
-        for (Payment payment: allPayments
-             ) {
-            if (payment.getPayer() == user){
+        for (Payment payment : allPayments
+        ) {
+            if (payment.getPayer() == user) {
                 userInvolvedPayments.add(payment);
-            }
-            else if (payment.getReceiver() == null || payment.getReceiver() == user) {
+            } else if (payment.getReceiver() == null || payment.getReceiver() == user) {
                 userInvolvedPayments.add(payment);
             }
         }
@@ -117,7 +138,102 @@ public class MockDataProvider {
         return userInvolvedPayments;
     }
 
-    public static BigDecimal getUsersBalance(User user, ObservableList<Payment> userInvolvedPayments){
-        return BigDecimal.valueOf(8);
+    //TODO: implement this as simple as possible -> done
+    // and implement total summary between people
+    public static BigDecimal getUsersBalance(User user, ObservableList<Payment> userInvolvedPayments) {
+        BigDecimal currentBalance = BigDecimal.valueOf(0);
+        for (Payment payment : userInvolvedPayments
+        ) {
+            User receiver = payment.getReceiver();
+            if (payment.getPayer() == user) {
+                //if the user pays for whole group
+                if (receiver == null){
+                    int amountOfMembers = user.getGroup().getAmountOfMembers();
+                    double multiplyBy = (amountOfMembers - 1) / (double) amountOfMembers;
+                    currentBalance = currentBalance.add(payment.getValue().multiply(BigDecimal.valueOf(multiplyBy)));
+                }
+                //if the user pays for some other user
+                else {
+                    currentBalance = currentBalance.add(payment.getValue());
+                }
+                //if the user is a group receiver
+            } else if (receiver == null) {
+                int divideBy = user.getGroup().getAmountOfMembers();
+                currentBalance = currentBalance.subtract(payment.getValue().divide(BigDecimal.valueOf(divideBy)));
+            }
+            // if the user is an individual receiver
+            else {
+                currentBalance = currentBalance.subtract(payment.getValue());
+            }
+        }
+        currentBalance = currentBalance.setScale(2, RoundingMode.HALF_DOWN);
+
+        return currentBalance;
+    }
+
+    public static ObservableList<String> calculateBalanceBetweenAll(User user, ObservableList<Payment> allPayments) {
+        List<User> groupMembers = user.getGroup().getMembers();
+        ObservableList<String> balances = FXCollections.observableArrayList();
+
+        for (User member : groupMembers
+        ) {
+            HashMap<User, BigDecimal> relations = new HashMap<>();
+            for (Payment payment : allPayments
+            ) {
+                User payer = payment.getPayer();
+                if (member != payer) {
+                    User receiver = payment.getReceiver();
+                    if (receiver == null) {
+                        int divideBy = user.getGroup().getAmountOfMembers();
+                        BigDecimal newValue = payment.getValue().divide(BigDecimal.valueOf(divideBy));
+                        updateRelations(payer, relations, newValue);
+
+                    } else if (receiver == user) {
+                        updateRelations(payer, relations, payment.getValue());
+                    }
+                }
+                else {
+                    User receiver = payment.getReceiver();
+                    if (receiver == null) {
+                        int divideBy = user.getGroup().getAmountOfMembers();
+                        BigDecimal newValue = payment.getValue().divide(BigDecimal.valueOf(divideBy)).negate();
+                        List<User> receivers = user.getGroup().getMembers().filtered((elem) -> elem != member);
+                        for (User groupReceiver : receivers
+                        ) {
+                            updateRelations(groupReceiver, relations, newValue);
+                        }
+
+
+                    } else {
+                        updateRelations(receiver, relations, payment.getValue().negate());
+                    }
+                }
+            }
+            if (!relations.isEmpty()) {
+                String newBalance = "";
+                List<User> payers = relations.keySet().stream().toList();
+                for (User payer : payers
+                ) {
+                    if (relations.get(payer).compareTo(BigDecimal.valueOf(0)) > 0) {
+                        if (newBalance.equals("")){
+                            newBalance = member.getFirstName() + " " + member.getLastName() + " owns: ";
+                        }
+                        newBalance = newBalance.concat(payer.getFirstName() + " " + payer.getLastName() + " -> " + relations.get(payer).setScale(2, RoundingMode.HALF_DOWN).toString() + "$; ");
+                    }
+                }
+                if (!newBalance.equals("")) balances.add(newBalance);
+            }
+        }
+
+        return balances;
+}
+
+    private static void updateRelations(User payer, HashMap<User, BigDecimal> relations, BigDecimal newValue) {
+        if (relations.containsKey(payer)) {
+            BigDecimal oldValue = relations.get(payer);
+            relations.put(payer, oldValue.add(newValue));
+        } else {
+            relations.put(payer, newValue);
+        }
     }
 }
