@@ -1,10 +1,8 @@
 ## Changelog
 
-### 09-11.12.2022
-#### Jędrzej Ziebura:
-* client model draft
-* fxml files
-* simple controllers
+### 09-12.12.2022
+#### Jędrzej Ziebura: (???)
+* whole GUI on mock data
 
 ### 08.12.2022
 
