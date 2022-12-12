@@ -1,6 +1,7 @@
 package com.splitwiser.splitwiserclient.controllers;
 
 import com.splitwiser.splitwiserclient.model.group.Group;
+import com.splitwiser.splitwiserclient.model.payment.Payment;
 import com.splitwiser.splitwiserclient.model.user.User;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +14,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class AppController {
-    private Stage primaryStage;
+    private Stage primaryStage ;
 
     public AppController(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -43,14 +44,6 @@ public class AppController {
         }
     }
 
-    //TODO: (order is important)
-    // 1. Set up a draft of client-side model -> done (but it's not picture perfect)
-    // 2. Create createUserController and createGroupController -> done (but only simple placeholders)
-    // 2.1 prepare createUserController
-    // 3. Create fxml files for group and user creation -> done (again simple placeholders)
-    // 4. Connect it all -> not there completely
-
-
     public void initSummaryLayout(User currentlyLoggedUser) {
         try {
 
@@ -58,12 +51,13 @@ public class AppController {
 
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(AppController.class.getResource("summary-view.fxml"));
-            VBox summaryLayout = loader.load();
+            BorderPane summaryLayout = loader.load();
 
             // set initial data into controller
             SummaryController controller = loader.getController();
             controller.setAppController(this);
             controller.setCurrentUser(currentlyLoggedUser);
+            controller.setPaymentsList();
 
 
             Scene scene = new Scene(summaryLayout);
@@ -124,6 +118,35 @@ public class AppController {
             CreateGroupController controller = loader.getController();
             controller.setDialogStage(dialogStage);
             controller.setGroup(group);
+
+            // Show the dialog and wait until the user closes it
+            dialogStage.showAndWait();
+            return controller.isApproved();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public boolean showCreatePaymentDialog(Payment payment) {
+        try {
+            // Load the fxml file and create a new stage for the dialog
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(AppController.class.getResource("create-payment-dialog.fxml"));
+            BorderPane page = loader.load();
+
+            // Create the dialog Stage.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Create Payment");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(this.primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            // Set the group into the controller.
+            CreatePaymentController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setPayment(payment);
 
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();

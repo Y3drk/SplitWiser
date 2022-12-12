@@ -1,17 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" prefHeight="600.0" prefWidth="800.0" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.splitwiser.splitwiserclient.controllers.SummaryController">
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<BorderPane BorderPane.alignment="CENTER" prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.splitwiser.splitwiserclient.controllers.SummaryController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
-
-    <Label fx:id="welcomeText"/>
-    <Button text="Hello!" onAction="#onHelloButtonClick"/>
-    <Button text="Back to login" onAction="#onBackButtonClick"/>
-</VBox>
+    <left>
+        <VBox  alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding: 20.0">
+            <children>
+                <HBox alignment="CENTER" styleClass="actionDescriptors" stylesheets="css/guiStyles.css" prefHeight="40.0" prefWidth="60.0">
+                    <Label style="-fx-text-fill: white">Transaction list</Label>
+                </HBox>
+                <Label>Order: Payer, Date, Value, Receiver</Label>
+                <HBox alignment="CENTER" styleClass="actionDescriptors" stylesheets="css/guiStyles.css" prefHeight="40.0" prefWidth="60.0">
+                    <Label fx:id="userInvolvedLabel" style="-fx-text-fill: white"/>
+                </HBox>
+                <ListView fx:id="userInvolvedPaymentsList"/>
+                <HBox alignment="CENTER" styleClass="actionDescriptors" stylesheets="css/guiStyles.css" prefHeight="40.0" prefWidth="60.0">
+                    <Label style="-fx-text-fill: white">other :</Label>
+                </HBox>
+                <ListView fx:id="otherPaymentList"/>
+                <HBox alignment="CENTER" prefHeight="40.0" prefWidth="60.0">
+                    <Label fx:id="userInvolvedBalanceLabel" />
+                    <Label fx:id="userInvolvedBalanceValueLabel"/>
+                    <Label>$</Label>
+                </HBox>
+            </children>
+        </VBox>
+    </left>
+    <bottom>
+        <HBox alignment="CENTER" spacing="10.0" style="-fx-padding: 20.0">
+            <Button text="Create Payment" onAction="#onCreatePaymentButtonClick"  prefWidth="100.0"
+                    styleClass="clickableButton" stylesheets="css/guiStyles.css">
+                <HBox.margin>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                </HBox.margin>
+            </Button>
+            <Button text="Logout" onAction="#onLogoutButtonClick" prefWidth="60.0" styleClass="cancelButton"
+                    stylesheets="css/guiStyles.css">
+                <HBox.margin>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                </HBox.margin>
+            </Button>
+        </HBox>
+    </bottom>
+</BorderPane>

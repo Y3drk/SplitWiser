@@ -32,8 +32,8 @@ public class CreateUserController {
         this.groupsList.setCellFactory(new GroupCellFactory());
 
         this.createUserButton.disableProperty().bind(Bindings.isEmpty(this.firstNameTextField.textProperty())
-                .and(Bindings.isEmpty(this.lastNameTextField.textProperty()))
-                .and(Bindings.isEmpty(this.groupsList.getSelectionModel().getSelectedItems())));
+                .or(Bindings.isEmpty(this.lastNameTextField.textProperty()))
+                .or(Bindings.isEmpty(this.groupsList.getSelectionModel().getSelectedItems())));
     }
 
     public void setDialogStage(Stage dialogStage) {

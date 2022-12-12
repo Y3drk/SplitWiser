@@ -39,7 +39,6 @@ public class LoginController {
     @FXML
     protected void onLoginButtonClick() {
         User selectedUser = usersList.getSelectionModel().getSelectedItem();
-        System.out.println(selectedUser.getFirstName());
         this.appController.initSummaryLayout(selectedUser);
     }
 
@@ -49,6 +48,7 @@ public class LoginController {
         boolean isCreated = appController.showCreateUserDialog(newUser, this.groups);
         if (isCreated) {
             this.usersList.getItems().add(newUser);
+            MockDataProvider.addUser(newUser);
         }
     }
 
@@ -58,6 +58,7 @@ public class LoginController {
         boolean isCreated = appController.showCreateGroupDialog(newGroup);
         if (isCreated) {
             this.groups.add(newGroup);
+            MockDataProvider.addGroup(newGroup);
         }
 
     }

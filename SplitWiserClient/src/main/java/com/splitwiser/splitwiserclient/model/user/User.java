@@ -7,11 +7,11 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class User {
-    private StringProperty firstName;
+    private final StringProperty firstName;
 
-    private StringProperty lastName;
+    private final StringProperty lastName;
 
-    private ObjectProperty<Group> group;
+    private final ObjectProperty<Group> group;
 
     public User(String firstName, String lastName, Group group){
         this.firstName = new SimpleStringProperty(firstName);
