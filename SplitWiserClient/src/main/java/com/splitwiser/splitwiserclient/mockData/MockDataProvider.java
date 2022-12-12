@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.util.*;
 
 public class MockDataProvider {
@@ -45,24 +46,24 @@ public class MockDataProvider {
         users.add(user5);
 
         //group payment for Jane Doe
-        Payment payment1 = new Payment(group1, BigDecimal.valueOf(100.50), new Date(22, Calendar.NOVEMBER, 27), "Dinner together", user1);
+        Payment payment1 = new Payment(group1, BigDecimal.valueOf(100.50), LocalDate.of(22, 11, 27), "Dinner together", user1);
 
         //group payment where Jane paid
-        Payment payment2 = new Payment(group1, BigDecimal.valueOf(36.95), new Date(22, Calendar.DECEMBER, 12), "Bowling alley payment", user3);
+        Payment payment2 = new Payment(group1, BigDecimal.valueOf(36.95), LocalDate.of(22, 12, 12), "Bowling alley payment", user3);
 
         //single person payments for Jane Doe
-        Payment payment3 = new Payment(group1, BigDecimal.valueOf(9.50), new Date(22, Calendar.OCTOBER, 19), "Butter", user4, user3);
-        Payment payment4 = new Payment(group1, BigDecimal.valueOf(35.50), new Date(22, Calendar.AUGUST, 18), "", user1, user3);
-        Payment payment5 = new Payment(group1, BigDecimal.valueOf(17.00), new Date(22, Calendar.OCTOBER, 23), "Uber", user2, user3);
+        Payment payment3 = new Payment(group1, BigDecimal.valueOf(9.50), LocalDate.of(22, 10, 19), "Butter", user4, user3);
+        Payment payment4 = new Payment(group1, BigDecimal.valueOf(35.50), LocalDate.of(22, 8, 18), "", user1, user3);
+        Payment payment5 = new Payment(group1, BigDecimal.valueOf(17.00), LocalDate.of(22, 9, 23), "Uber", user2, user3);
 
         //single person payment where Jane paid
-        Payment payment6 = new Payment(group1, BigDecimal.valueOf(21.37), new Date(22, Calendar.OCTOBER, 12), "Drinks at C&U's", user3, user1);
+        Payment payment6 = new Payment(group1, BigDecimal.valueOf(21.37), LocalDate.of(22, 10, 12), "Drinks at C&U's", user3, user1);
 
 
         //other single person payments for Jan, Adam and John
-        Payment payment7 = new Payment(group1, BigDecimal.valueOf(10.50), new Date(22, Calendar.AUGUST, 27), "Beers", user1, user2);
-        Payment payment8 = new Payment(group1, BigDecimal.valueOf(10.50), new Date(22, Calendar.NOVEMBER, 27), "", user2, user4);
-        Payment payment9 = new Payment(group1, BigDecimal.valueOf(42.00), new Date(22, Calendar.DECEMBER, 13), "pizza", user1, user4);
+        Payment payment7 = new Payment(group1, BigDecimal.valueOf(10.50), LocalDate.of(22, 8, 27), "Beers", user1, user2);
+        Payment payment8 = new Payment(group1, BigDecimal.valueOf(10.50), LocalDate.of(22, 11, 27), "", user2, user4);
+        Payment payment9 = new Payment(group1, BigDecimal.valueOf(42.00), LocalDate.of(22, 12, 13), "pizza", user1, user4);
 
         payments.add(payment1);
         payments.add(payment2);
@@ -181,29 +182,33 @@ public class MockDataProvider {
             for (Payment payment : allPayments
             ) {
                 User payer = payment.getPayer();
+                //if the member is a receiver
                 if (member != payer) {
                     User receiver = payment.getReceiver();
+                    //if it's a group payment
                     if (receiver == null) {
-                        int divideBy = user.getGroup().getAmountOfMembers();
+                        int divideBy = groupMembers.size();
                         BigDecimal newValue = payment.getValue().divide(BigDecimal.valueOf(divideBy));
                         updateRelations(payer, relations, newValue);
-
-                    } else if (receiver == user) {
+                    //if it's a single person payment
+                    } else if (receiver == member) {
                         updateRelations(payer, relations, payment.getValue());
                     }
                 }
+//                if the member is a payer
                 else {
                     User receiver = payment.getReceiver();
+                    //if they pay for the whole group
                     if (receiver == null) {
-                        int divideBy = user.getGroup().getAmountOfMembers();
-                        BigDecimal newValue = payment.getValue().divide(BigDecimal.valueOf(divideBy)).negate();
+                        int divideBy = groupMembers.size();
+                        BigDecimal newValue = payment.getValue().divide(BigDecimal.valueOf(divideBy));
                         List<User> receivers = user.getGroup().getMembers().filtered((elem) -> elem != member);
                         for (User groupReceiver : receivers
                         ) {
-                            updateRelations(groupReceiver, relations, newValue);
+                            updateRelations(groupReceiver, relations, newValue.negate());
                         }
 
-
+                    //if they pay for a single person
                     } else {
                         updateRelations(receiver, relations, payment.getValue().negate());
                     }

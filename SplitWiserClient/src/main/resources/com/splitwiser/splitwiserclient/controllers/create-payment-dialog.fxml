@@ -8,7 +8,40 @@
             fx:controller="com.splitwiser.splitwiserclient.controllers.CreatePaymentController"
             prefHeight="400.0" prefWidth="600.0">
     <left>
-        <Label>Creation of Adam</Label>
+        <VBox alignment="CENTER_LEFT">
+            <HBox  alignment="CENTER" spacing="10.0" style="-fx-padding: 20.0">
+                <Label>Payer (current user by default):</Label>
+                <ListView fx:id="payerListPicker" />
+            </HBox>
+            <HBox  alignment="CENTER" spacing="10.0" style="-fx-padding: 20.0">
+                <Label>Value:</Label>
+                <TextField fx:id="valueTextField">
+                    <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                    </HBox.margin>
+                </TextField>
+            </HBox>
+            <HBox  alignment="CENTER" spacing="10.0" style="-fx-padding: 20.0">
+                <Label>Date:</Label>
+                    <DatePicker fx:id="datePicker" promptText="Enter a date"/>
+                    <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                    </HBox.margin>
+            </HBox>
+            <HBox  alignment="CENTER" spacing="10.0" style="-fx-padding: 20.0">
+                <Label>Description:</Label>
+                <TextField fx:id="descriptionTextField">
+                    <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                    </HBox.margin>
+                </TextField>
+            </HBox>
+            <HBox  alignment="CENTER" spacing="10.0" style="-fx-padding: 20.0">
+                <Label>Receiver (whole group by default):</Label>
+                <ListView fx:id="receiverListPicker" />
+                <RadioButton fx:id="groupReceiverButton" text="whole group payment" />
+            </HBox>
+        </VBox>
     </left>
     <right>
         <VBox alignment="CENTER" spacing="10.0" style="-fx-padding: 20.0">
@@ -17,6 +50,12 @@
                 <VBox.margin>
                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                 </VBox.margin>
+            </Button>
+            <Button fx:id="createPaymentButton" onAction="#handleCreateAction" prefWidth="60.0" text="Create"
+                    styleClass="clickableButton" stylesheets="css/guiStyles.css">
+                <HBox.margin>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                </HBox.margin>
             </Button>
         </VBox>
     </right>

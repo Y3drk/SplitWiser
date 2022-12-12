@@ -7,6 +7,7 @@ import com.splitwiser.splitwiserclient.model.user.User;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,6 +17,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -38,6 +40,8 @@ public class SummaryController {
     private Label userInvolvedBalanceValueLabel;
     @FXML
     private ListView<Payment> userInvolvedPaymentsList;
+
+    private ObservableList<Payment> allPayments = FXCollections.observableArrayList();
     private AppController appController;
 
     private ObjectProperty<User> currentUser;
@@ -58,14 +62,19 @@ public class SummaryController {
 
     @FXML
     protected void onCreatePaymentButtonClick() {
-        Payment newPayment = new Payment(this.currentUser.get().getGroup(), BigDecimal.valueOf(0), new Date(1, Calendar.JANUARY, 1900), "", this.currentUser.get());
+        Payment newPayment = new Payment(this.currentUser.get().getGroup(), BigDecimal.valueOf(0), LocalDate.of(2022, 1, 1), "", this.currentUser.get());
         boolean isCreated = appController.showCreatePaymentDialog(newPayment);
         if (isCreated){
-            //probably necessary to check if user is really involved
-            this.userInvolvedPaymentsList.getItems().add(newPayment);
+            this.allPayments.add(newPayment);
             MockDataProvider.addPayment(newPayment);
-            //update balance
-            //update summaries
+
+            if (newPayment.getPayer().equals(this.currentUser.get()) || newPayment.getReceiver() == null || newPayment.getReceiver().equals(this.currentUser.get())){
+                this.userInvolvedPaymentsList.getItems().add(newPayment);
+                this.currentUsersBalance = new SimpleObjectProperty<>(MockDataProvider.getUsersBalance(this.currentUser.get(), this.userInvolvedPaymentsList.getItems()));
+                this.userInvolvedBalanceValueLabel.setText(this.currentUsersBalance.get().toString());
+            }
+
+            totalSummaryList.setItems(MockDataProvider.calculateBalanceBetweenAll(this.currentUser.get(), allPayments));
         }
     }
 
@@ -93,7 +102,7 @@ public class SummaryController {
     }
 
     public void setPaymentsList(){
-        ObservableList<Payment> allPayments = MockDataProvider.getMockPayments();
+        allPayments.addAll(MockDataProvider.getMockPayments().filtered((elem) -> elem.getGroup() == this.currentUser.get().getGroup()));
         ObservableList<Payment> userInvolvedPayments = MockDataProvider.getAllUserInvolvedPayments(this.currentUser.get(), allPayments);
         userInvolvedPaymentsList.setItems(userInvolvedPayments);
         otherPaymentList.setItems(allPayments.filtered((payment) -> !userInvolvedPayments.contains(payment)));
