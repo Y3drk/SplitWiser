@@ -6,4 +6,6 @@ module com.splitwiser.splitwiserclient {
 
     opens com.splitwiser.splitwiserclient to javafx.fxml;
     exports com.splitwiser.splitwiserclient;
+    exports com.splitwiser.splitwiserclient.controllers;
+    opens com.splitwiser.splitwiserclient.controllers to javafx.fxml;
 }

@@ -1,5 +1,8 @@
 ## Changelog
 
+### 09-12.12.2022
+* whole GUI on mock data
+
 ### 10.12.2022
 
 * first model implementation

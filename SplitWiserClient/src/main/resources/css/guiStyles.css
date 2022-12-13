@@ -1,0 +1,19 @@
+.clickableButton {
+    -fx-text-fill: white;
+    -fx-background-color: dodgerblue;
+    -fx-background-radius: 5%;
+    -fx-cursor: hand;
+}
+
+.actionDescriptors {
+    -fx-border-color: black;
+    -fx-padding: 5;
+    -fx-background-color: grey;
+}
+
+.cancelButton {
+    -fx-text-fill: white;
+    -fx-background-color: red;
+    -fx-background-radius: 5%;
+    -fx-cursor: hand;
+}
