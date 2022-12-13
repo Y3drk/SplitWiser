@@ -29,21 +29,21 @@ public class PaymentService {
     }
 
 
-    public void postPayment(int groupId, BigDecimal amount, Date date, String description, int payerId, Optional<Integer> receiverId) {
+    public void addPayment(int groupId, BigDecimal amount, Date date, String description, int payerId, Optional<Integer> receiverId) {
         Optional<Group> group = groupRepository.findById(groupId);
         Optional<User> payer = userRepository.findById(payerId);
 
-        if (group.isPresent() && payer.isPresent()) {
-            if (receiverId.isEmpty()) {
-                Payment groupPayment = new Payment(group.get(), amount, date, description, payer.get());
-                paymentRepository.save(groupPayment);
-            } else {
-                Optional<User> receiver = userRepository.findById(receiverId.get());
-
-                if (receiver.isPresent()) {
-                    Payment singlePayment = new Payment(group.get(), amount, date, description, payer.get(), receiver.get());
-                    paymentRepository.save(singlePayment);
-                }
+        if (group.isEmpty() || payer.isEmpty()) {
+            return;
+        }
+        if (receiverId.isEmpty()) {
+            Payment groupPayment = new Payment(group.get(), amount, date, description, payer.get());
+            paymentRepository.save(groupPayment);
+        } else {
+            Optional<User> receiver = userRepository.findById(receiverId.get());
+            if (receiver.isPresent()) {
+                Payment singlePayment = new Payment(group.get(), amount, date, description, payer.get(), receiver.get());
+                paymentRepository.save(singlePayment);
             }
         }
     }

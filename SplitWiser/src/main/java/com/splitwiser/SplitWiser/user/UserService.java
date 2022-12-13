@@ -34,18 +34,10 @@ public class UserService {
 //   take all user group payments without receiver && single payments if user is payer or receiver
     public List<Payment> getUserPayments(int id) {
         User user = getUserById(id);
-        List<Payment> allPayments =  user.getGroup().getPayments();
-        List<Payment> userPayments = new ArrayList<>();
-        for (Payment payment: allPayments) {
-            if (payment.getReceiver() == null || (payment.getReceiver() != null &&
-                    (Objects.equals(payment.getPayer().getId(), id) || Objects.equals(payment.getReceiver().getId(), id)))) {
-                userPayments.add(payment);
-            }
-        }
-        return userPayments;
+        return userRepository.findAllUserPayments(user.getGroup().getId(), id);
     }
 
-    public void postUser(String firstName, String lastName, int groupId) {
+    public void addUser(String firstName, String lastName, int groupId) {
         Optional<Group> group = groupRepository.findById(groupId);
         if (group.isPresent()) {
             User user = new User(firstName,lastName, group.get());

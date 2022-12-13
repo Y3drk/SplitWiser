@@ -32,8 +32,8 @@ public class UserController {
     }
 
     @PostMapping("/user/{firstName}/{lastName}/{groupId}")
-    public void postUser(@PathVariable String firstName, @PathVariable  String lastName, @PathVariable int groupId) {
-        userService.postUser(firstName, lastName, groupId);
+    public void addUser(@PathVariable String firstName, @PathVariable  String lastName, @PathVariable int groupId) {
+        userService.addUser(firstName, lastName, groupId);
     }
 
 }

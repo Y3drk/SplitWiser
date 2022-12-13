@@ -36,8 +36,8 @@ public class GroupController {
     }
 
     @PostMapping("/{name}")
-    public void postGroup(@PathVariable String name) {
-        groupService.postGroup(name);
+    public void addGroup(@PathVariable String name) {
+        groupService.addGroup(name);
     }
 
 }

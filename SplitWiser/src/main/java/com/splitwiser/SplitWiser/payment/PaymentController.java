@@ -23,8 +23,8 @@ public class PaymentController {
 
 
     @PostMapping("/payment/{groupId}")
-    public void postPayment(@PathVariable int groupId, BigDecimal amount, Date date, String description, int payerId, Optional<Integer> receiverId) {
-        paymentService.postPayment(groupId, amount, date, description, payerId, receiverId);
+    public void addPayment(@PathVariable int groupId, BigDecimal amount, Date date, String description, int payerId, Optional<Integer> receiverId) {
+        paymentService.addPayment(groupId, amount, date, description, payerId, receiverId);
     }
 
 }

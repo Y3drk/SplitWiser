@@ -35,7 +35,7 @@ public class GroupService {
         return group.getPayments();
     }
 
-    public void postGroup(String name) {
+    public void addGroup(String name) {
         Group group = new Group(name);
         groupRepository.save(group);
     }
