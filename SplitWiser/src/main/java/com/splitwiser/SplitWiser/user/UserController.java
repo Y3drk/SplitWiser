@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/users")
+@RequestMapping(path = "/api")
 public class UserController {
 
     private final UserService userService;
@@ -16,22 +16,22 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("")
+    @GetMapping("/users")
     public List<User> getUsers() {
         return userService.getUsers();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/user/{id}")
     public User getUser(@PathVariable int id) {
         return userService.getUserById(id);
     }
 
-    @GetMapping("/{id}/payments")
+    @GetMapping("/user/{id}/payments")
     public List<Payment> getUserPayments(@PathVariable int id) {
         return userService.getUserPayments(id);
     }
 
-    @PostMapping("/{firstName}/{lastName}/{groupId}")
+    @PostMapping("/user/{firstName}/{lastName}/{groupId}")
     public void postUser(@PathVariable String firstName, @PathVariable  String lastName, @PathVariable int groupId) {
         userService.postUser(firstName, lastName, groupId);
     }

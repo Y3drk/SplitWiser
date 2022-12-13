@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/groups")
+@RequestMapping(path = "/api")
 public class GroupController {
     private final GroupService groupService;
 
@@ -15,17 +15,17 @@ public class GroupController {
         this.groupService = groupService;
     }
 
-    @GetMapping("")
+    @GetMapping("/groups")
     public List<Group> getGroups() {
         return groupService.getGroups();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/group/{id}")
     public Group getGroup(@PathVariable int id) {
         return groupService.getGroup(id);
     }
 
-    @GetMapping("/{id}/members")
+    @GetMapping("group/{id}/members")
     public List<User> getGroupMembers(@PathVariable int id) {
         return groupService.getGroupMembers(id);
     }
