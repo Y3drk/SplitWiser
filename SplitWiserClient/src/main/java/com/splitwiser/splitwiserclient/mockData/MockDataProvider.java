@@ -187,7 +187,7 @@ public class MockDataProvider {
                 //if the member is a receiver
                 if (member != payer) {
                     //if it's a group payment
-                    if (amountOfReceivers > 1) {
+                    if (amountOfReceivers > 1 && receivers.contains(member)) {
                         BigDecimal newValue = payment.getValue().divide(BigDecimal.valueOf(amountOfReceivers));
                         updateRelations(payer, relations, newValue);
                     //if it's a single person payment
