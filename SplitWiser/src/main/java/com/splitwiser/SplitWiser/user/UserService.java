@@ -6,9 +6,7 @@ import com.splitwiser.SplitWiser.group.GroupRepository;
 import com.splitwiser.SplitWiser.payment.Payment;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -31,17 +29,18 @@ public class UserService {
         return user.orElse(null);
     }
 
-//   take all user group payments without receiver && single payments if user is payer or receiver
-    public List<Payment> getUserPayments(int id) {
-        User user = getUserById(id);
-        return userRepository.findAllUserPayments(user.getGroup().getId(), id);
+    public List<Payment> getUserPayments(int userId) {
+        User user = getUserById(userId);
+        return userRepository.findAllUserPayments(user.getGroup().getId(), userId);
     }
 
-    public void addUser(String firstName, String lastName, int groupId) {
+    public void addUser(User user, int groupId) {
         Optional<Group> group = groupRepository.findById(groupId);
         if (group.isPresent()) {
-            User user = new User(firstName,lastName, group.get());
+            user.setGroup(group.get());
+            group.get().addMember(user);
             userRepository.save(user);
+            groupRepository.save(group.get());
         }
     }
 }

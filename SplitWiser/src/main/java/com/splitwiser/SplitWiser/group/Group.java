@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.splitwiser.SplitWiser.payment.Payment;
 import com.splitwiser.SplitWiser.user.User;
 import jakarta.persistence.*;
-
 import java.util.List;
 
 @Entity
@@ -18,12 +17,12 @@ public class Group {
     private String name;
 
     // without ignore - infinite loop
-    @OneToMany
+    @OneToMany(fetch=FetchType.EAGER)
     @JoinColumn(name="GROUP_ID")
     @JsonIgnoreProperties("group")
     private List<User> members;
 
-    @OneToMany
+    @OneToMany(fetch=FetchType.EAGER)
     @JoinColumn(name="GROUP_ID")
     @JsonIgnoreProperties("group")
     private List<Payment> payments;

@@ -25,19 +25,19 @@ public class GroupController {
         return groupService.getGroup(id);
     }
 
-    @GetMapping("group/{id}/members")
+    @GetMapping("/group/{id}/members")
     public List<User> getGroupMembers(@PathVariable int id) {
         return groupService.getGroupMembers(id);
     }
 
-    @GetMapping("/{id}/payments")
+    @GetMapping("/group/{id}/payments")
     public List<Payment> getGroupPayments(@PathVariable int id) {
         return groupService.getGroupPayments(id);
     }
 
-    @PostMapping("/{name}")
-    public void addGroup(@PathVariable String name) {
-        groupService.addGroup(name);
+    @PostMapping("/group")
+    public void addGroup(@RequestBody Group group) {
+        groupService.addGroup(group);
     }
 
 }

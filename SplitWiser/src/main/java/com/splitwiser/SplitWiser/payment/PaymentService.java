@@ -5,10 +5,8 @@ import com.splitwiser.SplitWiser.group.GroupRepository;
 import com.splitwiser.SplitWiser.user.User;
 import com.splitwiser.SplitWiser.user.UserRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
-import java.math.BigDecimal;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,22 +27,24 @@ public class PaymentService {
     }
 
 
-    public void addPayment(int groupId, BigDecimal amount, Date date, String description, int payerId, Optional<Integer> receiverId) {
+    public void addPayment(Payment payment, int groupId, int payerId, List<Integer> receiverIDs) {
         Optional<Group> group = groupRepository.findById(groupId);
+        List<User> receivers = new ArrayList<>();
         Optional<User> payer = userRepository.findById(payerId);
 
-        if (group.isEmpty() || payer.isEmpty()) {
-            return;
-        }
-        if (receiverId.isEmpty()) {
-            Payment groupPayment = new Payment(group.get(), amount, date, description, payer.get());
-            paymentRepository.save(groupPayment);
-        } else {
-            Optional<User> receiver = userRepository.findById(receiverId.get());
-            if (receiver.isPresent()) {
-                Payment singlePayment = new Payment(group.get(), amount, date, description, payer.get(), receiver.get());
-                paymentRepository.save(singlePayment);
+        if (group.isPresent() && payer.isPresent()) {
+            for (int receiverId : receiverIDs) {
+                Optional<User> user = userRepository.findById(receiverId);
+                user.ifPresent(receivers::add);
             }
+            payment.setReceivers(receivers);
+            payment.setPayer(payer.get());
+            payment.setGroup(group.get());
+            paymentRepository.save(payment);
+
+            group.get().addPayment(payment);
+            groupRepository.save(group.get());
         }
+
     }
 }

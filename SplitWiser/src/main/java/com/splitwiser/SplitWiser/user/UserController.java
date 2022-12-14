@@ -31,9 +31,9 @@ public class UserController {
         return userService.getUserPayments(id);
     }
 
-    @PostMapping("/user/{firstName}/{lastName}/{groupId}")
-    public void addUser(@PathVariable String firstName, @PathVariable  String lastName, @PathVariable int groupId) {
-        userService.addUser(firstName, lastName, groupId);
+    @PostMapping("/user/group/{groupId}")
+    public void addUser(@RequestBody User user, @PathVariable int groupId) {
+        userService.addUser(user, groupId);
     }
 
 }

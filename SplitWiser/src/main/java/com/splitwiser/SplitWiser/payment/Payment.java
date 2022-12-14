@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "PAYMENTS")
@@ -15,41 +16,34 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne
+    @ManyToOne()
+    @JoinColumn(name="USER_ID")
+    @JsonIgnoreProperties("group")
+    private User payer;
+
+    @ManyToMany(fetch=FetchType.EAGER)
+    @JoinTable(
+            name = "payments_receivers_users",
+            joinColumns = @JoinColumn(name = "payment_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @JsonIgnoreProperties("group")
+    private List<User> receivers;
+
+
+    @ManyToOne()
     @JsonIgnoreProperties("payments")
     private Group group;
 
     private BigDecimal amount;
 
-    @ManyToOne
-    @JsonIgnoreProperties("group")
-    private User payer;
-
-    @ManyToOne
-    @JsonIgnoreProperties("group")
-    private User receiver;
-
     private Date date;
 
     private String description;
 
-//    group payment
-    public Payment(Group group, BigDecimal amount, Date date, String description, User payer) {
-        this.group = group;
+    public Payment(BigDecimal amount, Date date, String description) {
         this.amount = amount;
         this.date = date;
         this.description = description;
-        this.payer = payer;
-    }
-
-//    single payment
-    public Payment(Group group, BigDecimal amount, Date date, String description, User payer, User receiver) {
-        this.group = group;
-        this.amount = amount;
-        this.date = date;
-        this.description = description;
-        this.payer = payer;
-        this.receiver = receiver;
     }
 
     public Payment() {
@@ -57,10 +51,6 @@ public class Payment {
 
     public BigDecimal getAmount() {
         return amount;
-    }
-
-    public User getPayer() {
-        return payer;
     }
 
     public Date getDate() {
@@ -79,8 +69,12 @@ public class Payment {
         return group;
     }
 
-    public User getReceiver() {
-        return receiver;
+    public List<User> getReceivers() {
+        return receivers;
+    }
+
+    public User getPayer() {
+        return payer;
     }
 
     public void setId(int id) {
@@ -95,12 +89,8 @@ public class Payment {
         this.amount = amount;
     }
 
-    public void setPayer(User payer) {
-        this.payer = payer;
-    }
-
-    public void setReceiver(User receiver) {
-        this.receiver = receiver;
+    public void setReceivers(List<User> receivers) {
+        this.receivers = receivers;
     }
 
     public void setDate(Date date) {
@@ -109,5 +99,9 @@ public class Payment {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setPayer(User payer) {
+        this.payer = payer;
     }
 }

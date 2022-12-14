@@ -2,10 +2,7 @@ package com.splitwiser.SplitWiser.payment;
 
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/api")
@@ -22,9 +19,9 @@ public class PaymentController {
     }
 
 
-    @PostMapping("/payment/{groupId}")
-    public void addPayment(@PathVariable int groupId, BigDecimal amount, Date date, String description, int payerId, Optional<Integer> receiverId) {
-        paymentService.addPayment(groupId, amount, date, description, payerId, receiverId);
+    @PostMapping("/payment/group/{groupId}/{payerId}/{receiverIds}")
+    public void addPayment(@RequestBody Payment payment, @PathVariable int groupId, @PathVariable int payerId, @PathVariable("receiverIds") Integer[] receiverIds) {
+        paymentService.addPayment(payment, groupId, payerId, List.of(receiverIds));
     }
 
 }

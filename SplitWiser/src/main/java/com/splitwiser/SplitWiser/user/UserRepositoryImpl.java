@@ -15,7 +15,9 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
 
     @Override
     public List<Payment> findAllUserPayments(int groupId, int userId) {
-        String hql = "SELECT p FROM Payment p WHERE (p.group.id = :groupId AND (p.receiver is null OR p.receiver.id = :userId OR p.payer.id = :userId))";
+        String hql = "SELECT p FROM Payment p WHERE (p.group.id = :groupId AND " +
+                "(p.payer.id = :userId OR (SELECT u FROM User u WHERE u.id = :userId)" +
+                " IN elements(p.receivers)))";
         TypedQuery<Payment> query = entityManager.createQuery(hql, Payment.class);
         query.setParameter("groupId", groupId);
         query.setParameter("userId", userId);
