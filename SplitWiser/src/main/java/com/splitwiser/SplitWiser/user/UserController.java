@@ -1,4 +1,4 @@
-package com.splitwiser.SplitWiser.user;
+package com.splitwiser.SplitWiser.User;
 
 
 import com.splitwiser.SplitWiser.payment.Payment;

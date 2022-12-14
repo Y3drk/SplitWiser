@@ -10,10 +10,10 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.math.BigDecimal;
-import java.security.Timestamp;
 import java.text.DecimalFormat;
 import java.text.ParseException;
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CreatePaymentController {
 
@@ -95,7 +95,9 @@ public class CreatePaymentController {
         }
 
         if (!this.receiverListPicker.getSelectionModel().getSelectedItems().isEmpty() && !this.groupReceiverButton.isSelected()){
-            this.payment.setReceiver(this.receiverListPicker.getSelectionModel().getSelectedItem());
+            List<User> receiver = new ArrayList<>();
+            receiver.add(this.receiverListPicker.getSelectionModel().getSelectedItem());
+            this.payment.setReceivers(receiver);
         }
 
         DecimalFormat decimalFormatter = new DecimalFormat();
@@ -105,7 +107,6 @@ public class CreatePaymentController {
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
-        // if the radio button whole group is clicked we don't care about single receivers
     }
 
 }

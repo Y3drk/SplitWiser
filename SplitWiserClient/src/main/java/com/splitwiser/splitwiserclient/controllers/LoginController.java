@@ -19,7 +19,7 @@ public class LoginController {
     private ObservableList<Group> groups;
 
     @FXML
-    private ListView<User> usersList; //is list view better than dynamically spawning buttons? -> prolly yes
+    private ListView<User> usersList;
 
     @FXML
     public Button loginButton;

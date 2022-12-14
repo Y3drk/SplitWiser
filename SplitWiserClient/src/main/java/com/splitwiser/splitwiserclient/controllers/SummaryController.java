@@ -5,7 +5,6 @@ import com.splitwiser.splitwiserclient.mockData.MockDataProvider;
 import com.splitwiser.splitwiserclient.model.payment.Payment;
 import com.splitwiser.splitwiserclient.model.user.User;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,13 +12,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Date;
 
 public class SummaryController {
 
@@ -50,8 +44,8 @@ public class SummaryController {
 
     @FXML
     private void initialize(){
-        this.currentUser = new SimpleObjectProperty<User>();
-        this.currentUsersBalance = new SimpleObjectProperty<BigDecimal>(BigDecimal.valueOf(0));
+        this.currentUser = new SimpleObjectProperty<>();
+        this.currentUsersBalance = new SimpleObjectProperty<>(BigDecimal.valueOf(0));
 
         this.otherPaymentList.setCellFactory(new PaymentCellFactory());
         this.userInvolvedPaymentsList.setCellFactory(new PaymentCellFactory());
@@ -62,18 +56,18 @@ public class SummaryController {
 
     @FXML
     protected void onCreatePaymentButtonClick() {
-        Payment newPayment = new Payment(this.currentUser.get().getGroup(), BigDecimal.valueOf(0), LocalDate.of(2022, 1, 1), "", this.currentUser.get());
+        Payment newPayment = new Payment(this.currentUser.get().getGroup(), BigDecimal.valueOf(0), LocalDate.of(2022, 1, 1), "", this.currentUser.get(), this.currentUser.get().getGroup().getMembers());
         boolean isCreated = appController.showCreatePaymentDialog(newPayment);
         if (isCreated){
-            this.allPayments.add(newPayment);
             MockDataProvider.addPayment(newPayment);
 
-            if (newPayment.getPayer().equals(this.currentUser.get()) || newPayment.getReceiver() == null || newPayment.getReceiver().equals(this.currentUser.get())){
+            if (newPayment.getPayer().equals(this.currentUser.get()) || newPayment.getReceivers().contains(this.currentUser.get())){
                 this.userInvolvedPaymentsList.getItems().add(newPayment);
                 this.currentUsersBalance = new SimpleObjectProperty<>(MockDataProvider.getUsersBalance(this.currentUser.get(), this.userInvolvedPaymentsList.getItems()));
                 this.userInvolvedBalanceValueLabel.setText(this.currentUsersBalance.get().toString());
             }
 
+            this.allPayments.add(newPayment);
             totalSummaryList.setItems(MockDataProvider.calculateBalanceBetweenAll(this.currentUser.get(), allPayments));
         }
     }
