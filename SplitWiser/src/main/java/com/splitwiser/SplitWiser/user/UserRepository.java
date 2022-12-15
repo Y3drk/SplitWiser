@@ -1,4 +1,4 @@
-package com.splitwiser.SplitWiser.user;
+package com.splitwiser.SplitWiser.User;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;

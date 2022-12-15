@@ -5,9 +5,7 @@ import com.splitwiser.splitwiserclient.model.payment.Payment;
 import com.splitwiser.splitwiserclient.model.user.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.*;
@@ -45,11 +43,17 @@ public class MockDataProvider {
         users.add(user4);
         users.add(user5);
 
+        List<User> allG1members = new ArrayList<>();
+        allG1members.add(user1);
+        allG1members.add(user2);
+        allG1members.add(user3);
+        allG1members.add(user4);
+
         //group payment for Jane Doe
-        Payment payment1 = new Payment(group1, BigDecimal.valueOf(100.50), LocalDate.of(22, 11, 27), "Dinner together", user1);
+        Payment payment1 = new Payment(group1, BigDecimal.valueOf(100.50), LocalDate.of(22, 11, 27), "Dinner together", user1, allG1members);
 
         //group payment where Jane paid
-        Payment payment2 = new Payment(group1, BigDecimal.valueOf(36.95), LocalDate.of(22, 12, 12), "Bowling alley payment", user3);
+        Payment payment2 = new Payment(group1, BigDecimal.valueOf(36.95), LocalDate.of(22, 12, 12), "Bowling alley payment", user3, allG1members);
 
         //single person payments for Jane Doe
         Payment payment3 = new Payment(group1, BigDecimal.valueOf(9.50), LocalDate.of(22, 10, 19), "Butter", user4, user3);
@@ -131,7 +135,7 @@ public class MockDataProvider {
         ) {
             if (payment.getPayer() == user) {
                 userInvolvedPayments.add(payment);
-            } else if (payment.getReceiver() == null || payment.getReceiver() == user) {
+            } else if (payment.getReceivers().contains(user)) {
                 userInvolvedPayments.add(payment);
             }
         }
@@ -139,18 +143,15 @@ public class MockDataProvider {
         return userInvolvedPayments;
     }
 
-    //TODO: implement this as simple as possible -> done
-    // and implement total summary between people
     public static BigDecimal getUsersBalance(User user, ObservableList<Payment> userInvolvedPayments) {
         BigDecimal currentBalance = BigDecimal.valueOf(0);
         for (Payment payment : userInvolvedPayments
         ) {
-            User receiver = payment.getReceiver();
+            int amountOfReceivers = payment.getReceivers().size();
             if (payment.getPayer() == user) {
                 //if the user pays for whole group
-                if (receiver == null){
-                    int amountOfMembers = user.getGroup().getAmountOfMembers();
-                    double multiplyBy = (amountOfMembers - 1) / (double) amountOfMembers;
+                if (amountOfReceivers > 1){
+                    double multiplyBy = (amountOfReceivers - 1) / (double) amountOfReceivers;
                     currentBalance = currentBalance.add(payment.getValue().multiply(BigDecimal.valueOf(multiplyBy)));
                 }
                 //if the user pays for some other user
@@ -158,9 +159,8 @@ public class MockDataProvider {
                     currentBalance = currentBalance.add(payment.getValue());
                 }
                 //if the user is a group receiver
-            } else if (receiver == null) {
-                int divideBy = user.getGroup().getAmountOfMembers();
-                currentBalance = currentBalance.subtract(payment.getValue().divide(BigDecimal.valueOf(divideBy)));
+            } else if (amountOfReceivers > 1) {
+                currentBalance = currentBalance.subtract(payment.getValue().divide(BigDecimal.valueOf(amountOfReceivers)));
             }
             // if the user is an individual receiver
             else {
@@ -182,35 +182,33 @@ public class MockDataProvider {
             for (Payment payment : allPayments
             ) {
                 User payer = payment.getPayer();
+                ObservableList<User> receivers = payment.getReceivers();
+                int amountOfReceivers = receivers.size();
                 //if the member is a receiver
                 if (member != payer) {
-                    User receiver = payment.getReceiver();
                     //if it's a group payment
-                    if (receiver == null) {
-                        int divideBy = groupMembers.size();
-                        BigDecimal newValue = payment.getValue().divide(BigDecimal.valueOf(divideBy));
+                    if (amountOfReceivers > 1 && receivers.contains(member)) {
+                        BigDecimal newValue = payment.getValue().divide(BigDecimal.valueOf(amountOfReceivers));
                         updateRelations(payer, relations, newValue);
                     //if it's a single person payment
-                    } else if (receiver == member) {
+                    } else if (receivers.get(0) == member) {
                         updateRelations(payer, relations, payment.getValue());
                     }
                 }
 //                if the member is a payer
                 else {
-                    User receiver = payment.getReceiver();
                     //if they pay for the whole group
-                    if (receiver == null) {
-                        int divideBy = groupMembers.size();
-                        BigDecimal newValue = payment.getValue().divide(BigDecimal.valueOf(divideBy));
-                        List<User> receivers = user.getGroup().getMembers().filtered((elem) -> elem != member);
-                        for (User groupReceiver : receivers
+                    if (amountOfReceivers > 1) {
+                        BigDecimal newValue = payment.getValue().divide(BigDecimal.valueOf(amountOfReceivers));
+                        List<User> otherReceivers = receivers.filtered((elem) -> elem != member);
+                        for (User groupReceiver : otherReceivers
                         ) {
                             updateRelations(groupReceiver, relations, newValue.negate());
                         }
 
                     //if they pay for a single person
                     } else {
-                        updateRelations(receiver, relations, payment.getValue().negate());
+                        updateRelations(receivers.get(0), relations, payment.getValue().negate());
                     }
                 }
             }
@@ -223,7 +221,7 @@ public class MockDataProvider {
                         if (newBalance.equals("")){
                             newBalance = member.getFirstName() + " " + member.getLastName() + " owns: ";
                         }
-                        newBalance = newBalance.concat(payer.getFirstName() + " " + payer.getLastName() + " -> " + relations.get(payer).setScale(2, RoundingMode.HALF_DOWN).toString() + "$; ");
+                        newBalance = newBalance.concat(payer.getFirstName() + " " + payer.getLastName() + " -> " + relations.get(payer).setScale(2, RoundingMode.HALF_DOWN) + "$; ");
                     }
                 }
                 if (!newBalance.equals("")) balances.add(newBalance);

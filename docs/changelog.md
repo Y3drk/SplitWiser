@@ -1,5 +1,10 @@
 ## Changelog
 
+### 14-15.12.2022
+
+* corrections in GUI
+* final touches on backend
+
 ### 14.12.2022
 * change base structure
 * fixed all problems connected with endpoints
@@ -7,6 +12,10 @@
 
 ### 11.12.2022
 * created PR with backend endpoints
+
+### 09-12.12.2022
+
+* whole GUI on mock data
 
 ### 10.12.2022
 
