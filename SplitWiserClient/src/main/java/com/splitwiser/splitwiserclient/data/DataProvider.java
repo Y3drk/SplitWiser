@@ -4,6 +4,7 @@ import com.splitwiser.splitwiserclient.model.group.Group;
 import com.splitwiser.splitwiserclient.model.payment.Payment;
 import com.splitwiser.splitwiserclient.model.user.User;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -18,23 +19,27 @@ public class DataProvider {
         return instance;
     }
 
-    private ObservableList<User> users = FXCollections.observableArrayList();
+    private final ObservableList<User> users = FXCollections.observableArrayList();
 
-    private ObservableList<Group> groups = FXCollections.observableArrayList();
-    private ObservableList<Payment> payments = FXCollections.observableArrayList();
+    private final ObservableList<Group> groups = FXCollections.observableArrayList();
+    private final ObservableList<Payment> payments = FXCollections.observableArrayList();
 
 
     private final DataService dataService = new DataService();
+    private Disposable refetchSub;
+
 
     public void init() {
         refetchData();
     }
 
     public void refetchData() {
+        if(this.refetchSub != null)
+            this.refetchSub.dispose();
         this.payments.clear();
         this.users.clear();
         this.groups.clear();
-        this.dataService.getGroupsInfo().subscribe(group -> {
+        this.refetchSub = this.dataService.getGroupsInfo().subscribe(group -> {
             this.groups.add(group);
             for (User user : group.getMembers()) {
                 user.setGroup(group);
