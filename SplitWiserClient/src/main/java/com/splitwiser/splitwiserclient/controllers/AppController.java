@@ -3,7 +3,6 @@ package com.splitwiser.splitwiserclient.controllers;
 import com.splitwiser.splitwiserclient.model.group.Group;
 import com.splitwiser.splitwiserclient.model.payment.Payment;
 import com.splitwiser.splitwiserclient.model.user.User;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -13,7 +12,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class AppController {
-    private Stage primaryStage ;
+    private Stage primaryStage;
 
     public AppController(Stage primaryStage) {
         this.primaryStage = primaryStage;

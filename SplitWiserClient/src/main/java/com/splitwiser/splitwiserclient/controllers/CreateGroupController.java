@@ -23,12 +23,12 @@ public class CreateGroupController {
     private DataProvider dataProvider = DataProvider.getInstance();
 
     @FXML
-    private void initialize(){
+    private void initialize() {
         this.isApproved = false;
         this.createGroupButton.disableProperty().bind(Bindings.isEmpty(this.groupNameTextField.textProperty()));
     }
 
-    public void setGroup(Group group){
+    public void setGroup(Group group) {
         this.group = group;
         updateControls();
     }
@@ -36,7 +36,7 @@ public class CreateGroupController {
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
     }
-    
+
 
     @FXML
     private void handleCreateAction(ActionEvent actionEvent) {
@@ -53,11 +53,11 @@ public class CreateGroupController {
         dialogStage.close();
     }
 
-    private void updateControls(){
+    private void updateControls() {
         groupNameTextField.setText(this.group.getName());
     }
 
-    private void updateModel(){
+    private void updateModel() {
         this.group.setName(groupNameTextField.getText());
     }
 

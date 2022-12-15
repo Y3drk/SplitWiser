@@ -30,7 +30,7 @@ public class DataProvider {
         refetchData();
     }
 
-    public void refetchData(){
+    public void refetchData() {
         this.payments.clear();
         this.users.clear();
         this.groups.clear();
@@ -74,10 +74,11 @@ public class DataProvider {
         return userInvolvedPayments;
     }
 
-    public Observable<User> addUser(User user){
+    public Observable<User> addUser(User user) {
         return this.dataService.createUser(user);
     }
-    public Observable<Group> addGroup(Group group){
+
+    public Observable<Group> addGroup(Group group) {
         return this.dataService.createGroup(group);
     }
 }

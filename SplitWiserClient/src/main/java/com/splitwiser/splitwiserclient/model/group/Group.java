@@ -1,6 +1,5 @@
 package com.splitwiser.splitwiserclient.model.group;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.splitwiser.splitwiserclient.model.payment.Payment;
 import com.splitwiser.splitwiserclient.model.user.User;
 import javafx.beans.property.SimpleStringProperty;
@@ -13,14 +12,6 @@ import java.util.List;
 public class Group {
 
     private int id;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     private StringProperty name;
 
@@ -50,6 +41,14 @@ public class Group {
 
     // for Jackson
     public Group() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {

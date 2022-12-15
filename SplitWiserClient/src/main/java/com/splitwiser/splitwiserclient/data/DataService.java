@@ -37,11 +37,11 @@ public class DataService {
                 .flatMap(Observable::fromIterable);
     }
 
-    public Observable<User> createUser(User user){
+    public Observable<User> createUser(User user) {
         return this.splitWiserAPI.postUser(user, user.getGroup().getId());
     }
 
-    public Observable<Group> createGroup(Group group){
+    public Observable<Group> createGroup(Group group) {
         return this.splitWiserAPI.postGroup(group);
     }
 

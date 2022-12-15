@@ -1,11 +1,11 @@
 package com.splitwiser.splitwiserclient.controllers;
 
 import com.splitwiser.splitwiserclient.auxiliary.PaymentCellFactory;
-import com.splitwiser.splitwiserclient.util.CalculateService;
 import com.splitwiser.splitwiserclient.data.DataProvider;
 import com.splitwiser.splitwiserclient.mockData.MockDataProvider;
 import com.splitwiser.splitwiserclient.model.payment.Payment;
 import com.splitwiser.splitwiserclient.model.user.User;
+import com.splitwiser.splitwiserclient.util.CalculateService;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;

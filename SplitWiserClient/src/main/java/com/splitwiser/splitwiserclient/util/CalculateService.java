@@ -67,7 +67,7 @@ public class CalculateService {
                 for (User payer : payers
                 ) {
                     if (relations.get(payer).compareTo(BigDecimal.valueOf(0)) > 0) {
-                        if (newBalance.equals("")){
+                        if (newBalance.equals("")) {
                             newBalance = member.getFirstName() + " " + member.getLastName() + " owns: ";
                         }
                         newBalance = newBalance.concat(payer.getFirstName() + " " + payer.getLastName() + " -> " + relations.get(payer).setScale(2, RoundingMode.HALF_DOWN) + "$; ");
@@ -87,7 +87,7 @@ public class CalculateService {
             int amountOfReceivers = payment.getReceivers().size();
             if (payment.getPayer() == user) {
                 //if the user pays for whole group
-                if (amountOfReceivers > 1){
+                if (amountOfReceivers > 1) {
                     double multiplyBy = (amountOfReceivers - 1) / (double) amountOfReceivers;
                     currentBalance = currentBalance.add(payment.getValue().multiply(BigDecimal.valueOf(multiplyBy)));
                 }

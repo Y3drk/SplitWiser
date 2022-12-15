@@ -17,11 +17,11 @@ public class Payment {
     private int id;
 
     @ManyToOne()
-    @JoinColumn(name="USER_ID")
+    @JoinColumn(name = "USER_ID")
     @JsonIgnoreProperties("group")
     private User payer;
 
-    @ManyToMany(fetch=FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "payments_receivers_users",
             joinColumns = @JoinColumn(name = "payment_id"),

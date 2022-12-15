@@ -38,7 +38,7 @@ public class CreatePaymentController {
     private boolean isApproved;
 
     @FXML
-    private void initialize(){
+    private void initialize() {
         this.isApproved = false;
 
         this.payerListPicker.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -66,7 +66,7 @@ public class CreatePaymentController {
         this.dialogStage = dialogStage;
     }
 
-    public void setPayment(Payment payment){
+    public void setPayment(Payment payment) {
         this.payment = payment;
         this.updateControls();
     }
@@ -75,7 +75,7 @@ public class CreatePaymentController {
         return isApproved;
     }
 
-    private void updateControls(){
+    private void updateControls() {
         //binding the user with list of payers (?)
         this.descriptionTextField.setText(payment.getDescription());
         this.valueTextField.setText(payment.getValue().toString());
@@ -86,15 +86,15 @@ public class CreatePaymentController {
 
     }
 
-    private void updateModel(){
+    private void updateModel() {
         this.payment.setDescription(this.descriptionTextField.getText());
         this.payment.setDate(this.datePicker.getValue());
 
-        if (!this.payerListPicker.getSelectionModel().getSelectedItems().isEmpty()){
+        if (!this.payerListPicker.getSelectionModel().getSelectedItems().isEmpty()) {
             this.payment.setPayer(this.payerListPicker.getSelectionModel().getSelectedItem());
         }
 
-        if (!this.receiverListPicker.getSelectionModel().getSelectedItems().isEmpty() && !this.groupReceiverButton.isSelected()){
+        if (!this.receiverListPicker.getSelectionModel().getSelectedItems().isEmpty() && !this.groupReceiverButton.isSelected()) {
             List<User> receiver = new ArrayList<>();
             receiver.add(this.receiverListPicker.getSelectionModel().getSelectedItem());
             this.payment.setReceivers(receiver);

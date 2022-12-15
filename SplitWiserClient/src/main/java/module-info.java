@@ -7,7 +7,6 @@ module com.splitwiser.splitwiserclient {
     requires io.reactivex.rxjava3;
     requires retrofit2.adapter.rxjava3;
     requires retrofit2.converter.jackson;
-    requires retrofit2.converter.gson;
     requires com.fasterxml.jackson.databind;
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.annotation;

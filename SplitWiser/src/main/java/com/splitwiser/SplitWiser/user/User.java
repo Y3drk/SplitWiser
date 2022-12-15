@@ -23,8 +23,8 @@ public class User {
     @JsonIgnoreProperties("members")
     private Group group;
 
-//    list of payments where user is receiver
-    @ManyToMany(mappedBy = "receivers", fetch=FetchType.EAGER)
+    //    list of payments where user is receiver
+    @ManyToMany(mappedBy = "receivers", fetch = FetchType.EAGER)
     private List<Payment> receiverPayments;
 
     protected User() {
