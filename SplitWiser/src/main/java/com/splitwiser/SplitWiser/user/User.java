@@ -1,32 +1,41 @@
 package com.splitwiser.SplitWiser.user;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.splitwiser.SplitWiser.group.Group;
+import com.splitwiser.SplitWiser.payment.Payment;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
+@JsonIgnoreProperties({"receiverPayments"})
 @Table(name = "USERS")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
     private String firstName;
     private String lastName;
 
-    @OneToOne
+    // without ignore - infinite loop
+    @ManyToOne
+    @JsonIgnoreProperties("members")
     private Group group;
+
+//    list of payments where user is receiver
+    @ManyToMany(mappedBy = "receivers", fetch=FetchType.EAGER)
+    private List<Payment> receiverPayments;
 
     protected User() {
     } // for JPA only
 
-    public User(String firstName, String lastName, Group group) {
+    public User(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.group = group;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -42,7 +51,11 @@ public class User {
         this.group = group;
     }
 
-    public Long getId() {
+    public void setReceiverPayments(List<Payment> receiverPayments) {
+        this.receiverPayments = receiverPayments;
+    }
+
+    public int getId() {
         return id;
     }
 
@@ -56,5 +69,13 @@ public class User {
 
     public Group getGroup() {
         return group;
+    }
+
+    public List<Payment> getReceiverPayments() {
+        return receiverPayments;
+    }
+
+    public void addPaymentToReceiver(Payment payment) {
+        receiverPayments.add(payment);
     }
 }

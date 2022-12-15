@@ -1,14 +1,13 @@
 package com.splitwiser.SplitWiser.user;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+
+import com.splitwiser.SplitWiser.payment.Payment;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api")
-
 public class UserController {
 
     private final UserService userService;
@@ -18,8 +17,23 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public List<User> getStudents() {
+    public List<User> getUsers() {
         return userService.getUsers();
+    }
+
+    @GetMapping("/user/{id}")
+    public User getUser(@PathVariable int id) {
+        return userService.getUserById(id);
+    }
+
+    @GetMapping("/user/{id}/payments")
+    public List<Payment> getUserPayments(@PathVariable int id) {
+        return userService.getUserPayments(id);
+    }
+
+    @PostMapping("/user/group/{groupId}")
+    public void addUser(@RequestBody User user, @PathVariable int groupId) {
+        userService.addUser(user, groupId);
     }
 
 }

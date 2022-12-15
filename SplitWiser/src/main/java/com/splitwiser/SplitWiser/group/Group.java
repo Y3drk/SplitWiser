@@ -1,9 +1,9 @@
 package com.splitwiser.SplitWiser.group;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.splitwiser.SplitWiser.payment.Payment;
 import com.splitwiser.SplitWiser.user.User;
 import jakarta.persistence.*;
-
 import java.util.List;
 
 @Entity
@@ -12,14 +12,19 @@ public class Group {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     private String name;
 
-    @OneToMany
+    // without ignore - infinite loop
+    @OneToMany(fetch=FetchType.EAGER)
+    @JoinColumn(name="GROUP_ID")
+    @JsonIgnoreProperties("group")
     private List<User> members;
 
-    @OneToMany
+    @OneToMany(fetch=FetchType.EAGER)
+    @JoinColumn(name="GROUP_ID")
+    @JsonIgnoreProperties("group")
     private List<Payment> payments;
 
 
@@ -38,7 +43,7 @@ public class Group {
         this.members.add(user);
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -46,7 +51,7 @@ public class Group {
         this.name = name;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 

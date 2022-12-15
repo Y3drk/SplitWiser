@@ -1,7 +1,12 @@
 ## Changelog
 
-### 09-12.12.2022
-* whole GUI on mock data
+### 14.12.2022
+* change base structure
+* fixed all problems connected with endpoints
+* backend work is complete
+
+### 11.12.2022
+* created PR with backend endpoints
 
 ### 10.12.2022
 
@@ -10,7 +15,10 @@
 * changed Value in Person(now User) to be Amount
 * merged 2 configurators to be 1 now
 * added endpoints list for backend
- 
+
+### 09-12.12.2022
+* whole GUI on mock data
+
 ### 08.12.2022
 
 * client project init
