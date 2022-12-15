@@ -15,6 +15,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -45,9 +47,9 @@ public class AppConfigurator {
             }
 
             if (paymentRepository.count() == 0) {
-                paymentService.addPayment(new Payment(BigDecimal.valueOf(100), new Date(), "dinner bill"), 1, 1, List.of(2, 3));
-                paymentService.addPayment(new Payment(BigDecimal.valueOf(300), new Date(), "bill"), 1, 2, List.of(3));
-                paymentService.addPayment(new Payment(BigDecimal.valueOf(80), new Date(), "bill 2"), 3, 4, List.of(5, 6));
+                paymentService.addPayment(new Payment(BigDecimal.valueOf(100), LocalDate.now(), "dinner bill"), 1, 1, List.of(2, 3));
+                paymentService.addPayment(new Payment(BigDecimal.valueOf(300), LocalDate.now(), "bill"), 1, 2, List.of(3));
+                paymentService.addPayment(new Payment(BigDecimal.valueOf(80), LocalDate.now(), "bill 2"), 3, 4, List.of(5, 6));
             }
 
             List<Group> allGroups = groupService.getGroups();

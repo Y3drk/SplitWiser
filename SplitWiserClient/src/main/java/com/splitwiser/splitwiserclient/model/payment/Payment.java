@@ -1,5 +1,9 @@
 package com.splitwiser.splitwiserclient.model.payment;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.splitwiser.splitwiserclient.model.group.Group;
 import com.splitwiser.splitwiserclient.model.user.User;
 import javafx.beans.property.ObjectProperty;
@@ -11,21 +15,45 @@ import javafx.collections.ObservableList;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
 public class Payment {
-    private final ObjectProperty<Group> group;
+    private int id;
 
-    private final ObjectProperty<BigDecimal> amount;
+    public int getId() {
+        return id;
+    }
 
-    private final ObjectProperty<User> payer;
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    private ObservableList<User> receivers;
+    private ObjectProperty<Group> group = new SimpleObjectProperty<>();
 
-    private final ObjectProperty<LocalDate> date;
+    private ObjectProperty<BigDecimal> amount = new SimpleObjectProperty<>();
 
-    private StringProperty description;
+    private ObjectProperty<User> payer = new SimpleObjectProperty<>();
+
+    private ObservableList<User> receivers = FXCollections.observableArrayList();
+
+    private ObjectProperty<LocalDate> date = new SimpleObjectProperty<>();
+
+    private StringProperty description = new SimpleStringProperty();
+
+    public void setGroup(Group group) {
+        this.group.set(group);
+    }
+
+    public BigDecimal getAmount() {
+        return amount.get();
+    }
+
+    public ObjectProperty<BigDecimal> amountProperty() {
+        return amount;
+    }
+
 
     //    group payment
     public Payment(Group group, BigDecimal amount, LocalDate date, String description, User payer, List<User> receivers) {
@@ -35,9 +63,9 @@ public class Payment {
         this.description = new SimpleStringProperty(description);
         this.payer = new SimpleObjectProperty<>(payer);
 
-        this.receivers = FXCollections.observableArrayList();
         this.receivers.addAll(receivers);
     }
+
 
     //    single payment
     public Payment(Group group, BigDecimal amount, LocalDate date, String description, User payer, User receiver) {
@@ -46,8 +74,12 @@ public class Payment {
         this.date = new SimpleObjectProperty<>(date);
         this.description = new SimpleStringProperty(description);
         this.payer = new SimpleObjectProperty<>(payer);
-        this.receivers= FXCollections.observableArrayList();
+        this.receivers = FXCollections.observableArrayList();
         this.receivers.add(receiver);
+    }
+
+    // for Jackson
+    public Payment() {
     }
 
     public Group getGroup() {

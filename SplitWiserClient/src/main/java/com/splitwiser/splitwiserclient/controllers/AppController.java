@@ -68,7 +68,7 @@ public class AppController {
         }
     }
 
-    public boolean showCreateUserDialog(User newUser, ObservableList<Group> groups) {
+    public boolean showCreateUserDialog(User newUser) {
         try {
             // Load the fxml file and create a new stage for the dialog
             FXMLLoader loader = new FXMLLoader();
@@ -87,7 +87,6 @@ public class AppController {
             CreateUserController controller = loader.getController();
             controller.setDialogStage(dialogStage);
             controller.setUser(newUser);
-            controller.setGroupsList(groups);
 
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();

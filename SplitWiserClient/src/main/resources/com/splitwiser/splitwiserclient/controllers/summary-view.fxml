@@ -14,7 +14,7 @@
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
     <left>
-        <VBox  alignment="CENTER" spacing="10.0" style="-fx-padding: 20.0">
+        <VBox  alignment="CENTER" prefWidth="370.0" spacing="10.0" style="-fx-padding: 20.0">
             <children>
                 <HBox alignment="CENTER" styleClass="actionDescriptors" stylesheets="css/guiStyles.css" prefHeight="40.0" prefWidth="60.0">
                     <Label style="-fx-text-fill: white">Transaction list</Label>
@@ -37,7 +37,7 @@
         </VBox>
     </left>
     <right>
-        <VBox alignment="CENTER" spacing="10.0" style="-fx-padding: 20.0">
+        <VBox alignment="CENTER" prefWidth="370.0" spacing="10.0" style="-fx-padding: 20.0">
             <HBox alignment="CENTER" styleClass="actionDescriptors" stylesheets="css/guiStyles.css" prefHeight="40.0" prefWidth="60.0">
                 <Label fx:id="groupLabel" style="-fx-text-fill: white"/>
             </HBox>

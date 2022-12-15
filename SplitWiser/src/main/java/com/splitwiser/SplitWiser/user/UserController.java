@@ -1,4 +1,4 @@
-package com.splitwiser.SplitWiser.User;
+package com.splitwiser.SplitWiser.user;
 
 
 import com.splitwiser.SplitWiser.payment.Payment;
@@ -32,8 +32,10 @@ public class UserController {
     }
 
     @PostMapping("/user/group/{groupId}")
-    public void addUser(@RequestBody User user, @PathVariable int groupId) {
+    @ResponseBody
+    public User addUser(@RequestBody User user, @PathVariable int groupId) {
         userService.addUser(user, groupId);
+        return user;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.splitwiser.splitwiserclient.controllers;
 
+import com.splitwiser.splitwiserclient.data.DataProvider;
 import com.splitwiser.splitwiserclient.model.group.Group;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
@@ -18,6 +19,8 @@ public class CreateGroupController {
     private Group group;
 
     private boolean isApproved;
+
+    private DataProvider dataProvider = DataProvider.getInstance();
 
     @FXML
     private void initialize(){
@@ -38,6 +41,9 @@ public class CreateGroupController {
     @FXML
     private void handleCreateAction(ActionEvent actionEvent) {
         this.updateModel();
+        this.dataProvider.addGroup(this.group).first(this.group).blockingSubscribe(newGroup -> {
+            this.group = newGroup;
+        });
         isApproved = true;
         dialogStage.close();
     }
