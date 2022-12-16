@@ -4,6 +4,7 @@ import com.splitwiser.splitwiserclient.auxiliary.GroupCellFactory;
 import com.splitwiser.splitwiserclient.data.DataProvider;
 import com.splitwiser.splitwiserclient.model.group.Group;
 import com.splitwiser.splitwiserclient.model.user.User;
+import com.splitwiser.splitwiserclient.util.AlertGenerator;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -29,7 +30,7 @@ public class CreateUserController {
 
     private boolean isApproved;
 
-    private DataProvider dataProvider = DataProvider.getInstance();
+    private final DataProvider dataProvider = DataProvider.getInstance();
 
     @FXML
     private void initialize() {
@@ -65,7 +66,9 @@ public class CreateUserController {
         this.updateModel();
         this.dataProvider.addUser(this.user).first(this.user).blockingSubscribe(newUser -> {
             this.user = newUser;
-        });
+            AlertGenerator.showConfirmationAlert(user.getFirstName() + " " + user.getLastName() + " was created successfully");
+        }, throwable -> AlertGenerator.showErrorAlert("Could not create new user -> " + throwable.getMessage()));
+        this.dataProvider.refetchData();
         isApproved = true;
         dialogStage.close();
     }

@@ -25,7 +25,7 @@
                 </HBox>
                 <ListView fx:id="userInvolvedPaymentsList"/>
                 <HBox alignment="CENTER" styleClass="actionDescriptors" stylesheets="css/guiStyles.css" prefHeight="40.0" prefWidth="60.0">
-                    <Label style="-fx-text-fill: white">other :</Label>
+                    <Label style="-fx-text-fill: white">Other</Label>
                 </HBox>
                 <ListView fx:id="otherPaymentList"/>
                 <HBox alignment="CENTER" prefHeight="40.0" prefWidth="60.0">

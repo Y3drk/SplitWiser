@@ -1,6 +1,7 @@
 package com.splitwiser.splitwiserclient.data;
 
 import com.splitwiser.splitwiserclient.model.group.Group;
+import com.splitwiser.splitwiserclient.model.payment.Payment;
 import com.splitwiser.splitwiserclient.model.user.User;
 import io.reactivex.rxjava3.core.Observable;
 import retrofit2.http.Body;
@@ -26,4 +27,7 @@ public interface SplitWiserAPI {
 
     @POST("/api/group")
     Observable<Group> postGroup(@Body Group group);
+
+    @POST("/api/payment/group/{groupId}")
+    Observable<Payment> postPayment(@Body Payment payment, @Path("groupId") int groupId);
 }

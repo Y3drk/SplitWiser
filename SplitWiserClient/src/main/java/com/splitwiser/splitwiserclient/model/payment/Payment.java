@@ -1,5 +1,7 @@
 package com.splitwiser.splitwiserclient.model.payment;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.splitwiser.splitwiserclient.model.group.Group;
 import com.splitwiser.splitwiserclient.model.user.User;
 import javafx.beans.property.ObjectProperty;
@@ -13,8 +15,10 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-
+@JsonIgnoreProperties(value = {"group"})
 public class Payment {
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private int id;
 
     private ObjectProperty<Group> group = new SimpleObjectProperty<>();
@@ -120,7 +124,7 @@ public class Payment {
     }
 
     public void setReceivers(List<User> receivers) {
-        this.receivers.addAll(receivers);
+        this.receivers.setAll(receivers);
     }
 
     public void setAmount(BigDecimal amount) {

@@ -30,7 +30,7 @@ public class AppController {
             // set initial data into controller
             LoginController controller = loader.getController();
             controller.setAppController(this);
-            controller.setUsersList();
+            controller.initData();
 
 
             Scene scene = new Scene(loginLayout);

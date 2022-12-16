@@ -2,6 +2,7 @@ package com.splitwiser.splitwiserclient.controllers;
 
 import com.splitwiser.splitwiserclient.data.DataProvider;
 import com.splitwiser.splitwiserclient.model.group.Group;
+import com.splitwiser.splitwiserclient.util.AlertGenerator;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -43,7 +44,9 @@ public class CreateGroupController {
         this.updateModel();
         this.dataProvider.addGroup(this.group).first(this.group).blockingSubscribe(newGroup -> {
             this.group = newGroup;
-        });
+            AlertGenerator.showConfirmationAlert(newGroup.getName() + " was created successfully");
+        }, throwable -> AlertGenerator.showErrorAlert("Could not create new group -> " + throwable.getMessage()));
+        this.dataProvider.refetchData();
         isApproved = true;
         dialogStage.close();
     }
