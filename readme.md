@@ -36,4 +36,21 @@ During the implementation of the GUI/Client side the views changed slightly, but
 
 ### Server endpoints
 
-![Endpoints](./docs/resources/endpoints.svg)
+![Endpoints](./docs/resources/endpoints-updated.png)
+
+### Data Base
+
+#### Date base diagram
+![Diagram](./docs/resources/database/database-schema.png)
+
+#### Groups
+![Groups](./docs/resources/database/groups.png)
+
+#### Users
+![Users](./docs/resources/database/users.png)
+
+#### Payments
+![Payments](./docs/resources/database/payments.png)
+
+#### Payments receivers users
+![PaymentsReceivers](./docs/resources/database/payments-receivers-users.png)

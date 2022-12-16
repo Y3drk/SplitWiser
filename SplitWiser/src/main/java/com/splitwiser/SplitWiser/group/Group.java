@@ -6,6 +6,7 @@ import com.splitwiser.SplitWiser.user.User;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "GROUPS")
@@ -66,5 +67,18 @@ public class Group {
 
     public List<Payment> getPayments() {
         return payments;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Group group = (Group) o;
+        return id == group.id && Objects.equals(name, group.name) && Objects.equals(members, group.members) && Objects.equals(payments, group.payments);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, members, payments);
     }
 }

@@ -10,7 +10,7 @@
 
 ### 14-15.12.2022
 
-* corrections in GUI - nullable receiver changed to list of receivers
+* corrections in GUI
 * final touches on backend
 
 ### 14.12.2022
