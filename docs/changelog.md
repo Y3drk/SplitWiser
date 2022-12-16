@@ -1,5 +1,11 @@
 ## Changelog
 
+### 15.12.2022
+
+* retrofit basic implementation
+* retrofit get groups / users
+* retrofit create user / group 
+
 ### 14-15.12.2022
 
 * corrections in GUI
