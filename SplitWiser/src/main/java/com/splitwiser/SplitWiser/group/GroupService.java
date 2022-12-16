@@ -21,17 +21,17 @@ public class GroupService {
     }
 
     public Group getGroup(int id) {
-        Optional<Group> result =  this.groupRepository.findById(id);
+        Optional<Group> result = this.groupRepository.findById(id);
         return result.orElse(null);
     }
 
     public List<User> getGroupMembers(int id) {
-        Group group =  getGroup(id);
+        Group group = getGroup(id);
         return group.getMembers();
     }
 
     public List<Payment> getGroupPayments(int id) {
-        Group group =  getGroup(id);
+        Group group = getGroup(id);
         return group.getPayments();
     }
 

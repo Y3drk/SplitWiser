@@ -6,7 +6,7 @@ import com.splitwiser.SplitWiser.user.User;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -17,11 +17,11 @@ public class Payment {
     private int id;
 
     @ManyToOne()
-    @JoinColumn(name="USER_ID")
+    @JoinColumn(name = "USER_ID")
     @JsonIgnoreProperties("group")
     private User payer;
 
-    @ManyToMany(fetch=FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "payments_receivers_users",
             joinColumns = @JoinColumn(name = "payment_id"),
@@ -36,11 +36,11 @@ public class Payment {
 
     private BigDecimal amount;
 
-    private Date date;
+    private LocalDate date;
 
     private String description;
 
-    public Payment(BigDecimal amount, Date date, String description) {
+    public Payment(BigDecimal amount, LocalDate date, String description) {
         this.amount = amount;
         this.date = date;
         this.description = description;
@@ -53,7 +53,7 @@ public class Payment {
         return amount;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
@@ -93,7 +93,7 @@ public class Payment {
         this.receivers = receivers;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

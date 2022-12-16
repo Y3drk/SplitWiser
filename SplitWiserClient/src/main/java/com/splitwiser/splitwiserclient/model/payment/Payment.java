@@ -15,17 +15,32 @@ import java.util.List;
 
 
 public class Payment {
-    private final ObjectProperty<Group> group;
+    private int id;
 
-    private final ObjectProperty<BigDecimal> amount;
+    private ObjectProperty<Group> group = new SimpleObjectProperty<>();
 
-    private final ObjectProperty<User> payer;
+    private ObjectProperty<BigDecimal> amount = new SimpleObjectProperty<>();
 
-    private ObservableList<User> receivers;
+    private ObjectProperty<User> payer = new SimpleObjectProperty<>();
 
-    private final ObjectProperty<LocalDate> date;
+    private ObservableList<User> receivers = FXCollections.observableArrayList();
 
-    private StringProperty description;
+    private ObjectProperty<LocalDate> date = new SimpleObjectProperty<>();
+
+    private StringProperty description = new SimpleStringProperty();
+
+    public void setGroup(Group group) {
+        this.group.set(group);
+    }
+
+    public BigDecimal getAmount() {
+        return amount.get();
+    }
+
+    public ObjectProperty<BigDecimal> amountProperty() {
+        return amount;
+    }
+
 
     //    group payment
     public Payment(Group group, BigDecimal amount, LocalDate date, String description, User payer, List<User> receivers) {
@@ -35,9 +50,9 @@ public class Payment {
         this.description = new SimpleStringProperty(description);
         this.payer = new SimpleObjectProperty<>(payer);
 
-        this.receivers = FXCollections.observableArrayList();
         this.receivers.addAll(receivers);
     }
+
 
     //    single payment
     public Payment(Group group, BigDecimal amount, LocalDate date, String description, User payer, User receiver) {
@@ -46,8 +61,21 @@ public class Payment {
         this.date = new SimpleObjectProperty<>(date);
         this.description = new SimpleStringProperty(description);
         this.payer = new SimpleObjectProperty<>(payer);
-        this.receivers= FXCollections.observableArrayList();
+        this.receivers = FXCollections.observableArrayList();
         this.receivers.add(receiver);
+    }
+
+    // for Jackson
+    public Payment() {
+    }
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Group getGroup() {

@@ -1,22 +1,36 @@
 package com.splitwiser.splitwiserclient.model.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.splitwiser.splitwiserclient.model.group.Group;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+import java.util.Objects;
+
+@JsonIgnoreProperties(value = {"group"})
 public class User {
-    private final StringProperty firstName;
+    int id;
 
-    private final StringProperty lastName;
+    @JsonProperty("firstName")
+    private StringProperty firstName = new SimpleStringProperty();
 
-    private final ObjectProperty<Group> group;
 
-    public User(String firstName, String lastName, Group group){
-        this.firstName = new SimpleStringProperty(firstName);
-        this.lastName = new SimpleStringProperty(lastName);
-        this.group = new SimpleObjectProperty<>(group);
+    @JsonProperty("lastName")
+    private StringProperty lastName = new SimpleStringProperty();
+
+    private ObjectProperty<Group> group = new SimpleObjectProperty<>();
+
+    public User(String firstName, String lastName, Group group) {
+        this.firstName.set(firstName);
+        this.lastName.set(lastName);
+        this.group.set(group);
+    }
+
+    // for Jackson
+    public User() {
     }
 
     public String getFirstName() {
@@ -54,4 +68,27 @@ public class User {
     public void setGroup(Group group) {
         this.group.set(group);
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+
 }

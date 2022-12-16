@@ -1,13 +1,17 @@
 package com.splitwiser.splitwiserclient.controllers;
 
 import com.splitwiser.splitwiserclient.auxiliary.GroupCellFactory;
+import com.splitwiser.splitwiserclient.data.DataProvider;
 import com.splitwiser.splitwiserclient.model.group.Group;
 import com.splitwiser.splitwiserclient.model.user.User;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class CreateUserController {
@@ -25,6 +29,8 @@ public class CreateUserController {
 
     private boolean isApproved;
 
+    private DataProvider dataProvider = DataProvider.getInstance();
+
     @FXML
     private void initialize() {
         this.isApproved = false;
@@ -34,6 +40,7 @@ public class CreateUserController {
         this.createUserButton.disableProperty().bind(Bindings.isEmpty(this.firstNameTextField.textProperty())
                 .or(Bindings.isEmpty(this.lastNameTextField.textProperty()))
                 .or(Bindings.isEmpty(this.groupsList.getSelectionModel().getSelectedItems())));
+        setGroupsList(this.dataProvider.getGroupsData());
     }
 
     public void setDialogStage(Stage dialogStage) {
@@ -56,6 +63,9 @@ public class CreateUserController {
     @FXML
     private void handleCreateAction(ActionEvent actionEvent) {
         this.updateModel();
+        this.dataProvider.addUser(this.user).first(this.user).blockingSubscribe(newUser -> {
+            this.user = newUser;
+        });
         isApproved = true;
         dialogStage.close();
     }

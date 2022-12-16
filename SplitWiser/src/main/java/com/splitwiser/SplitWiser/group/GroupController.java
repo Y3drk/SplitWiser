@@ -36,8 +36,10 @@ public class GroupController {
     }
 
     @PostMapping("/group")
-    public void addGroup(@RequestBody Group group) {
+    @ResponseBody
+    public Group addGroup(@RequestBody Group group) {
         groupService.addGroup(group);
+        return group;
     }
 
 }

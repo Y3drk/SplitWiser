@@ -1,7 +1,7 @@
 package com.splitwiser.splitwiserclient.controllers;
 
 import com.splitwiser.splitwiserclient.auxiliary.UserCellFactory;
-import com.splitwiser.splitwiserclient.mockData.MockDataProvider;
+import com.splitwiser.splitwiserclient.data.DataProvider;
 import com.splitwiser.splitwiserclient.model.group.Group;
 import com.splitwiser.splitwiserclient.model.user.User;
 import javafx.beans.binding.Bindings;
@@ -24,6 +24,8 @@ public class LoginController {
     @FXML
     public Button loginButton;
 
+    private DataProvider dataProvider = DataProvider.getInstance();
+
 
     @FXML
     private void initialize() {
@@ -34,6 +36,7 @@ public class LoginController {
         loginButton.disableProperty().bind(Bindings.isEmpty(usersList.getSelectionModel().getSelectedItems()));
 
         this.groups = FXCollections.observableArrayList();
+        this.dataProvider.refetchData();
     }
 
     @FXML
@@ -45,10 +48,9 @@ public class LoginController {
     @FXML
     public void onCreateUserButtonClick(ActionEvent actionEvent) {
         User newUser = new User("", "", null);
-        boolean isCreated = appController.showCreateUserDialog(newUser, this.groups);
+        boolean isCreated = appController.showCreateUserDialog(newUser);
         if (isCreated) {
             this.usersList.getItems().add(newUser);
-            MockDataProvider.addUser(newUser);
         }
     }
 
@@ -58,7 +60,6 @@ public class LoginController {
         boolean isCreated = appController.showCreateGroupDialog(newGroup);
         if (isCreated) {
             this.groups.add(newGroup);
-            MockDataProvider.addGroup(newGroup);
         }
 
     }
@@ -68,7 +69,7 @@ public class LoginController {
     }
 
     public void setUsersList() {
-        usersList.setItems(MockDataProvider.getMockUsers());
+        usersList.setItems(dataProvider.getUsersData());
         for (User user : usersList.getItems()
         ) {
             Group usersGroup = user.getGroup();

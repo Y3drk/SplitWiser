@@ -1,13 +1,9 @@
 package com.splitwiser.splitwiserclient;
 
 import com.splitwiser.splitwiserclient.controllers.AppController;
-import com.splitwiser.splitwiserclient.mockData.MockDataProvider;
+import com.splitwiser.splitwiserclient.data.DataProvider;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 public class SplitWiserClientApplication extends Application {
     private Stage primaryStage;
@@ -18,7 +14,8 @@ public class SplitWiserClientApplication extends Application {
     public void start(Stage stage){
         this.primaryStage = stage;
 
-        MockDataProvider.init();
+        DataProvider dataProvider = DataProvider.getInstance();
+        dataProvider.init();
 
         this.appController = new AppController(primaryStage);
         this.appController.initLoginLayout();
