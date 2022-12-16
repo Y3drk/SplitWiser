@@ -22,9 +22,9 @@ public class PaymentCellFactory implements Callback<ListView<Payment>, ListCell<
                     if (receivers.size() == 1){
                         receiver = receivers.get(0).getFirstName() + " " + receivers.get(0).getLastName();
                     }
-                    setText(payment.getPayer().getFirstName() + " "+ payment.getPayer().getLastName() + ", " + payment.getDate() + ", " + payment.getValue().toString() + ", " + receiver + ", "+ payment.getDescription());
-                    setMouseTransparent(true); //added this line
-                    setFocusTraversable(false); //added this line
+                    setText(payment.getPayer().getFirstName() + " "+ payment.getPayer().getLastName() + ", " + payment.getDate() + ", " + payment.getAmount().toString() + ", " + receiver + ", "+ payment.getDescription());
+                    setMouseTransparent(true);
+                    setFocusTraversable(false);
                 }
             }
         };

@@ -78,7 +78,7 @@ public class CreatePaymentController {
     private void updateControls() {
         //binding the user with list of payers (?)
         this.descriptionTextField.setText(payment.getDescription());
-        this.valueTextField.setText(payment.getValue().toString());
+        this.valueTextField.setText(payment.getAmount().toString());
         this.datePicker.setValue(payment.getDate());
 
         this.payerListPicker.setItems(payment.getPayer().getGroup().getMembers());

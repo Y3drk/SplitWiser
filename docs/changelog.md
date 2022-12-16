@@ -1,8 +1,13 @@
 ## Changelog
 
+### 15-16.12.2022
+
+* unit tests added on client-side
+* unit tests added on server-side
+
 ### 14-15.12.2022
 
-* corrections in GUI
+* corrections in GUI - nullable receiver changed to list of receivers
 * final touches on backend
 
 ### 14.12.2022
