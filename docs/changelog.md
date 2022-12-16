@@ -1,5 +1,13 @@
 ## Changelog
 
+### 16.12.2022
+
+* client working on full retrofit rest queries
+* refactor and error handling on client side
+* update post method on server side
+* removed db file from repository (server generates sample data)
+* added popups for errors/confirmation on client
+
 ### 15-16.12.2022
 
 * unit tests added on client-side
@@ -14,11 +22,13 @@
 * final touches on backend
 
 ### 14.12.2022
+
 * change base structure
 * fixed all problems connected with endpoints
 * backend work is complete
 
 ### 11.12.2022
+
 * created PR with backend endpoints
 
 ### 09-12.12.2022
