@@ -7,6 +7,7 @@
 * update post method on server side
 * removed db file from repository (server generates sample data)
 * added popups for errors/confirmation on client
+* readme update
 
 ### 15-16.12.2022
 

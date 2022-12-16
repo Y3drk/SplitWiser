@@ -15,6 +15,7 @@
 ![Overview](./docs/resources/overview.jfif)
 
 ### Legacy Model
+
  This model is the first draft that was created in the beginning of the project.
 
 ![Model](./docs/resources/model/model.svg)
@@ -36,21 +37,58 @@ During the implementation of the GUI/Client side the views changed slightly, but
 
 ### Server endpoints
 
-![Endpoints](./docs/resources/endpoints-updated.png)
+Base url: `/api`
 
-### Data Base
+#### user
 
-#### Date base diagram
+* `GET /users`
+* `GET /user/{id}`
+* `POST /user/{id}/payments`
+
+#### payment
+
+* `GET /payments`
+* `GET /payment/{id}`
+* `POST /payment/group/{groupId}`
+
+#### group
+
+* `GET /groups`
+* `GET /group/{id}`
+* `GET /group/{id}/members`
+* `GET /group/{id}/payments`
+* `POST /group`
+
+### Database
+
+#### Datebase diagram
+
 ![Diagram](./docs/resources/database/database-schema.png)
 
 #### Groups
+
 ![Groups](./docs/resources/database/groups.png)
 
 #### Users
+
 ![Users](./docs/resources/database/users.png)
 
 #### Payments
+
 ![Payments](./docs/resources/database/payments.png)
 
 #### Payments receivers users
+
 ![PaymentsReceivers](./docs/resources/database/payments-receivers-users.png)
+
+#### JavaFx Views
+
+![Login](./docs/resources/views/javafx/login.jpg)
+
+![Create group](./docs/resources/views/javafx/create-group.jpg)
+
+![Create user](./docs/resources/views/javafx/create-user.jpg)
+
+![Summary](./docs/resources/views/javafx/summary.jpg)
+
+![Create payment](./docs/resources/views/javafx/create-payment.jpg)
