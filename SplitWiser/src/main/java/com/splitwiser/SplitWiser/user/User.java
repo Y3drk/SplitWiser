@@ -6,6 +6,7 @@ import com.splitwiser.SplitWiser.payment.Payment;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @JsonIgnoreProperties({"receiverPayments"})
@@ -33,6 +34,13 @@ public class User {
     public User(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+//    for tests
+    public User(String firstName, String lastName, Group group) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.group = group;
     }
 
     public void setId(int id) {
@@ -77,5 +85,18 @@ public class User {
 
     public void addPaymentToReceiver(Payment payment) {
         receiverPayments.add(payment);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(group, user.group) && Objects.equals(receiverPayments, user.receiverPayments);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, group, receiverPayments);
     }
 }

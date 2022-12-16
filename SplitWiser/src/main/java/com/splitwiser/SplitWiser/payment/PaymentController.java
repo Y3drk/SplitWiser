@@ -18,6 +18,10 @@ public class PaymentController {
         return paymentService.getPayments();
     }
 
+    @GetMapping("/payment/{id}")
+    public Payment getPayment(@PathVariable int id) {
+        return paymentService.getPayment(id);
+    }
 
     @PostMapping("/payment/group/{groupId}/{payerId}/{receiverIds}")
     public void addPayment(@RequestBody Payment payment, @PathVariable int groupId, @PathVariable int payerId, @PathVariable("receiverIds") Integer[] receiverIds) {

@@ -34,13 +34,15 @@ public class UserService {
         return userRepository.findAllUserPayments(user.getGroup().getId(), userId);
     }
 
-    public void addUser(User user, int groupId) {
+    public int addUser(User user, int groupId) {
         Optional<Group> group = groupRepository.findById(groupId);
         if (group.isPresent()) {
             user.setGroup(group.get());
             group.get().addMember(user);
-            userRepository.save(user);
+            User addedUser = userRepository.save(user);
             groupRepository.save(group.get());
+            return addedUser.getId();
         }
+        return -1;
     }
 }

@@ -26,8 +26,13 @@ public class PaymentService {
         return paymentRepository.findAll();
     }
 
+    public Payment getPayment(int id) {
+        Optional<Payment> result = this.paymentRepository.findById(id);
+        return result.orElse(null);
+    }
 
-    public void addPayment(Payment payment, int groupId, int payerId, List<Integer> receiverIDs) {
+
+    public int addPayment(Payment payment, int groupId, int payerId, List<Integer> receiverIDs) {
         Optional<Group> group = groupRepository.findById(groupId);
         List<User> receivers = new ArrayList<>();
         Optional<User> payer = userRepository.findById(payerId);
@@ -40,11 +45,12 @@ public class PaymentService {
             payment.setReceivers(receivers);
             payment.setPayer(payer.get());
             payment.setGroup(group.get());
-            paymentRepository.save(payment);
+            int id = paymentRepository.save(payment).getId();
 
             group.get().addPayment(payment);
             groupRepository.save(group.get());
+            return id;
         }
-
+        return -1;
     }
 }

@@ -13,6 +13,7 @@ import com.splitwiser.SplitWiser.user.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
+@Profile("!test")
 @Configuration
 public class AppConfigurator {
 
@@ -70,5 +72,5 @@ public class AppConfigurator {
 
             }
         };
-    };
-};
+    }
+}

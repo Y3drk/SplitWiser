@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "PAYMENTS")
@@ -39,6 +40,15 @@ public class Payment {
     private LocalDate date;
 
     private String description;
+
+    public Payment(User payer, List<User> receivers, Group group, BigDecimal amount, LocalDate date, String description) {
+        this.payer = payer;
+        this.receivers = receivers;
+        this.group = group;
+        this.amount = amount;
+        this.date = date;
+        this.description = description;
+    }
 
     public Payment(BigDecimal amount, LocalDate date, String description) {
         this.amount = amount;
@@ -103,5 +113,18 @@ public class Payment {
 
     public void setPayer(User payer) {
         this.payer = payer;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Payment payment = (Payment) o;
+        return id == payment.id && Objects.equals(payer, payment.payer) && Objects.equals(receivers, payment.receivers) && Objects.equals(group, payment.group) && Objects.equals(amount, payment.amount) && Objects.equals(date, payment.date) && Objects.equals(description, payment.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, payer, receivers, group, amount, date, description);
     }
 }
