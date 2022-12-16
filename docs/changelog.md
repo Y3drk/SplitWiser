@@ -4,6 +4,9 @@
 
 * unit tests added on client-side
 * unit tests added on server-side
+* retrofit basic implementation
+* retrofit get groups / users
+* retrofit create user / group 
 
 ### 14-15.12.2022
 
