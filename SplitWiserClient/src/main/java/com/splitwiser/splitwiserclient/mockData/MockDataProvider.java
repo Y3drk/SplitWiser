@@ -152,19 +152,19 @@ public class MockDataProvider {
                 //if the user pays for whole group
                 if (amountOfReceivers > 1){
                     double multiplyBy = (amountOfReceivers - 1) / (double) amountOfReceivers;
-                    currentBalance = currentBalance.add(payment.getValue().multiply(BigDecimal.valueOf(multiplyBy)));
+                    currentBalance = currentBalance.add(payment.getAmount().multiply(BigDecimal.valueOf(multiplyBy)));
                 }
                 //if the user pays for some other user
                 else {
-                    currentBalance = currentBalance.add(payment.getValue());
+                    currentBalance = currentBalance.add(payment.getAmount());
                 }
                 //if the user is a group receiver
             } else if (amountOfReceivers > 1) {
-                currentBalance = currentBalance.subtract(payment.getValue().divide(BigDecimal.valueOf(amountOfReceivers)));
+                currentBalance = currentBalance.subtract(payment.getAmount().divide(BigDecimal.valueOf(amountOfReceivers)));
             }
             // if the user is an individual receiver
             else {
-                currentBalance = currentBalance.subtract(payment.getValue());
+                currentBalance = currentBalance.subtract(payment.getAmount());
             }
         }
         currentBalance = currentBalance.setScale(2, RoundingMode.HALF_DOWN);
@@ -188,18 +188,18 @@ public class MockDataProvider {
                 if (member != payer) {
                     //if it's a group payment
                     if (amountOfReceivers > 1 && receivers.contains(member)) {
-                        BigDecimal newValue = payment.getValue().divide(BigDecimal.valueOf(amountOfReceivers));
+                        BigDecimal newValue = payment.getAmount().divide(BigDecimal.valueOf(amountOfReceivers));
                         updateRelations(payer, relations, newValue);
                     //if it's a single person payment
                     } else if (receivers.get(0) == member) {
-                        updateRelations(payer, relations, payment.getValue());
+                        updateRelations(payer, relations, payment.getAmount());
                     }
                 }
 //                if the member is a payer
                 else {
                     //if they pay for the whole group
                     if (amountOfReceivers > 1) {
-                        BigDecimal newValue = payment.getValue().divide(BigDecimal.valueOf(amountOfReceivers));
+                        BigDecimal newValue = payment.getAmount().divide(BigDecimal.valueOf(amountOfReceivers));
                         List<User> otherReceivers = receivers.filtered((elem) -> elem != member);
                         for (User groupReceiver : otherReceivers
                         ) {
@@ -208,7 +208,7 @@ public class MockDataProvider {
 
                     //if they pay for a single person
                     } else {
-                        updateRelations(receivers.get(0), relations, payment.getValue().negate());
+                        updateRelations(receivers.get(0), relations, payment.getAmount().negate());
                     }
                 }
             }

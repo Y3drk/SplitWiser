@@ -47,9 +47,9 @@ public class AppConfigurator {
             }
 
             if (paymentRepository.count() == 0) {
-                paymentService.addPayment(new Payment(BigDecimal.valueOf(100), LocalDate.now(), "dinner bill"), 1, 1, List.of(2, 3));
+                paymentService.addPayment(new Payment(BigDecimal.valueOf(100), LocalDate.now(), "dinner bill"), 1, 1, List.of(1, 2, 3));
                 paymentService.addPayment(new Payment(BigDecimal.valueOf(300), LocalDate.now(), "bill"), 1, 2, List.of(3));
-                paymentService.addPayment(new Payment(BigDecimal.valueOf(80), LocalDate.now(), "bill 2"), 3, 4, List.of(5, 6));
+                paymentService.addPayment(new Payment(BigDecimal.valueOf(80), LocalDate.now(), "bill 2"), 3, 4, List.of(4, 5, 6));
             }
 
             List<Group> allGroups = groupService.getGroups();

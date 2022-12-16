@@ -34,21 +34,21 @@ public class CalculateService {
                 ObservableList<User> receivers = payment.getReceivers();
                 int amountOfReceivers = receivers.size();
                 //if the member is a receiver
-                if (member.getId() != payer.getId()) {
+                if (!member.equals(payer)) {
                     //if it's a group payment
                     if (amountOfReceivers > 1 && receivers.contains(member)) {
-                        BigDecimal newValue = payment.getValue().divide(BigDecimal.valueOf(amountOfReceivers));
+                        BigDecimal newValue = payment.getAmount().divide(BigDecimal.valueOf(amountOfReceivers), RoundingMode.HALF_DOWN);
                         updateRelations(payer, relations, newValue);
                         //if it's a single person payment
-                    } else if (receivers.get(0) == member) {
-                        updateRelations(payer, relations, payment.getValue());
+                    } else if (receivers.get(0).equals(member)) {
+                        updateRelations(payer, relations, payment.getAmount());
                     }
                 }
 //                if the member is a payer
                 else {
                     //if they pay for the whole group
                     if (amountOfReceivers > 1) {
-                        BigDecimal newValue = payment.getValue().divide(BigDecimal.valueOf(amountOfReceivers));
+                        BigDecimal newValue = payment.getAmount().divide(BigDecimal.valueOf(amountOfReceivers), RoundingMode.HALF_DOWN);
                         List<User> otherReceivers = receivers.filtered((elem) -> elem != member);
                         for (User groupReceiver : otherReceivers
                         ) {
@@ -57,7 +57,7 @@ public class CalculateService {
 
                         //if they pay for a single person
                     } else {
-                        updateRelations(receivers.get(0), relations, payment.getValue().negate());
+                        updateRelations(receivers.get(0), relations, payment.getAmount().negate());
                     }
                 }
             }
@@ -84,24 +84,28 @@ public class CalculateService {
         BigDecimal currentBalance = BigDecimal.valueOf(0);
         for (Payment payment : userInvolvedPayments
         ) {
-            int amountOfReceivers = payment.getReceivers().size();
-            if (payment.getPayer() == user) {
+            ObservableList<User> receivers = payment.getReceivers();
+            int amountOfReceivers = receivers.size();
+
+            if (payment.getPayer().equals(user)) {
                 //if the user pays for whole group
                 if (amountOfReceivers > 1) {
-                    double multiplyBy = (amountOfReceivers - 1) / (double) amountOfReceivers;
-                    currentBalance = currentBalance.add(payment.getValue().multiply(BigDecimal.valueOf(multiplyBy)));
+                    BigDecimal toSubtract = payment.getAmount().divide(BigDecimal.valueOf(amountOfReceivers), RoundingMode.HALF_DOWN);
+                    currentBalance = currentBalance.add(payment.getAmount()).subtract(toSubtract);
                 }
                 //if the user pays for some other user
                 else {
-                    currentBalance = currentBalance.add(payment.getValue());
+                    currentBalance = currentBalance.add(payment.getAmount());
+                    
                 }
                 //if the user is a group receiver
-            } else if (amountOfReceivers > 1) {
-                currentBalance = currentBalance.subtract(payment.getValue().divide(BigDecimal.valueOf(amountOfReceivers)));
+            } else if (amountOfReceivers > 1 && payment.getReceivers().contains(user)) {
+                currentBalance = currentBalance.subtract(payment.getAmount().divide(BigDecimal.valueOf(amountOfReceivers), RoundingMode.HALF_DOWN));
+
             }
             // if the user is an individual receiver
-            else {
-                currentBalance = currentBalance.subtract(payment.getValue());
+            else if (receivers.get(0).equals(user)) {
+                currentBalance = currentBalance.subtract(payment.getAmount());
             }
         }
         currentBalance = currentBalance.setScale(2, RoundingMode.HALF_DOWN);

@@ -86,9 +86,6 @@ public class Payment {
         return group;
     }
 
-    public BigDecimal getValue() {
-        return amount.get();
-    }
 
     public ObjectProperty<BigDecimal> valueProperty() {
         return amount;

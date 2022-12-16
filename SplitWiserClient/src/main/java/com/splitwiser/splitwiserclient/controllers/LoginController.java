@@ -40,7 +40,7 @@ public class LoginController {
     }
 
     @FXML
-    protected void onLoginButtonClick() {
+    private void onLoginButtonClick() {
         User selectedUser = usersList.getSelectionModel().getSelectedItem();
         this.appController.initSummaryLayout(selectedUser);
     }
