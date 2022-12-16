@@ -81,7 +81,7 @@ Base url: `/api`
 
 ![PaymentsReceivers](./docs/resources/database/payments-receivers-users.png)
 
-#### JavaFx Views
+### JavaFx Views
 
 ![Login](./docs/resources/views/javafx/login.jpg)
 
