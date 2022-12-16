@@ -34,7 +34,7 @@ public class CalculateService {
                 ObservableList<User> receivers = payment.getReceivers();
                 int amountOfReceivers = receivers.size();
                 //if the member is a receiver
-                if (member.getId() != payer.getId()) {
+                if (!member.equals(payer)) {
                     //if it's a group payment
                     if (amountOfReceivers > 1 && receivers.contains(member)) {
                         BigDecimal newValue = payment.getAmount().divide(BigDecimal.valueOf(amountOfReceivers), RoundingMode.HALF_DOWN);

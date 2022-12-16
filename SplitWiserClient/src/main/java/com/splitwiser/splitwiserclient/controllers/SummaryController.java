@@ -60,7 +60,7 @@ public class SummaryController {
     }
 
     @FXML
-    protected void onCreatePaymentButtonClick() {
+    private void onCreatePaymentButtonClick() {
         Payment newPayment = new Payment(this.currentUser.get().getGroup(), BigDecimal.valueOf(0), LocalDate.of(2022, 1, 1), "", this.currentUser.get(), this.currentUser.get().getGroup().getMembers());
         boolean isCreated = appController.showCreatePaymentDialog(newPayment);
         if (isCreated) {
