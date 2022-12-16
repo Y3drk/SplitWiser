@@ -31,7 +31,6 @@ public class PaymentService {
         return result.orElse(null);
     }
 
-
     public int addPayment(Payment payment, int groupId, int payerId, List<Integer> receiverIDs) {
         Optional<Group> group = groupRepository.findById(groupId);
         List<User> receivers = new ArrayList<>();
@@ -52,5 +51,12 @@ public class PaymentService {
             return id;
         }
         return -1;
+    }
+
+    public void addPaymentToGroup(Payment payment, int groupId) {
+        Optional<Group> group = groupRepository.findById(groupId);
+        group.get().addPayment(payment); // check if exists later todo
+        paymentRepository.save(payment).getId();
+        groupRepository.save(group.get());
     }
 }

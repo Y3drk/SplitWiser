@@ -23,9 +23,11 @@ public class PaymentController {
         return paymentService.getPayment(id);
     }
 
-    @PostMapping("/payment/group/{groupId}/{payerId}/{receiverIds}")
-    public void addPayment(@RequestBody Payment payment, @PathVariable int groupId, @PathVariable int payerId, @PathVariable("receiverIds") Integer[] receiverIds) {
-        paymentService.addPayment(payment, groupId, payerId, List.of(receiverIds));
+    @PostMapping("/payment/group/{groupId}")
+    @ResponseBody
+    public Payment addPayment(@RequestBody Payment payment, @PathVariable int groupId) {
+        paymentService.addPaymentToGroup(payment, groupId);
+        return payment;
     }
 
 }

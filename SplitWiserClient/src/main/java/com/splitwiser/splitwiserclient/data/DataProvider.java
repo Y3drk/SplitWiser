@@ -19,6 +19,10 @@ public class DataProvider {
         return instance;
     }
 
+    public static void destroy() {
+        instance = null;
+    }
+
     private final ObservableList<User> users = FXCollections.observableArrayList();
 
     private final ObservableList<Group> groups = FXCollections.observableArrayList();
@@ -29,17 +33,13 @@ public class DataProvider {
     private Disposable refetchSub;
 
 
-    public void init() {
-        refetchData();
-    }
-
     public void refetchData() {
-        if(this.refetchSub != null)
+        if (this.refetchSub != null)
             this.refetchSub.dispose();
         this.payments.clear();
         this.users.clear();
         this.groups.clear();
-        this.refetchSub = this.dataService.getGroupsInfo().subscribe(group -> {
+        this.dataService.getGroupsInfo().blockingSubscribe(group -> {
             this.groups.add(group);
             for (User user : group.getMembers()) {
                 user.setGroup(group);
@@ -49,7 +49,7 @@ public class DataProvider {
                 payment.setGroup(group);
                 this.payments.add(payment);
             }
-        });
+        }, throwable -> System.out.println("refetch error -> " + throwable.getMessage()));
     }
 
     public ObservableList<User> getUsersData() {
@@ -62,6 +62,14 @@ public class DataProvider {
 
     public ObservableList<Payment> getPaymentsData() {
         return payments;
+    }
+
+    public Group getGroupData(Group group) {
+        for (Group groupVar : this.groups) {
+            if (groupVar.equals(group))
+                return groupVar;
+        }
+        return null;
     }
 
     public ObservableList<Payment> getAllUserInvolvedPayments(User user, ObservableList<Payment> allPayments) {
@@ -85,5 +93,9 @@ public class DataProvider {
 
     public Observable<Group> addGroup(Group group) {
         return this.dataService.createGroup(group);
+    }
+
+    public Observable<Payment> addPayment(Payment payment, int group_id) {
+        return this.dataService.createPayment(payment, group_id);
     }
 }

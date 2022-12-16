@@ -1,8 +1,15 @@
 package com.splitwiser.splitwiserclient.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.splitwiser.splitwiserclient.auxiliary.UserCellFactory;
+import com.splitwiser.splitwiserclient.data.DataProvider;
 import com.splitwiser.splitwiserclient.model.payment.Payment;
 import com.splitwiser.splitwiserclient.model.user.User;
+import com.splitwiser.splitwiserclient.util.AlertGenerator;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -37,6 +44,8 @@ public class CreatePaymentController {
 
     private boolean isApproved;
 
+    private final DataProvider dataProvider = DataProvider.getInstance();
+
     @FXML
     private void initialize() {
         this.isApproved = false;
@@ -58,6 +67,12 @@ public class CreatePaymentController {
     @FXML
     private void handleCreateAction(ActionEvent actionEvent) {
         this.updateModel();
+
+        this.dataProvider.addPayment(this.payment, this.payment.getGroup().getId()).blockingSubscribe(newPayment -> {
+            this.payment = newPayment;
+            AlertGenerator.showConfirmationAlert("Payment created!");
+        }, throwable -> AlertGenerator.showErrorAlert("Could not create payment -> " + throwable.getMessage()));
+        this.dataProvider.refetchData();
         this.isApproved = true;
         this.dialogStage.close();
     }
@@ -90,6 +105,7 @@ public class CreatePaymentController {
         this.payment.setDescription(this.descriptionTextField.getText());
         this.payment.setDate(this.datePicker.getValue());
 
+        // sets to selected payer only if selected
         if (!this.payerListPicker.getSelectionModel().getSelectedItems().isEmpty()) {
             this.payment.setPayer(this.payerListPicker.getSelectionModel().getSelectedItem());
         }

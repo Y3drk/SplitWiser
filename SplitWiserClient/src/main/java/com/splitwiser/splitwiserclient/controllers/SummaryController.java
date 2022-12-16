@@ -2,7 +2,6 @@ package com.splitwiser.splitwiserclient.controllers;
 
 import com.splitwiser.splitwiserclient.auxiliary.PaymentCellFactory;
 import com.splitwiser.splitwiserclient.data.DataProvider;
-import com.splitwiser.splitwiserclient.mockData.MockDataProvider;
 import com.splitwiser.splitwiserclient.model.payment.Payment;
 import com.splitwiser.splitwiserclient.model.user.User;
 import com.splitwiser.splitwiserclient.util.CalculateService;
@@ -62,19 +61,8 @@ public class SummaryController {
     @FXML
     private void onCreatePaymentButtonClick() {
         Payment newPayment = new Payment(this.currentUser.get().getGroup(), BigDecimal.valueOf(0), LocalDate.of(2022, 1, 1), "", this.currentUser.get(), this.currentUser.get().getGroup().getMembers());
-        boolean isCreated = appController.showCreatePaymentDialog(newPayment);
-        if (isCreated) {
-            MockDataProvider.addPayment(newPayment);
-
-            if (newPayment.getPayer().equals(this.currentUser.get()) || newPayment.getReceivers().contains(this.currentUser.get())) {
-                this.userInvolvedPaymentsList.getItems().add(newPayment);
-                this.currentUsersBalance = new SimpleObjectProperty<>(MockDataProvider.getUsersBalance(this.currentUser.get(), this.userInvolvedPaymentsList.getItems()));
-                this.userInvolvedBalanceValueLabel.setText(this.currentUsersBalance.get().toString());
-            }
-
-            this.allPayments.add(newPayment);
-            totalSummaryList.setItems(MockDataProvider.calculateBalanceBetweenAll(this.currentUser.get(), allPayments));
-        }
+        appController.showCreatePaymentDialog(newPayment);
+        setPaymentsList();
     }
 
     public void setAppController(AppController appController) {
@@ -95,15 +83,17 @@ public class SummaryController {
 
     public void setCurrentUser(User currentUser) {
         this.currentUser.set(currentUser);
-        this.userInvolvedLabel.setText("with " + this.currentUser.get().getFirstName() + " :");
+        this.userInvolvedLabel.setText("Involving you");
         this.userInvolvedBalanceLabel.setText(this.currentUser.get().getFirstName() + " " + this.currentUser.get().getLastName() + " balance: ");
         this.groupLabel.setText(this.currentUser.get().getGroup().getName() + " balance");
     }
 
     public void setPaymentsList() {
-        allPayments.addAll(dataProvider.getPaymentsData().filtered((elem) -> elem.getGroup() == this.currentUser.get().getGroup()));
+        ObservableList<Payment> allPayments = dataProvider.getPaymentsData().filtered((elem) -> elem.getGroup().equals(this.currentUser.get().getGroup()));
         ObservableList<Payment> userInvolvedPayments = dataProvider.getAllUserInvolvedPayments(this.currentUser.get(), allPayments);
+
         userInvolvedPaymentsList.setItems(userInvolvedPayments);
+
         otherPaymentList.setItems(allPayments.filtered((payment) -> !userInvolvedPayments.contains(payment)));
         totalSummaryList.setItems(CalculateService.calculateBalanceBetweenAll(this.currentUser.get(), allPayments));
 

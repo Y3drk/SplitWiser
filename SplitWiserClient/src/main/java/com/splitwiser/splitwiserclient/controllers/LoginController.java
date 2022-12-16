@@ -48,34 +48,21 @@ public class LoginController {
     @FXML
     public void onCreateUserButtonClick(ActionEvent actionEvent) {
         User newUser = new User("", "", null);
-        boolean isCreated = appController.showCreateUserDialog(newUser);
-        if (isCreated) {
-            this.usersList.getItems().add(newUser);
-        }
+        appController.showCreateUserDialog(newUser);
     }
 
     @FXML
     public void onCreateGroupButtonClick(ActionEvent actionEvent) {
         Group newGroup = new Group("");
-        boolean isCreated = appController.showCreateGroupDialog(newGroup);
-        if (isCreated) {
-            this.groups.add(newGroup);
-        }
-
+        appController.showCreateGroupDialog(newGroup);
     }
 
     public void setAppController(AppController appController) {
         this.appController = appController;
     }
 
-    public void setUsersList() {
+    public void initData() {
         usersList.setItems(dataProvider.getUsersData());
-        for (User user : usersList.getItems()
-        ) {
-            Group usersGroup = user.getGroup();
-            if (!groups.contains(usersGroup)) {
-                groups.add(usersGroup);
-            }
-        }
+        groups = dataProvider.getGroupsData();
     }
 }

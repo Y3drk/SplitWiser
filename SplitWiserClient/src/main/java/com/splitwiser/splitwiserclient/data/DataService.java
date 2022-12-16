@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.splitwiser.splitwiserclient.model.group.Group;
+import com.splitwiser.splitwiserclient.model.payment.Payment;
 import com.splitwiser.splitwiserclient.model.user.User;
 import io.reactivex.rxjava3.core.Observable;
 import retrofit2.Retrofit;
@@ -43,6 +44,10 @@ public class DataService {
 
     public Observable<Group> createGroup(Group group) {
         return this.splitWiserAPI.postGroup(group);
+    }
+
+    public Observable<Payment> createPayment(Payment payment, int group_id) {
+        return this.splitWiserAPI.postPayment(payment, group_id);
     }
 
 }
