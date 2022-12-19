@@ -13,6 +13,7 @@ import javafx.collections.ObservableList;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @JsonIgnoreProperties(value = {"group"})
@@ -33,18 +34,15 @@ public class Payment {
 
     private StringProperty description = new SimpleStringProperty();
 
-    public void setGroup(Group group) {
-        this.group.set(group);
+    // for Jackson
+    public Payment() {
+        this(null, BigDecimal.valueOf(0), LocalDate.now(), "", null, new ArrayList<>());
     }
 
-    public BigDecimal getAmount() {
-        return amount.get();
+    //    single payment
+    public Payment(Group group, BigDecimal amount, LocalDate date, String description, User payer, User receiver) {
+        this(group, amount, date, description, payer, List.of(receiver));
     }
-
-    public ObjectProperty<BigDecimal> amountProperty() {
-        return amount;
-    }
-
 
     //    group payment
     public Payment(Group group, BigDecimal amount, LocalDate date, String description, User payer, List<User> receivers) {
@@ -56,23 +54,6 @@ public class Payment {
 
         this.receivers.addAll(receivers);
     }
-
-
-    //    single payment
-    public Payment(Group group, BigDecimal amount, LocalDate date, String description, User payer, User receiver) {
-        this.group = new SimpleObjectProperty<>(group);
-        this.amount = new SimpleObjectProperty<>(amount);
-        this.date = new SimpleObjectProperty<>(date);
-        this.description = new SimpleStringProperty(description);
-        this.payer = new SimpleObjectProperty<>(payer);
-        this.receivers = FXCollections.observableArrayList();
-        this.receivers.add(receiver);
-    }
-
-    // for Jackson
-    public Payment() {
-    }
-
 
     public int getId() {
         return id;
@@ -90,8 +71,19 @@ public class Payment {
         return group;
     }
 
+    public void setGroup(Group group) {
+        this.group.set(group);
+    }
 
-    public ObjectProperty<BigDecimal> valueProperty() {
+    public BigDecimal getAmount() {
+        return amount.get();
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount.set(amount);
+    }
+
+    private ObjectProperty<BigDecimal> amountProperty() {
         return amount;
     }
 
@@ -125,10 +117,6 @@ public class Payment {
 
     public void setReceivers(List<User> receivers) {
         this.receivers.setAll(receivers);
-    }
-
-    public void setAmount(BigDecimal amount) {
-        this.amount.set(amount);
     }
 
     public void setPayer(User payer) {

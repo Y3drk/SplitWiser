@@ -7,6 +7,7 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,28 +21,20 @@ public class Group {
 
     private ObservableList<Payment> payments;
 
+    // for Jackson
+    public Group() {
+        this("newGroup", new ArrayList<>());
+    }
+
     public Group(String name) {
-        this.name = new SimpleStringProperty(name);
-        this.members = FXCollections.observableArrayList();
-        this.payments = FXCollections.observableArrayList();
+        this(name, new ArrayList<>());
     }
 
-    public void setMembers(List<User> members) {
-        this.members = FXCollections.observableArrayList(members);
-    }
-
-    public void setPayments(List<Payment> payments) {
-        this.payments = FXCollections.observableArrayList(payments);
-    }
 
     public Group(String name, List<User> members) {
         this.name = new SimpleStringProperty(name);
         this.members = FXCollections.observableArrayList(members);
         this.payments = FXCollections.observableArrayList();
-    }
-
-    // for Jackson
-    public Group() {
     }
 
     public int getId() {
@@ -64,8 +57,15 @@ public class Group {
         return members;
     }
 
+    public void setMembers(List<User> members) {
+        this.members = FXCollections.observableArrayList(members);
+    }
     public ObservableList<Payment> getPayments() {
         return payments;
+    }
+
+    public void setPayments(List<Payment> payments) {
+        this.payments = FXCollections.observableArrayList(payments);
     }
 
     public void addPayment(Payment payment) {

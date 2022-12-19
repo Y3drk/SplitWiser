@@ -21,6 +21,22 @@ public class CalculateService {
         }
     }
 
+    private static String createNewSummaryLine(HashMap<User, BigDecimal> relations, User member){
+        String newBalance = "";
+        List<User> payers = relations.keySet().stream().toList();
+        for (User payer : payers
+        ) {
+            if (relations.get(payer).compareTo(BigDecimal.valueOf(0)) > 0) {
+                if (newBalance.equals("")) {
+                    newBalance = member.getFirstName() + " " + member.getLastName() + " owns: ";
+                }
+                newBalance = newBalance.concat(payer.getFirstName() + " " + payer.getLastName() + " -> " + relations.get(payer).setScale(2, RoundingMode.HALF_DOWN) + "$; ");
+            }
+        }
+        return newBalance;
+    }
+
+    //TODO: refactor method -> create sub-methods, make it smarter
     public static ObservableList<String> calculateBalanceBetweenAll(User user, ObservableList<Payment> allPayments) {
         List<User> groupMembers = user.getGroup().getMembers();
         ObservableList<String> balances = FXCollections.observableArrayList();
@@ -62,17 +78,7 @@ public class CalculateService {
                 }
             }
             if (!relations.isEmpty()) {
-                String newBalance = "";
-                List<User> payers = relations.keySet().stream().toList();
-                for (User payer : payers
-                ) {
-                    if (relations.get(payer).compareTo(BigDecimal.valueOf(0)) > 0) {
-                        if (newBalance.equals("")) {
-                            newBalance = member.getFirstName() + " " + member.getLastName() + " owns: ";
-                        }
-                        newBalance = newBalance.concat(payer.getFirstName() + " " + payer.getLastName() + " -> " + relations.get(payer).setScale(2, RoundingMode.HALF_DOWN) + "$; ");
-                    }
-                }
+                String newBalance = createNewSummaryLine(relations, member);
                 if (!newBalance.equals("")) balances.add(newBalance);
             }
         }

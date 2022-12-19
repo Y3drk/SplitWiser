@@ -18,13 +18,35 @@ public class AppController {
         this.primaryStage = primaryStage;
     }
 
+
+    private FXMLLoader getLoaderWithLocation(String resource){
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(AppController.class.getResource(resource));
+        return loader;
+    }
+
+    private Stage createDialogStage(BorderPane page, String title){
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle(title);
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.initOwner(this.primaryStage);
+        Scene scene = new Scene(page);
+        dialogStage.setScene(scene);
+        return dialogStage;
+    }
+
+    private void setSceneAndShow(BorderPane layout){
+        Scene scene = new Scene(layout);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+
     public void initLoginLayout() {
         try {
             this.primaryStage.setTitle("SplitWiser Client Application");
 
-
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(AppController.class.getResource("login-view.fxml"));
+            FXMLLoader loader = this.getLoaderWithLocation("login-view.fxml");
             BorderPane loginLayout = loader.load();
 
             // set initial data into controller
@@ -32,10 +54,7 @@ public class AppController {
             controller.setAppController(this);
             controller.initData();
 
-
-            Scene scene = new Scene(loginLayout);
-            primaryStage.setScene(scene);
-            primaryStage.show();
+            this.setSceneAndShow(loginLayout);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -47,8 +66,7 @@ public class AppController {
 
             primaryStage.setTitle(currentlyLoggedUser.getFirstName() + " " + currentlyLoggedUser.getLastName() + "; " + currentlyLoggedUser.getGroup().getName() + " summary");
 
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(AppController.class.getResource("summary-view.fxml"));
+            FXMLLoader loader = this.getLoaderWithLocation("summary-view.fxml");
             BorderPane summaryLayout = loader.load();
 
             // set initial data into controller
@@ -57,10 +75,7 @@ public class AppController {
             controller.setCurrentUser(currentlyLoggedUser);
             controller.setPaymentsList();
 
-
-            Scene scene = new Scene(summaryLayout);
-            primaryStage.setScene(scene);
-            primaryStage.show();
+            this.setSceneAndShow(summaryLayout);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -69,19 +84,11 @@ public class AppController {
 
     public boolean showCreateUserDialog(User newUser) {
         try {
-            // Load the fxml file and create a new stage for the dialog
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(AppController.class.getResource("create-user-dialog.fxml"));
+            FXMLLoader loader = this.getLoaderWithLocation("create-user-dialog.fxml");
             BorderPane page = loader.load();
 
             // Create the dialog Stage.
-            Stage dialogStage = new Stage();
-            dialogStage.setTitle("Create User");
-            dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(this.primaryStage);
-            Scene scene = new Scene(page);
-            dialogStage.setScene(scene);
-
+            Stage dialogStage = this.createDialogStage(page, "Create User");
 
             CreateUserController controller = loader.getController();
             controller.setDialogStage(dialogStage);
@@ -98,18 +105,10 @@ public class AppController {
 
     public boolean showCreateGroupDialog(Group group) {
         try {
-            // Load the fxml file and create a new stage for the dialog
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(AppController.class.getResource("create-group-dialog.fxml"));
+            FXMLLoader loader = getLoaderWithLocation("create-group-dialog.fxml");
             BorderPane page = loader.load();
 
-            // Create the dialog Stage.
-            Stage dialogStage = new Stage();
-            dialogStage.setTitle("Create Group");
-            dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(this.primaryStage);
-            Scene scene = new Scene(page);
-            dialogStage.setScene(scene);
+            Stage dialogStage = this.createDialogStage(page, "Create Group");
 
             // Set the group into the controller.
             CreateGroupController controller = loader.getController();
@@ -127,18 +126,10 @@ public class AppController {
 
     public boolean showCreatePaymentDialog(Payment payment) {
         try {
-            // Load the fxml file and create a new stage for the dialog
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(AppController.class.getResource("create-payment-dialog.fxml"));
+            FXMLLoader loader = this.getLoaderWithLocation("create-payment-dialog.fxml");
             BorderPane page = loader.load();
 
-            // Create the dialog Stage.
-            Stage dialogStage = new Stage();
-            dialogStage.setTitle("Create Payment");
-            dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(this.primaryStage);
-            Scene scene = new Scene(page);
-            dialogStage.setScene(scene);
+            Stage dialogStage = this.createDialogStage(page,"Create Payment");
 
             // Set the group into the controller.
             CreatePaymentController controller = loader.getController();
