@@ -32,31 +32,31 @@ public class PaymentService {
     }
 
     public int addPayment(Payment payment, int groupId, int payerId, List<Integer> receiverIDs) {
-        Optional<Group> group = groupRepository.findById(groupId);
         List<User> receivers = new ArrayList<>();
-        Optional<User> payer = userRepository.findById(payerId);
 
-        if (group.isPresent() && payer.isPresent()) {
-            for (int receiverId : receiverIDs) {
-                Optional<User> user = userRepository.findById(receiverId);
-                user.ifPresent(receivers::add);
-            }
-            payment.setReceivers(receivers);
-            payment.setPayer(payer.get());
-            payment.setGroup(group.get());
-            int id = paymentRepository.save(payment).getId();
+        return groupRepository.findById(groupId).map(group ->
+               userRepository.findById(payerId).map(payer -> {
+                    for (int receiverId : receiverIDs) {
+                        Optional<User> user = userRepository.findById(receiverId);
+                        user.ifPresent(receivers::add);
+                    }
+                    payment.setReceivers(receivers);
+                    payment.setPayer(payer);
+                    payment.setGroup(group);
+                    int id = paymentRepository.save(payment).getId();
 
-            group.get().addPayment(payment);
-            groupRepository.save(group.get());
-            return id;
-        }
-        return -1;
+                    group.addPayment(payment);
+                    groupRepository.save(group);
+                    return id;
+                }).orElse(-1)
+            ).orElse(-1);
     }
 
     public void addPaymentToGroup(Payment payment, int groupId) {
-        Optional<Group> group = groupRepository.findById(groupId);
-        group.get().addPayment(payment); // check if exists later todo
-        paymentRepository.save(payment).getId();
-        groupRepository.save(group.get());
+        groupRepository.findById(groupId).map(group -> {
+            group.addPayment(payment);
+            paymentRepository.save(payment);
+            return groupRepository.save(group);
+        });
     }
 }

@@ -25,8 +25,7 @@ public class UserService {
     }
 
     public User getUserById(int id) {
-        Optional<User> user = this.userRepository.findById(id);
-        return user.orElse(null);
+        return userRepository.findById(id).orElse(null);
     }
 
     public List<Payment> getUserPayments(int userId) {
@@ -35,14 +34,12 @@ public class UserService {
     }
 
     public int addUser(User user, int groupId) {
-        Optional<Group> group = groupRepository.findById(groupId);
-        if (group.isPresent()) {
-            user.setGroup(group.get());
-            group.get().addMember(user);
+        return groupRepository.findById(groupId).map(foundGroup -> {
+            user.setGroup(foundGroup);
+            foundGroup.addMember(user);
             User addedUser = userRepository.save(user);
-            groupRepository.save(group.get());
+            groupRepository.save(foundGroup);
             return addedUser.getId();
-        }
-        return -1;
+        }).orElse(-1);
     }
 }

@@ -16,18 +16,18 @@ public interface SplitWiserAPI {
     @GET("/api/users")
     Observable<List<User>> getUsers();
 
-    @GET("/api/user/{id}")
+    @GET("/api/users/{id}")
     Observable<User> getUser(@Path("id") int id);
 
     @GET("/api/groups")
     Observable<List<Group>> getGroupsInfo();
 
-    @POST("/api/user/group/{id}")
+    @POST("/api/users/groups/{id}")
     Observable<User> postUser(@Body User user, @Path("id") int groupId);
 
-    @POST("/api/group")
+    @POST("/api/groups")
     Observable<Group> postGroup(@Body Group group);
 
-    @POST("/api/payment/group/{groupId}")
+    @POST("/api/payments/groups/{groupId}")
     Observable<Payment> postPayment(@Body Payment payment, @Path("groupId") int groupId);
 }
