@@ -23,15 +23,17 @@ public class User {
 
     private ObjectProperty<Group> group = new SimpleObjectProperty<>();
 
+    // for Jackson
+    public User() {
+        this("newFirstName", "newLastName", null);
+    }
+
     public User(String firstName, String lastName, Group group) {
         this.firstName.set(firstName);
         this.lastName.set(lastName);
         this.group.set(group);
     }
 
-    // for Jackson
-    public User() {
-    }
 
     public String getFirstName() {
         return firstName.get();

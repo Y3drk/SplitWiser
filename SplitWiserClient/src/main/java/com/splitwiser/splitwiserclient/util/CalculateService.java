@@ -21,6 +21,50 @@ public class CalculateService {
         }
     }
 
+    private static String createNewSummaryLine(HashMap<User, BigDecimal> relations, User member){
+        String newBalance = "";
+        List<User> payers = relations.keySet().stream().toList();
+        for (User payer : payers
+        ) {
+            if (relations.get(payer).compareTo(BigDecimal.valueOf(0)) > 0) {
+                if (newBalance.equals("")) {
+                    newBalance = member.getFirstName() + " " + member.getLastName() + " owns: ";
+                }
+                newBalance = newBalance.concat(payer.getFirstName() + " " + payer.getLastName() + " -> " + relations.get(payer).setScale(2, RoundingMode.HALF_DOWN) + "$; ");
+            }
+        }
+        return newBalance;
+    }
+
+    private static void processMemberAsPayerPayments(HashMap<User, BigDecimal> relations, User member, Payment payment, ObservableList<User> receivers){
+        //if they pay for the whole group
+        int amountOfReceivers = receivers.size();
+        if (amountOfReceivers > 1) {
+            BigDecimal newValue = payment.getAmount().divide(BigDecimal.valueOf(amountOfReceivers), RoundingMode.HALF_DOWN);
+            List<User> otherReceivers = receivers.filtered((elem) -> elem != member);
+            for (User groupReceiver : otherReceivers
+            ) {
+                updateRelations(groupReceiver, relations, newValue.negate());
+            }
+
+            //if they pay for a single person
+        } else {
+            updateRelations(receivers.get(0), relations, payment.getAmount().negate());
+        }
+    }
+
+    private static void processMemberAsReceiverPayments(HashMap<User, BigDecimal> relations, User member, Payment payment, User payer, ObservableList<User> receivers){
+        int amountOfReceivers = receivers.size();
+        //if it's a group payment
+        if (amountOfReceivers > 1 && receivers.contains(member)) {
+            BigDecimal newValue = payment.getAmount().divide(BigDecimal.valueOf(amountOfReceivers), RoundingMode.HALF_DOWN);
+            updateRelations(payer, relations, newValue);
+            //if it's a single person payment
+        } else if (receivers.get(0).equals(member)) {
+            updateRelations(payer, relations, payment.getAmount());
+        }
+    }
+
     public static ObservableList<String> calculateBalanceBetweenAll(User user, ObservableList<Payment> allPayments) {
         List<User> groupMembers = user.getGroup().getMembers();
         ObservableList<String> balances = FXCollections.observableArrayList();
@@ -32,47 +76,17 @@ public class CalculateService {
             ) {
                 User payer = payment.getPayer();
                 ObservableList<User> receivers = payment.getReceivers();
-                int amountOfReceivers = receivers.size();
                 //if the member is a receiver
                 if (!member.equals(payer)) {
-                    //if it's a group payment
-                    if (amountOfReceivers > 1 && receivers.contains(member)) {
-                        BigDecimal newValue = payment.getAmount().divide(BigDecimal.valueOf(amountOfReceivers), RoundingMode.HALF_DOWN);
-                        updateRelations(payer, relations, newValue);
-                        //if it's a single person payment
-                    } else if (receivers.get(0).equals(member)) {
-                        updateRelations(payer, relations, payment.getAmount());
-                    }
+                    processMemberAsReceiverPayments(relations, member, payment, payer, receivers);
                 }
-//                if the member is a payer
+                // if the member is a payer
                 else {
-                    //if they pay for the whole group
-                    if (amountOfReceivers > 1) {
-                        BigDecimal newValue = payment.getAmount().divide(BigDecimal.valueOf(amountOfReceivers), RoundingMode.HALF_DOWN);
-                        List<User> otherReceivers = receivers.filtered((elem) -> elem != member);
-                        for (User groupReceiver : otherReceivers
-                        ) {
-                            updateRelations(groupReceiver, relations, newValue.negate());
-                        }
-
-                        //if they pay for a single person
-                    } else {
-                        updateRelations(receivers.get(0), relations, payment.getAmount().negate());
-                    }
+                    processMemberAsPayerPayments(relations, member, payment, receivers);
                 }
             }
             if (!relations.isEmpty()) {
-                String newBalance = "";
-                List<User> payers = relations.keySet().stream().toList();
-                for (User payer : payers
-                ) {
-                    if (relations.get(payer).compareTo(BigDecimal.valueOf(0)) > 0) {
-                        if (newBalance.equals("")) {
-                            newBalance = member.getFirstName() + " " + member.getLastName() + " owns: ";
-                        }
-                        newBalance = newBalance.concat(payer.getFirstName() + " " + payer.getLastName() + " -> " + relations.get(payer).setScale(2, RoundingMode.HALF_DOWN) + "$; ");
-                    }
-                }
+                String newBalance = createNewSummaryLine(relations, member);
                 if (!newBalance.equals("")) balances.add(newBalance);
             }
         }
