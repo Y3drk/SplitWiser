@@ -34,21 +34,26 @@ public class UserServiceIntegrationTest {
     private UserService userService;
 
     @Test
-    public void shouldSaveUser() {
+    public void testSaveUser() {
+//        GIVEN
         Group group = new Group("animal group");
         int groupId = groupRepository.save(group).getId();
 
         User user = new User("Garfield", "Cat", group);
         int userId = userService.addUser(user, groupId);
 
+//        WHEN
         User resultUser = userService.getUserById(userId);
+
+//        THEN
         assertThat(resultUser.getGroup().getId()).isEqualTo(groupId);
         assertThat(resultUser.getFirstName()).isEqualTo(user.getFirstName());
         assertThat(resultUser.getLastName()).isEqualTo(user.getLastName());
     }
 
     @Test
-    public void shouldGetUserPayments() {
+    public void testGetUserPayments() {
+//        GIVEN
         List<Integer> correctPaymentsIds = new ArrayList<>();
         Group group = new Group("animal group");
         Group savedGroup = groupRepository.save(group);
@@ -71,9 +76,12 @@ public class UserServiceIntegrationTest {
         Payment payment3 = new Payment(savedUser3, List.of(savedUser1), savedGroup, BigDecimal.valueOf(10), LocalDate.now(), "Garfield is lazy");
         correctPaymentsIds.add(paymentRepository.save(payment3).getId());
 
+//        WHEN
         List<Payment> userPayments = userService.getUserPayments(savedUser1.getId());
         List<Integer> userPaymentsIds = userPayments.stream().map(Payment::getId).toList();
 
+
+//        THEN
         assertThat(userPaymentsIds)
                 .containsExactlyInAnyOrderElementsOf(correctPaymentsIds)
                 .usingRecursiveComparison();

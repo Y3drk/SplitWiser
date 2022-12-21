@@ -34,17 +34,22 @@ class GroupServiceIntegrationTest {
     private GroupService groupService;
 
     @Test
-    public void shouldSaveGroup() {
+    public void testSaveGroup() {
+//        GIVEN
         Group group = new Group("animal group");
         int groupId = groupService.addGroup(group);
 
+//        WHEN
         Group resultGroup = groupService.getGroup(groupId);
+
+//        THEN
         assertThat(resultGroup.getId()).isEqualTo(groupId);
         assertThat(resultGroup.getName()).isEqualTo(group.getName());
     }
 
     @Test
-    public void shouldGetGroupMembers() {
+    public void testGetGroupMembers() {
+//        GIVEN
         List<Integer> correctMembersIds = new ArrayList<>();
         Group group1 = new Group("animal group");
         Group savedGroup1 = groupRepository.save(group1);
@@ -64,16 +69,19 @@ class GroupServiceIntegrationTest {
         User user4 = new User("Odie", "Dog", savedGroup1);
         correctMembersIds.add(userRepository.save(user4).getId());
 
+//        WHEN
         List<User> groupMembers = groupService.getGroupMembers(savedGroup1.getId());
         List<Integer> groupMembersIds = groupMembers.stream().map(User::getId).toList();
 
+//        THEN
         assertThat(groupMembersIds)
                 .containsExactlyInAnyOrderElementsOf(correctMembersIds)
                 .usingRecursiveComparison();
     }
 
     @Test
-    public void shouldGetGroupPayments() {
+    public void testGetGroupPayments() {
+//        GIVEN
         List<Integer> correctPaymentsIds = new ArrayList<>();
         Group group1 = new Group("animal group");
         Group savedGroup1 = groupRepository.save(group1);
@@ -99,9 +107,12 @@ class GroupServiceIntegrationTest {
         Payment payment3 = new Payment(savedUser2, List.of(savedUser1, savedUser2), savedGroup1, BigDecimal.valueOf(10), LocalDate.now(), "Garfield is lazy");
         correctPaymentsIds.add(paymentRepository.save(payment3).getId());
 
+//        WHEN
         List<Payment> groupPayments = groupService.getGroupPayments(savedGroup1.getId());
         List<Integer> groupPaymentsIds = groupPayments.stream().map(Payment::getId).toList();
 
+
+//        THEN
         assertThat(groupPaymentsIds)
                 .containsExactlyInAnyOrderElementsOf(correctPaymentsIds)
                 .usingRecursiveComparison();

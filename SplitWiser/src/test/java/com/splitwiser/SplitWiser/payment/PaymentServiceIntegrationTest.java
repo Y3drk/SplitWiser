@@ -29,7 +29,8 @@ public class PaymentServiceIntegrationTest {
     private PaymentService paymentService;
 
     @Test
-    public void shouldSavePayment() {
+    public void testSavePayment() {
+//        GIVEN
         Group group1 = new Group("animal group");
         Group savedGroup1 = groupRepository.save(group1);
 
@@ -39,10 +40,12 @@ public class PaymentServiceIntegrationTest {
         User user2 = new User("Scooby", "Doo", savedGroup1);
         User savedUser2 = userRepository.save(user2);
 
+//        WHEN
         Payment payment = new Payment(savedUser1, List.of(savedUser2), savedGroup1, BigDecimal.valueOf(70), LocalDate.now(), "Scooby is cool");
         int paymentId = paymentService.addPayment(payment,savedGroup1.getId(), savedUser1.getId(), List.of(savedUser2.getId()));
-
         Payment resultPayment = paymentService.getPayment(paymentId);
+
+//        THEN
         assertThat(resultPayment.getId()).isEqualTo(paymentId);
     }
 }
