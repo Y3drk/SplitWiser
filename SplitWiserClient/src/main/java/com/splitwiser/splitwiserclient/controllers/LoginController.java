@@ -24,8 +24,7 @@ public class LoginController {
     @FXML
     public Button loginButton;
 
-    private DataProvider dataProvider = DataProvider.getInstance();
-
+    private DataProvider dataProvider;
 
     @FXML
     private void initialize() {
@@ -36,7 +35,10 @@ public class LoginController {
         loginButton.disableProperty().bind(Bindings.isEmpty(usersList.getSelectionModel().getSelectedItems()));
 
         this.groups = FXCollections.observableArrayList();
-        this.dataProvider.refetchData();
+    }
+
+    public void setDataProvider(DataProvider dataProvider) {
+        this.dataProvider = dataProvider;
     }
 
     @FXML
@@ -49,6 +51,7 @@ public class LoginController {
     public void onCreateUserButtonClick(ActionEvent actionEvent) {
         User newUser = new User("", "", null);
         appController.showCreateUserDialog(newUser);
+        this.dataProvider.refetchData();
     }
 
     @FXML
@@ -62,6 +65,7 @@ public class LoginController {
     }
 
     public void initData() {
+        this.dataProvider.refetchData();
         usersList.setItems(dataProvider.getUsersData());
         groups = dataProvider.getGroupsData();
     }

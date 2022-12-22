@@ -1,10 +1,5 @@
 package com.splitwiser.splitwiserclient.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.splitwiser.splitwiserclient.auxiliary.UserCellFactory;
 import com.splitwiser.splitwiserclient.data.DataProvider;
 import com.splitwiser.splitwiserclient.model.payment.Payment;
@@ -44,7 +39,7 @@ public class CreatePaymentController {
 
     private boolean isApproved;
 
-    private final DataProvider dataProvider = DataProvider.getInstance();
+    private DataProvider dataProvider;
 
     @FXML
     private void initialize() {
@@ -57,6 +52,10 @@ public class CreatePaymentController {
         this.receiverListPicker.setCellFactory(new UserCellFactory());
 
         this.createPaymentButton.disableProperty().bind(Bindings.equal("0", this.valueTextField.textProperty()));
+    }
+
+    public void setDataProvider(DataProvider dataProvider) {
+        this.dataProvider = dataProvider;
     }
 
     @FXML

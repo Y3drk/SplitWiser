@@ -27,19 +27,18 @@ public class BalanceAndSummaryFunctionsTests {
      */
 
     /**
-     *                                     NECESSARY ASSUMPTIONS
-     *                There are several things one should know about our payments model...
-     *
-     *             1. If it's a 1to1 payment then the receiver covers the whole cost of it.
-     *          If somebody got you a bottle of beer you return it's entire value, not a half right?
-     *
-     *             2. if it's a 1toAll payment then we assume the payer also gets his share.
-     *  if your friend buys a 5L jug of beer you will all drink it, including him, but it would still be nice to pull your weight.
+     * NECESSARY ASSUMPTIONS
+     * There are several things one should know about our payments model...
+     * <p>
+     * 1. If it's a 1to1 payment then the receiver covers the whole cost of it.
+     * If somebody got you a bottle of beer you return it's entire value, not a half right?
+     * <p>
+     * 2. if it's a 1toAll payment then we assume the payer also gets his share.
+     * if your friend buys a 5L jug of beer you will all drink it, including him, but it would still be nice to pull your weight.
      */
 
 
-
-    DataProvider dataProvider = DataProvider.getInstance();
+    DataProvider dataProvider = new DataProvider();
 
     Group group;
 
@@ -48,7 +47,7 @@ public class BalanceAndSummaryFunctionsTests {
     ObservableList<Payment> payments = FXCollections.observableArrayList();
 
     @BeforeEach
-    void basicSetUp(){
+    void basicSetUp() {
         this.group = new Group("G1");
 
         User X = new User("X", "X", this.group);
@@ -66,11 +65,11 @@ public class BalanceAndSummaryFunctionsTests {
 
         this.group.setMembers(this.members);
 
-        Payment p1 = new Payment(this.group, BigDecimal.valueOf(96), LocalDate.now(),"p1", X, this.members.stream().toList());
-        Payment p2 = new Payment(this.group, BigDecimal.valueOf(12), LocalDate.now(),"p2", X, Y);
-        Payment p3 = new Payment(this.group, BigDecimal.valueOf(28), LocalDate.now(),"p3", Z, Y);
-        Payment p4 = new Payment(this.group, BigDecimal.valueOf(30), LocalDate.now(),"p4", Y, X);
-        Payment p5 = new Payment(this.group, BigDecimal.valueOf(12), LocalDate.now(),"p5", Z, this.members.stream().toList());
+        Payment p1 = new Payment(this.group, BigDecimal.valueOf(96), LocalDate.now(), "p1", X, this.members.stream().toList());
+        Payment p2 = new Payment(this.group, BigDecimal.valueOf(12), LocalDate.now(), "p2", X, Y);
+        Payment p3 = new Payment(this.group, BigDecimal.valueOf(28), LocalDate.now(), "p3", Z, Y);
+        Payment p4 = new Payment(this.group, BigDecimal.valueOf(30), LocalDate.now(), "p4", Y, X);
+        Payment p5 = new Payment(this.group, BigDecimal.valueOf(12), LocalDate.now(), "p5", Z, this.members.stream().toList());
 
         this.payments.add(p1);
         this.payments.add(p2);
@@ -81,7 +80,7 @@ public class BalanceAndSummaryFunctionsTests {
         this.group.setPayments(this.payments);
     }
 
-    private void addNewUser(){
+    private void addNewUser() {
         User W = new User("W", "W", this.group);
         W.setId(4);
 
@@ -89,7 +88,7 @@ public class BalanceAndSummaryFunctionsTests {
         this.members.add(W);
     }
 
-    private void addNewUsersPayments(){
+    private void addNewUsersPayments() {
         Payment p6 = new Payment(this.group, BigDecimal.valueOf(42), LocalDate.now(), "p6", this.members.get(3), this.members.get(0));
         Payment p7 = new Payment(this.group, BigDecimal.valueOf(16), LocalDate.now(), "p7", this.members.get(3), this.members);
 
@@ -102,7 +101,7 @@ public class BalanceAndSummaryFunctionsTests {
 
     @Test
     @DisplayName("first summary is correct")
-    void testFirstSummary(){
+    void testFirstSummary() {
         //given
 
         //when
@@ -115,7 +114,7 @@ public class BalanceAndSummaryFunctionsTests {
 
     @Test
     @DisplayName("first balance for user X is correct")
-    void testFirstBalance(){
+    void testFirstBalance() {
         //given
         ObservableList<Payment> involvedX = FXCollections.observableArrayList();
         involvedX.add(payments.get(0));
@@ -132,7 +131,7 @@ public class BalanceAndSummaryFunctionsTests {
 
     @Test
     @DisplayName("user X involved payments are correctly recognized")
-    void testUserInvolvedPayments(){
+    void testUserInvolvedPayments() {
         //given
 
         //when
@@ -144,7 +143,7 @@ public class BalanceAndSummaryFunctionsTests {
 
     @Test
     @DisplayName("nothing changes when new user arrives")
-    void testBalancesAfterUserAddition(){
+    void testBalancesAfterUserAddition() {
         //given
         this.addNewUser();
 
@@ -160,7 +159,7 @@ public class BalanceAndSummaryFunctionsTests {
 
     @Test
     @DisplayName("the newcomer involved transactions are empty")
-    void testNewUsersInvolvedTransactions(){
+    void testNewUsersInvolvedTransactions() {
         //given
         this.addNewUser();
 
@@ -173,7 +172,7 @@ public class BalanceAndSummaryFunctionsTests {
 
     @Test
     @DisplayName("the newcomer balance is clean")
-    void testNewUsersBalance(){
+    void testNewUsersBalance() {
         //given
         this.addNewUser();
 
@@ -188,7 +187,7 @@ public class BalanceAndSummaryFunctionsTests {
 
     @Test
     @DisplayName("other users summaries change when new user adds payments")
-    void testSummariesAfterNewUsersPayments(){
+    void testSummariesAfterNewUsersPayments() {
         //given
         this.addNewUser();
         this.addNewUsersPayments();
@@ -204,7 +203,7 @@ public class BalanceAndSummaryFunctionsTests {
 
     @Test
     @DisplayName("other users involved payments change correctly when new user adds payments regarding them")
-    void testUserInvolvedTransactionsAfterNewUsersPayments(){
+    void testUserInvolvedTransactionsAfterNewUsersPayments() {
         //given
         this.addNewUser();
         this.addNewUsersPayments();
@@ -218,7 +217,7 @@ public class BalanceAndSummaryFunctionsTests {
 
     @Test
     @DisplayName("other users balance changes accordingly when new user adds payments")
-    void testUsersBalancesAfterNewUsersPayments(){
+    void testUsersBalancesAfterNewUsersPayments() {
         //given
         this.addNewUser();
         this.addNewUsersPayments();
@@ -234,7 +233,7 @@ public class BalanceAndSummaryFunctionsTests {
 
     @Test
     @DisplayName("new users involved payments change correctly when he adds payments")
-    void testNewUserInvolvedTransactionsAfterAddingPayments(){
+    void testNewUserInvolvedTransactionsAfterAddingPayments() {
         //given
         this.addNewUser();
         this.addNewUsersPayments();

@@ -1,5 +1,6 @@
 package com.splitwiser.splitwiserclient.controllers;
 
+import com.splitwiser.splitwiserclient.data.DataProvider;
 import com.splitwiser.splitwiserclient.model.group.Group;
 import com.splitwiser.splitwiserclient.model.payment.Payment;
 import com.splitwiser.splitwiserclient.model.user.User;
@@ -14,18 +15,24 @@ import java.io.IOException;
 public class AppController {
     private Stage primaryStage;
 
-    public AppController(Stage primaryStage) {
+    private DataProvider dataProvider;
+
+    public AppController(Stage primaryStage, DataProvider dataProvider) {
         this.primaryStage = primaryStage;
+        this.dataProvider = dataProvider;
     }
 
+    public void setDataProvider(DataProvider dataProvider) {
+        this.dataProvider = dataProvider;
+    }
 
-    private FXMLLoader getLoaderWithLocation(String resource){
+    private FXMLLoader getLoaderWithLocation(String resource) {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(AppController.class.getResource(resource));
         return loader;
     }
 
-    private Stage createDialogStage(BorderPane page, String title){
+    private Stage createDialogStage(BorderPane page, String title) {
         Stage dialogStage = new Stage();
         dialogStage.setTitle(title);
         dialogStage.initModality(Modality.WINDOW_MODAL);
@@ -35,7 +42,7 @@ public class AppController {
         return dialogStage;
     }
 
-    private void setSceneAndShow(BorderPane layout){
+    private void setSceneAndShow(BorderPane layout) {
         Scene scene = new Scene(layout);
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -51,6 +58,7 @@ public class AppController {
 
             // set initial data into controller
             LoginController controller = loader.getController();
+            controller.setDataProvider(this.dataProvider);
             controller.setAppController(this);
             controller.initData();
 
@@ -73,7 +81,8 @@ public class AppController {
             SummaryController controller = loader.getController();
             controller.setAppController(this);
             controller.setCurrentUser(currentlyLoggedUser);
-            controller.setPaymentsList();
+            controller.setDataProvider(this.dataProvider);
+            controller.initData();
 
             this.setSceneAndShow(summaryLayout);
 
@@ -92,7 +101,9 @@ public class AppController {
 
             CreateUserController controller = loader.getController();
             controller.setDialogStage(dialogStage);
+            controller.setDataProvider(this.dataProvider);
             controller.setUser(newUser);
+            controller.initData();
 
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();
@@ -113,6 +124,7 @@ public class AppController {
             // Set the group into the controller.
             CreateGroupController controller = loader.getController();
             controller.setDialogStage(dialogStage);
+            controller.setDataProvider(this.dataProvider);
             controller.setGroup(group);
 
             // Show the dialog and wait until the user closes it
@@ -129,11 +141,12 @@ public class AppController {
             FXMLLoader loader = this.getLoaderWithLocation("create-payment-dialog.fxml");
             BorderPane page = loader.load();
 
-            Stage dialogStage = this.createDialogStage(page,"Create Payment");
+            Stage dialogStage = this.createDialogStage(page, "Create Payment");
 
             // Set the group into the controller.
             CreatePaymentController controller = loader.getController();
             controller.setDialogStage(dialogStage);
+            controller.setDataProvider(this.dataProvider);
             controller.setPayment(payment);
 
             // Show the dialog and wait until the user closes it

@@ -13,17 +13,16 @@ public class SplitWiserClientApplication extends Application {
 
     @Override
     public void start(Stage stage) {
-        DataProvider dataProvider = DataProvider.getInstance();
+        DataProvider dataProvider = new DataProvider();
         this.primaryStage = stage;
 
-        this.appController = new AppController(primaryStage);
+        this.appController = new AppController(primaryStage, dataProvider);
         this.appController.initLoginLayout();
 
     }
 
     @Override
     public void stop() {
-        DataProvider.destroy();
         Platform.exit();
         System.exit(0);
     }
