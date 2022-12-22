@@ -50,4 +50,8 @@ public class DataService {
         return this.splitWiserAPI.postPayment(payment, group_id);
     }
 
+    public Observable<Group> getSingleGroupInfo(int groupId) {
+        return this.splitWiserAPI.getSingleGroupInfo(groupId);
+    }
+
 }

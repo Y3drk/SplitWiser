@@ -22,6 +22,9 @@ public interface SplitWiserAPI {
     @GET("/api/groups")
     Observable<List<Group>> getGroupsInfo();
 
+    @GET("/api/groups/{id}")
+    Observable<Group> getSingleGroupInfo(@Path("id") int groupId);
+
     @POST("/api/users/groups/{id}")
     Observable<User> postUser(@Body User user, @Path("id") int groupId);
 

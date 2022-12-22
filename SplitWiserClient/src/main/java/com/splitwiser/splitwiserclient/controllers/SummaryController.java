@@ -93,7 +93,7 @@ public class SummaryController {
     }
 
     public void initData() {
-        this.dataProvider.refetchData();
+        this.dataProvider.refetchSingleGroupData(this.currentUser.get().getGroup().getId());
         ObservableList<Payment> allPayments = dataProvider.getPaymentsData().filtered((elem) -> elem.getGroup().equals(this.currentUser.get().getGroup()));
         ObservableList<Payment> userInvolvedPayments = dataProvider.getAllUserInvolvedPayments(this.currentUser.get(), allPayments);
 

@@ -44,6 +44,26 @@ public class DataProvider {
         this.users.setAll(freshUsers);
     }
 
+    public void refetchSingleGroupData(int groupId) {
+        ObservableList<User> freshUsers = FXCollections.observableArrayList();
+        ObservableList<Group> freshGroups = FXCollections.observableArrayList();
+        ObservableList<Payment> freshPayments = FXCollections.observableArrayList();
+
+        this.dataService.getSingleGroupInfo(groupId).firstElement().blockingSubscribe(group -> {
+            freshGroups.add(group);
+            System.out.println(group.getName());
+            for (User user : group.getMembers()) {
+                user.setGroup(group);
+                freshUsers.add(user);
+            }
+            for (Payment payment : group.getPayments()) {
+                payment.setGroup(group);
+                freshPayments.add(payment);
+            }
+        }, throwable -> AlertGenerator.showErrorAlert("refetch error -> " + throwable.getMessage()));
+
+    }
+
     public ObservableList<User> getUsersData() {
         return users;
     }
