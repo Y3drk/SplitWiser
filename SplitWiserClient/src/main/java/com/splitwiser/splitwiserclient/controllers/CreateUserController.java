@@ -30,7 +30,11 @@ public class CreateUserController {
 
     private boolean isApproved;
 
-    private final DataProvider dataProvider = DataProvider.getInstance();
+    private DataProvider dataProvider;
+
+    public void setDataProvider(DataProvider dataProvider) {
+        this.dataProvider = dataProvider;
+    }
 
     @FXML
     private void initialize() {
@@ -41,7 +45,6 @@ public class CreateUserController {
         this.createUserButton.disableProperty().bind(Bindings.isEmpty(this.firstNameTextField.textProperty())
                 .or(Bindings.isEmpty(this.lastNameTextField.textProperty()))
                 .or(Bindings.isEmpty(this.groupsList.getSelectionModel().getSelectedItems())));
-        setGroupsList(this.dataProvider.getGroupsData());
     }
 
     public void setDialogStage(Stage dialogStage) {
@@ -68,7 +71,6 @@ public class CreateUserController {
             this.user = newUser;
             AlertGenerator.showConfirmationAlert(user.getFirstName() + " " + user.getLastName() + " was created successfully");
         }, throwable -> AlertGenerator.showErrorAlert("Could not create new user -> " + throwable.getMessage()));
-        this.dataProvider.refetchData();
         isApproved = true;
         dialogStage.close();
     }
@@ -87,5 +89,10 @@ public class CreateUserController {
         this.user.setFirstName(firstNameTextField.getText());
         this.user.setLastName(lastNameTextField.getText());
         this.user.setGroup(this.groupsList.getSelectionModel().getSelectedItem());
+    }
+
+    public void initData() {
+        this.dataProvider.refetchData();
+        setGroupsList(this.dataProvider.getGroupsData());
     }
 }

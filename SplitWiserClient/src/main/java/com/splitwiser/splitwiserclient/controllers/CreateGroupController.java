@@ -21,7 +21,11 @@ public class CreateGroupController {
 
     private boolean isApproved;
 
-    private DataProvider dataProvider = DataProvider.getInstance();
+    private DataProvider dataProvider;
+
+    public void setDataProvider(DataProvider dataProvider) {
+        this.dataProvider = dataProvider;
+    }
 
     @FXML
     private void initialize() {

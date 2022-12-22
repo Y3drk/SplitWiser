@@ -44,7 +44,11 @@ public class SummaryController {
 
     private SimpleObjectProperty<BigDecimal> currentUsersBalance;
 
-    private DataProvider dataProvider = DataProvider.getInstance();
+    private DataProvider dataProvider;
+
+    public void setDataProvider(DataProvider dataProvider) {
+        this.dataProvider = dataProvider;
+    }
 
     @FXML
     private void initialize() {
@@ -62,7 +66,7 @@ public class SummaryController {
     private void onCreatePaymentButtonClick() {
         Payment newPayment = new Payment(this.currentUser.get().getGroup(), BigDecimal.valueOf(0), LocalDate.of(2022, 1, 1), "", this.currentUser.get(), this.currentUser.get().getGroup().getMembers());
         appController.showCreatePaymentDialog(newPayment);
-        setPaymentsList();
+        initData();
     }
 
     public void setAppController(AppController appController) {
@@ -88,7 +92,8 @@ public class SummaryController {
         this.groupLabel.setText(this.currentUser.get().getGroup().getName() + " balance");
     }
 
-    public void setPaymentsList() {
+    public void initData() {
+        this.dataProvider.refetchData();
         ObservableList<Payment> allPayments = dataProvider.getPaymentsData().filtered((elem) -> elem.getGroup().equals(this.currentUser.get().getGroup()));
         ObservableList<Payment> userInvolvedPayments = dataProvider.getAllUserInvolvedPayments(this.currentUser.get(), allPayments);
 
@@ -100,4 +105,5 @@ public class SummaryController {
         this.currentUsersBalance = new SimpleObjectProperty<>(CalculateService.calculateUserBalance(this.currentUser.get(), this.userInvolvedPaymentsList.getItems()));
         this.userInvolvedBalanceValueLabel.setText(this.currentUsersBalance.get().toString());
     }
+
 }

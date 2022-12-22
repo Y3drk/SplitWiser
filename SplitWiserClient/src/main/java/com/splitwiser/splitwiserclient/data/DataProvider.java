@@ -10,19 +10,6 @@ import javafx.collections.ObservableList;
 
 public class DataProvider {
 
-    private static DataProvider instance = null;
-
-    public static DataProvider getInstance() {
-        if (instance == null) {
-            instance = new DataProvider();
-        }
-        return instance;
-    }
-
-    public static void destroy() {
-        instance = null;
-    }
-
     private final ObservableList<User> users = FXCollections.observableArrayList();
 
     private final ObservableList<Group> groups = FXCollections.observableArrayList();
@@ -30,6 +17,9 @@ public class DataProvider {
 
 
     private final DataService dataService = new DataService();
+
+    public DataProvider() {
+    }
 
 
     public void refetchData() {
