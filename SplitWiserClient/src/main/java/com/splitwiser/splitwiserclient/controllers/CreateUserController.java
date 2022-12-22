@@ -32,10 +32,6 @@ public class CreateUserController {
 
     private DataProvider dataProvider;
 
-    public void setDataProvider(DataProvider dataProvider) {
-        this.dataProvider = dataProvider;
-    }
-
     @FXML
     private void initialize() {
         this.isApproved = false;
@@ -45,6 +41,10 @@ public class CreateUserController {
         this.createUserButton.disableProperty().bind(Bindings.isEmpty(this.firstNameTextField.textProperty())
                 .or(Bindings.isEmpty(this.lastNameTextField.textProperty()))
                 .or(Bindings.isEmpty(this.groupsList.getSelectionModel().getSelectedItems())));
+    }
+
+    public void setDataProvider(DataProvider dataProvider) {
+        this.dataProvider = dataProvider;
     }
 
     public void setDialogStage(Stage dialogStage) {

@@ -23,14 +23,14 @@ public class CreateGroupController {
 
     private DataProvider dataProvider;
 
-    public void setDataProvider(DataProvider dataProvider) {
-        this.dataProvider = dataProvider;
-    }
-
     @FXML
     private void initialize() {
         this.isApproved = false;
         this.createGroupButton.disableProperty().bind(Bindings.isEmpty(this.groupNameTextField.textProperty()));
+    }
+
+    public void setDataProvider(DataProvider dataProvider) {
+        this.dataProvider = dataProvider;
     }
 
     public void setGroup(Group group) {

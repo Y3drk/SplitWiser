@@ -17,15 +17,14 @@ public class AppController {
 
     private DataProvider dataProvider;
 
-    public void setDataProvider(DataProvider dataProvider) {
-        this.dataProvider = dataProvider;
-    }
-
     public AppController(Stage primaryStage, DataProvider dataProvider) {
         this.primaryStage = primaryStage;
         this.dataProvider = dataProvider;
     }
 
+    public void setDataProvider(DataProvider dataProvider) {
+        this.dataProvider = dataProvider;
+    }
 
     private FXMLLoader getLoaderWithLocation(String resource) {
         FXMLLoader loader = new FXMLLoader();

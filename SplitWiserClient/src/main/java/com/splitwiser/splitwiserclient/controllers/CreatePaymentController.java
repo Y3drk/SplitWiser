@@ -41,10 +41,6 @@ public class CreatePaymentController {
 
     private DataProvider dataProvider;
 
-    public void setDataProvider(DataProvider dataProvider) {
-        this.dataProvider = dataProvider;
-    }
-
     @FXML
     private void initialize() {
         this.isApproved = false;
@@ -56,6 +52,10 @@ public class CreatePaymentController {
         this.receiverListPicker.setCellFactory(new UserCellFactory());
 
         this.createPaymentButton.disableProperty().bind(Bindings.equal("0", this.valueTextField.textProperty()));
+    }
+
+    public void setDataProvider(DataProvider dataProvider) {
+        this.dataProvider = dataProvider;
     }
 
     @FXML

@@ -26,10 +26,6 @@ public class LoginController {
 
     private DataProvider dataProvider;
 
-    public void setDataProvider(DataProvider dataProvider) {
-        this.dataProvider = dataProvider;
-    }
-
     @FXML
     private void initialize() {
         usersList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -39,6 +35,10 @@ public class LoginController {
         loginButton.disableProperty().bind(Bindings.isEmpty(usersList.getSelectionModel().getSelectedItems()));
 
         this.groups = FXCollections.observableArrayList();
+    }
+
+    public void setDataProvider(DataProvider dataProvider) {
+        this.dataProvider = dataProvider;
     }
 
     @FXML

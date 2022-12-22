@@ -46,20 +46,17 @@ public class SummaryController {
 
     private DataProvider dataProvider;
 
-    public void setDataProvider(DataProvider dataProvider) {
-        this.dataProvider = dataProvider;
-    }
-
     @FXML
     private void initialize() {
         this.currentUser = new SimpleObjectProperty<>();
         this.currentUsersBalance = new SimpleObjectProperty<>(BigDecimal.valueOf(0));
-
         this.otherPaymentList.setCellFactory(new PaymentCellFactory());
         this.userInvolvedPaymentsList.setCellFactory(new PaymentCellFactory());
-
         this.totalSummaryList.setFocusTraversable(false);
+    }
 
+    public void setDataProvider(DataProvider dataProvider) {
+        this.dataProvider = dataProvider;
     }
 
     @FXML
