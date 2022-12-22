@@ -51,7 +51,6 @@ public class DataProvider {
 
         this.dataService.getSingleGroupInfo(groupId).firstElement().blockingSubscribe(group -> {
             freshGroups.add(group);
-            System.out.println(group.getName());
             for (User user : group.getMembers()) {
                 user.setGroup(group);
                 freshUsers.add(user);
