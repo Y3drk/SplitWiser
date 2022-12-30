@@ -1,11 +1,15 @@
 package com.splitwiser.splitwiserclient.controllers;
 
+import com.splitwiser.splitwiserclient.auxiliary.CategoryCellFactory;
 import com.splitwiser.splitwiserclient.auxiliary.UserCellFactory;
 import com.splitwiser.splitwiserclient.data.DataProvider;
+import com.splitwiser.splitwiserclient.model.category.Category;
 import com.splitwiser.splitwiserclient.model.payment.Payment;
 import com.splitwiser.splitwiserclient.model.user.User;
 import com.splitwiser.splitwiserclient.util.AlertGenerator;
 import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -15,10 +19,13 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CreatePaymentController {
 
+    @FXML
+    private ListView<Category> categoryListPicker;
     @FXML
     private RadioButton groupReceiverButton;
     @FXML
@@ -51,6 +58,9 @@ public class CreatePaymentController {
         this.receiverListPicker.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         this.receiverListPicker.setCellFactory(new UserCellFactory());
 
+        this.categoryListPicker.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        this.categoryListPicker.setCellFactory(new CategoryCellFactory());
+
         this.createPaymentButton.disableProperty().bind(Bindings.equal("0", this.valueTextField.textProperty()));
     }
 
@@ -65,6 +75,11 @@ public class CreatePaymentController {
 
     @FXML
     private void handleCreateAction(ActionEvent actionEvent) {
+        if (this.isNewPaymentSinglePerson()
+                && this.receiverListPicker.getSelectionModel().getSelectedItem().getId() == this.getPayerId()) {
+            AlertGenerator.showErrorAlert("The payer cannot be the same as the receiver!");
+            return;
+        }
         this.updateModel();
 
         this.dataProvider.addPayment(this.payment, this.payment.getGroup().getId()).blockingSubscribe(newPayment -> {
@@ -74,6 +89,17 @@ public class CreatePaymentController {
         this.dataProvider.refetchData();
         this.isApproved = true;
         this.dialogStage.close();
+    }
+
+    private boolean isNewPaymentSinglePerson() {
+        return this.receiverListPicker.getSelectionModel().getSelectedItem() != null && !this.groupReceiverButton.isSelected();
+    }
+
+    private int getPayerId() {
+        if (this.payerListPicker.getSelectionModel().getSelectedItem() != null) {
+            return this.payerListPicker.getSelectionModel().getSelectedItem().getId();
+        }
+        return this.payment.getPayer().getId();
     }
 
     public void setDialogStage(Stage dialogStage) {
@@ -90,13 +116,16 @@ public class CreatePaymentController {
     }
 
     private void updateControls() {
-        //binding the user with list of payers (?)
         this.descriptionTextField.setText(payment.getDescription());
         this.valueTextField.setText(payment.getAmount().toString());
         this.datePicker.setValue(payment.getDate());
 
         this.payerListPicker.setItems(payment.getPayer().getGroup().getMembers());
         this.receiverListPicker.setItems(payment.getPayer().getGroup().getMembers());
+
+        ObservableList<Category> categories = FXCollections.observableArrayList();
+        categories.addAll(Arrays.stream(Category.values()).toList());
+        this.categoryListPicker.setItems(categories);
 
     }
 
@@ -123,5 +152,4 @@ public class CreatePaymentController {
             throw new RuntimeException(e);
         }
     }
-
 }

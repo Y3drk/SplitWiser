@@ -1,5 +1,9 @@
 ## Changelog
 
+### 19-22.12.2022
+
+* refactor both on the client and server side: simple IoC, some new submethods, slight API changes
+
 ### 16.12.2022
 
 * client working on full retrofit rest queries

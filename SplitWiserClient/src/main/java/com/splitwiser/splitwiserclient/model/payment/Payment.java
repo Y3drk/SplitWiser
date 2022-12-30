@@ -34,6 +34,8 @@ public class Payment {
 
     private StringProperty description = new SimpleStringProperty();
 
+//    private ObjectProperty<Category> category;
+
     // for Jackson
     public Payment() {
         this(null, BigDecimal.valueOf(0), LocalDate.now(), "", null, new ArrayList<>());
@@ -51,6 +53,7 @@ public class Payment {
         this.date = new SimpleObjectProperty<>(date);
         this.description = new SimpleStringProperty(description);
         this.payer = new SimpleObjectProperty<>(payer);
+//        this.category = new SimpleObjectProperty<>(category);
 
         this.receivers.addAll(receivers);
     }
@@ -130,4 +133,16 @@ public class Payment {
     public void setDescription(String description) {
         this.description.set(description);
     }
+
+//    public Category getCategory() {
+//        return category.get();
+//    }
+//
+//    public ObjectProperty<Category> categoryProperty() {
+//        return category;
+//    }
+//
+//    public void setCategory(Category category) {
+//        this.category.set(category);
+//    }
 }

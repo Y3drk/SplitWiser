@@ -10,7 +10,7 @@ import javafx.util.Callback;
 public class PaymentCellFactory implements Callback<ListView<Payment>, ListCell<Payment>> {
     @Override
     public ListCell<Payment> call(ListView<Payment> param) {
-        return new ListCell<>(){
+        return new ListCell<>() {
             @Override
             public void updateItem(Payment payment, boolean empty) {
                 super.updateItem(payment, empty);
@@ -19,10 +19,11 @@ public class PaymentCellFactory implements Callback<ListView<Payment>, ListCell<
                 } else {
                     String receiver = "All";
                     ObservableList<User> receivers = payment.getReceivers();
-                    if (receivers.size() == 1){
+                    if (receivers.size() == 1) {
                         receiver = receivers.get(0).getFirstName() + " " + receivers.get(0).getLastName();
                     }
-                    setText(payment.getPayer().getFirstName() + " "+ payment.getPayer().getLastName() + ", " + payment.getDate() + ", " + payment.getAmount().toString() + ", " + receiver + ", "+ payment.getDescription());
+                    setText(payment.getPayer().getFirstName() + " " + payment.getPayer().getLastName() + ", " + payment.getDate() + ", " + payment.getAmount().toString() + ", " + receiver + ", " + //", " + payment.getCategory() +
+                            ", " + payment.getDescription());
                     setMouseTransparent(true);
                     setFocusTraversable(false);
                 }
