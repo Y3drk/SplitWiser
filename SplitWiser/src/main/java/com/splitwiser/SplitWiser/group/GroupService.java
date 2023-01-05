@@ -1,5 +1,6 @@
 package com.splitwiser.SplitWiser.group;
 
+import com.splitwiser.SplitWiser.category.Category;
 import com.splitwiser.SplitWiser.payment.Payment;
 import com.splitwiser.SplitWiser.user.User;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,11 @@ public class GroupService {
     public List<Payment> getGroupPayments(int id) {
         Group group = getGroup(id);
         return group.getPayments();
+    }
+
+    public List<Payment> getGroupCategoryPayments(int id, Category category) {
+        return getGroupPayments(id).stream().filter(payment ->
+            payment.getCategory() == category).toList();
     }
 
     public int addGroup(Group group) {
