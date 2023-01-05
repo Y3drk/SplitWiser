@@ -4,6 +4,7 @@ import com.splitwiser.splitwiserclient.data.DataProvider;
 import com.splitwiser.splitwiserclient.model.group.Group;
 import com.splitwiser.splitwiserclient.model.payment.Payment;
 import com.splitwiser.splitwiserclient.model.user.User;
+import com.splitwiser.splitwiserclient.util.libs.graphs.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -152,6 +153,38 @@ public class AppController {
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();
             return controller.isApproved();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void showViewGraphDialog(String name, boolean isAggregated, SmartGraphPanel<String, String> graphView) {
+        try {
+            FXMLLoader loader = this.getLoaderWithLocation("view-graph-dialog.fxml");
+            BorderPane page = loader.load();
+
+            Stage dialogStage = this.createDialogStage(page, name);
+
+            // Set the group into the controller.
+            ViewGraphController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setGraphView(graphView);
+            if (isAggregated){
+                String AGGREGATED_PAYMENTS_GRAPH_DESCRIPTION = "Arrow represents the aggregated amount of money that someone owes the other person. It points towards the borrower.";
+                controller.setDescriptionLabel(AGGREGATED_PAYMENTS_GRAPH_DESCRIPTION);
+            }
+           else {
+                String ALL_PAYMENTS_GRAPH_DESCRIPTION = "Arrow represents the amount of money that someone paid for the other person. It points towards the receiver";
+                controller.setDescriptionLabel(ALL_PAYMENTS_GRAPH_DESCRIPTION);
+            }
+
+            // Show the dialog and wait until the user closes it
+            dialogStage.showAndWait();
+
+            graphView.init();
+            //TODO: fix the initial layout
+            // cause, despite all init seeming to work correctly all vertices end up in the exact same spot :((
 
         } catch (IOException e) {
             throw new RuntimeException(e);

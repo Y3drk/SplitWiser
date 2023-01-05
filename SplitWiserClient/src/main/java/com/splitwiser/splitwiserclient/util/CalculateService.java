@@ -7,6 +7,8 @@ import javafx.collections.ObservableList;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -65,6 +67,22 @@ public class CalculateService {
         }
     }
 
+    private static void searchPaymentsListForGivenMember(User member, List<Payment> allPayments, HashMap<User, BigDecimal> relations){
+        for (Payment payment : allPayments
+        ) {
+            User payer = payment.getPayer();
+            ObservableList<User> receivers = payment.getReceivers();
+            //if the member is a receiver
+            if (!member.equals(payer)) {
+                processMemberAsReceiverPayments(relations, member, payment, payer, receivers);
+            }
+            // if the member is a payer
+            else {
+                processMemberAsPayerPayments(relations, member, payment, receivers);
+            }
+        }
+    }
+
     public static ObservableList<String> calculateBalanceBetweenAll(User user, ObservableList<Payment> allPayments) {
         List<User> groupMembers = user.getGroup().getMembers();
         ObservableList<String> balances = FXCollections.observableArrayList();
@@ -72,19 +90,7 @@ public class CalculateService {
         for (User member : groupMembers
         ) {
             HashMap<User, BigDecimal> relations = new HashMap<>();
-            for (Payment payment : allPayments
-            ) {
-                User payer = payment.getPayer();
-                ObservableList<User> receivers = payment.getReceivers();
-                //if the member is a receiver
-                if (!member.equals(payer)) {
-                    processMemberAsReceiverPayments(relations, member, payment, payer, receivers);
-                }
-                // if the member is a payer
-                else {
-                    processMemberAsPayerPayments(relations, member, payment, receivers);
-                }
-            }
+            searchPaymentsListForGivenMember(member, allPayments, relations);
             if (!relations.isEmpty()) {
                 String newBalance = createNewSummaryLine(relations, member);
                 if (!newBalance.equals("")) balances.add(newBalance);
@@ -92,6 +98,29 @@ public class CalculateService {
         }
 
         return balances;
+    }
+
+    public static List<Payment> calculateAggregatedPayments(User user, ObservableList<Payment> allPayments) {
+        List<User> groupMembers = user.getGroup().getMembers();
+        List<Payment> aggregatedPayments = new ArrayList<>();
+
+        for (User member : groupMembers
+        ) {
+            HashMap<User, BigDecimal> relations = new HashMap<>();
+            searchPaymentsListForGivenMember(member, allPayments, relations);
+            if (!relations.isEmpty()) {
+                //TODO: parse relations into aggregated payments
+                List<User> payers = relations.keySet().stream().toList();
+                for (User payer : payers
+                ) {
+                    if (relations.get(payer).compareTo(BigDecimal.valueOf(0)) > 0) {
+                        aggregatedPayments.add(new Payment(payer.getGroup(), relations.get(payer).setScale(2, RoundingMode.HALF_DOWN), LocalDate.now(), "", payer, member));
+                    }
+                }
+            }
+        }
+
+        return aggregatedPayments;
     }
 
     public static BigDecimal calculateUserBalance(User user, ObservableList<Payment> userInvolvedPayments) {

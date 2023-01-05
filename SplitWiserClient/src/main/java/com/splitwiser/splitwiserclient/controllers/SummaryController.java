@@ -1,10 +1,17 @@
 package com.splitwiser.splitwiserclient.controllers;
 
+import com.splitwiser.splitwiserclient.auxiliary.GraphDrawer;
 import com.splitwiser.splitwiserclient.auxiliary.PaymentCellFactory;
 import com.splitwiser.splitwiserclient.data.DataProvider;
 import com.splitwiser.splitwiserclient.model.payment.Payment;
 import com.splitwiser.splitwiserclient.model.user.User;
 import com.splitwiser.splitwiserclient.util.CalculateService;
+import com.splitwiser.splitwiserclient.util.libs.graphs.brunomnsilva.smartgraph.graph.Digraph;
+import com.splitwiser.splitwiserclient.util.libs.graphs.brunomnsilva.smartgraph.graph.DigraphEdgeList;
+import com.splitwiser.splitwiserclient.util.libs.graphs.brunomnsilva.smartgraph.graph.Graph;
+import com.splitwiser.splitwiserclient.util.libs.graphs.brunomnsilva.smartgraph.graphview.SmartCircularSortedPlacementStrategy;
+import com.splitwiser.splitwiserclient.util.libs.graphs.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
+import com.splitwiser.splitwiserclient.util.libs.graphs.brunomnsilva.smartgraph.graphview.SmartPlacementStrategy;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -15,7 +22,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.util.List;
 
 public class SummaryController {
 
@@ -66,6 +75,26 @@ public class SummaryController {
         initData();
     }
 
+    @FXML
+    private void onDisplayMainGraphButtonClick(ActionEvent actionEvent) {
+        appController.showViewGraphDialog("All payments Graph", false, createGraphView(this.allPayments));
+    }
+
+    @FXML
+    private void onDisplayAggregatedGraphButtonClick(ActionEvent actionEvent) {
+        appController.showViewGraphDialog("Aggregated payments Graph", true, createGraphView(CalculateService.calculateAggregatedPayments(this.currentUser.get(), this.allPayments)));
+    }
+
+    private SmartGraphPanel<String, String> createGraphView(List<Payment> payments){
+        GraphDrawer drawer = new GraphDrawer(this.currentUser.get().getGroup().getMembers(), payments); //all payments are temp
+        Graph<String, String> graph = drawer.buildGraph();
+
+        SmartPlacementStrategy strategy = new SmartCircularSortedPlacementStrategy();
+
+        return new SmartGraphPanel<>(graph, strategy);
+    }
+
+
     public void setAppController(AppController appController) {
         this.appController = appController;
     }
@@ -99,6 +128,7 @@ public class SummaryController {
         otherPaymentList.setItems(allPayments.filtered((payment) -> !userInvolvedPayments.contains(payment)));
         totalSummaryList.setItems(CalculateService.calculateBalanceBetweenAll(this.currentUser.get(), allPayments));
 
+        this.allPayments = allPayments;
         this.currentUsersBalance = new SimpleObjectProperty<>(CalculateService.calculateUserBalance(this.currentUser.get(), this.userInvolvedPaymentsList.getItems()));
         this.userInvolvedBalanceValueLabel.setText(this.currentUsersBalance.get().toString());
     }

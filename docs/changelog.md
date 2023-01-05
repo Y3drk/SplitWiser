@@ -1,5 +1,9 @@
 ## Changelog
 
+### 04-05.01.2023
+
+* displaying graphs, initial solution without category filtering
+
 ### 19-22.12.2022
 
 * refactor both on the client and server side: simple IoC, some new submethods, slight API changes

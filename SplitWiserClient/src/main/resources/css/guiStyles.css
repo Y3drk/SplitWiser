@@ -5,6 +5,13 @@
     -fx-cursor: hand;
 }
 
+.specialButton{
+    -fx-text-fill: black;
+    -fx-background-color: #3BFD02;
+    -fx-background-radius: 5%;
+    -fx-cursor: hand;
+}
+
 .actionDescriptors {
     -fx-border-color: black;
     -fx-padding: 5;
