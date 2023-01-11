@@ -1,7 +1,13 @@
 ## Changelog
 
-### 04-05.01.2023
+### 11-13.01.2023
 
+* categories & filtering on frontend
+* connecting modules
+
+### 04-06.01.2023
+
+* backend endpoints for categories & filtering
 * displaying graphs, initial solution without category filtering
 
 ### 19-22.12.2022

@@ -3,6 +3,7 @@ package com.splitwiser.splitwiserclient.controllers;
 import com.splitwiser.splitwiserclient.auxiliary.GraphDrawer;
 import com.splitwiser.splitwiserclient.auxiliary.PaymentCellFactory;
 import com.splitwiser.splitwiserclient.data.DataProvider;
+import com.splitwiser.splitwiserclient.model.category.Category;
 import com.splitwiser.splitwiserclient.model.payment.Payment;
 import com.splitwiser.splitwiserclient.model.user.User;
 import com.splitwiser.splitwiserclient.util.CalculateService;
@@ -12,14 +13,16 @@ import com.splitwiser.splitwiserclient.util.libs.graphs.brunomnsilva.smartgraph.
 import com.splitwiser.splitwiserclient.util.libs.graphs.brunomnsilva.smartgraph.graphview.SmartCircularSortedPlacementStrategy;
 import com.splitwiser.splitwiserclient.util.libs.graphs.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.splitwiser.splitwiserclient.util.libs.graphs.brunomnsilva.smartgraph.graphview.SmartPlacementStrategy;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableBooleanValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -27,7 +30,21 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class SummaryController {
+    @FXML
+    private ToggleButton otherCategoryButton;
+    @FXML
+    private ToggleButton ticketsCategoryButton;
+    @FXML
+    private ToggleButton eatingCategoryButton;
+    @FXML
+    private ToggleButton transportCategoryButton;
+    @FXML
+    private ToggleButton entertainmentCategoryButton;
 
+    private ToggleGroup categoryButtons;
+
+    @FXML
+    private ToggleButton allCategoriesButton;
     @FXML
     private ListView<String> totalSummaryList;
     @FXML
@@ -55,6 +72,7 @@ public class SummaryController {
 
     private DataProvider dataProvider;
 
+
     @FXML
     private void initialize() {
         this.currentUser = new SimpleObjectProperty<>();
@@ -62,6 +80,17 @@ public class SummaryController {
         this.otherPaymentList.setCellFactory(new PaymentCellFactory());
         this.userInvolvedPaymentsList.setCellFactory(new PaymentCellFactory());
         this.totalSummaryList.setFocusTraversable(false);
+
+        this.disableAllCategoriesButton();
+        this.allCategoriesButton.setSelected(true);
+
+        this.categoryButtons = new ToggleGroup();
+        this.otherCategoryButton.setToggleGroup(categoryButtons);
+        this.ticketsCategoryButton.setToggleGroup(categoryButtons);
+        this.eatingCategoryButton.setToggleGroup(categoryButtons);
+        this.transportCategoryButton.setToggleGroup(categoryButtons);
+        this.entertainmentCategoryButton.setToggleGroup(categoryButtons);
+        this.allCategoriesButton.setToggleGroup(categoryButtons);
     }
 
     public void setDataProvider(DataProvider dataProvider) {
@@ -133,4 +162,40 @@ public class SummaryController {
         this.userInvolvedBalanceValueLabel.setText(this.currentUsersBalance.get().toString());
     }
 
+    private void disableAllCategoriesButton(){
+        this.allCategoriesButton.setDisable(true);
+    }
+
+    private void enableAllCategoriesButton(){
+        this.allCategoriesButton.setDisable(false);
+    }
+
+    private ToggleButton recognizeSelectedButton(ActionEvent actionEvent){
+        if (actionEvent.getTarget() instanceof ToggleButton){
+            return (ToggleButton) actionEvent.getTarget();
+        }
+        else {
+            throw new RuntimeException("Invalid element Clicked - should never Happen!!!");
+        }
+    }
+
+    @FXML
+    private void onAllCategoriesButtonClick(ActionEvent actionEvent) {
+        this.disableAllCategoriesButton();
+        //unselect the other selected button
+        this.recognizeSelectedButton(actionEvent);
+
+        //retrofit action to fetch (or get cached idk) payments -> something similar to initData would be nice -> it would work really nice with graphs
+    }
+
+    @FXML
+    private void onFilterBySingleCategoryButtonClick(ActionEvent actionEvent) {
+        this.enableAllCategoriesButton();
+
+        ToggleButton clickedButton = this.recognizeSelectedButton(actionEvent);
+        Category clickedCategory = Category.valueOf(clickedButton.getText());
+        System.out.println(clickedCategory);
+
+        //retrofit action to fetch (or get cached idk) payments -> something similar to initData would be nice -> it would work really nice with graphs
+    }
 }

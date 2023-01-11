@@ -12,6 +12,17 @@
     -fx-cursor: hand;
 }
 
+.filterButton{
+    -fx-text-fill: black;
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 5%;
+    -fx-cursor: hand;
+}
+
+.filterButton:selected{
+    -fx-background-color: gold;
+}
+
 .actionDescriptors {
     -fx-border-color: black;
     -fx-padding: 5;

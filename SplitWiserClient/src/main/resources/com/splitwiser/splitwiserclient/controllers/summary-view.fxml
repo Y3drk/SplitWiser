@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ToggleButton?>
 <BorderPane BorderPane.alignment="CENTER" prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.splitwiser.splitwiserclient.controllers.SummaryController">
     <padding>
@@ -37,6 +38,53 @@
     </left>
     <right>
         <VBox alignment="CENTER" prefWidth="370.0" spacing="10.0" style="-fx-padding: 20.0">
+            <VBox alignment="CENTER" prefWidth="370.0" spacing="10.0" style="-fx-padding: 10.0">
+                <HBox alignment="CENTER" styleClass="actionDescriptors" stylesheets="css/guiStyles.css" prefHeight="40.0" prefWidth="60.0">
+                    <Label style="-fx-text-fill: white">Filter by category</Label>
+                </HBox>
+                <HBox alignment="CENTER" spacing="10.0" style="-fx-padding: 5.0">
+                    <ToggleButton fx:id="allCategoriesButton" text="ALL" onAction="#onAllCategoriesButtonClick" prefWidth="200.0"
+                                  styleClass="filterButton" stylesheets="css/guiStyles.css">
+                        <HBox.margin>
+                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                        </HBox.margin>
+                    </ToggleButton>
+                    <ToggleButton fx:id="otherCategoryButton" text="OTHER" onAction="#onFilterBySingleCategoryButtonClick"  prefWidth="200.0"
+                            styleClass="filterButton" stylesheets="css/guiStyles.css">
+                        <HBox.margin>
+                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                        </HBox.margin>
+                    </ToggleButton>
+                </HBox>
+                <HBox alignment="CENTER" spacing="10.0" style="-fx-padding: 5.0">
+                    <ToggleButton fx:id="ticketsCategoryButton" text="TICKETS" onAction="#onFilterBySingleCategoryButtonClick"  prefWidth="200.0"
+                            styleClass="filterButton" stylesheets="css/guiStyles.css">
+                        <HBox.margin>
+                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                        </HBox.margin>
+                    </ToggleButton>
+                    <ToggleButton fx:id="eatingCategoryButton" text="EATING" onAction="#onFilterBySingleCategoryButtonClick"  prefWidth="200.0"
+                            styleClass="filterButton" stylesheets="css/guiStyles.css">
+                        <HBox.margin>
+                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                        </HBox.margin>
+                    </ToggleButton>
+                </HBox>
+                <HBox alignment="CENTER" spacing="10.0" style="-fx-padding: 10.0">
+                    <ToggleButton fx:id="transportCategoryButton" text="TRANSPORT" onAction="#onFilterBySingleCategoryButtonClick"  prefWidth="200.0"
+                            styleClass="filterButton" stylesheets="css/guiStyles.css">
+                        <HBox.margin>
+                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                        </HBox.margin>
+                    </ToggleButton>
+                    <ToggleButton fx:id="entertainmentCategoryButton" text="ENTERTAINMENT" onAction="#onFilterBySingleCategoryButtonClick"  prefWidth="200.0"
+                            styleClass="filterButton" stylesheets="css/guiStyles.css">
+                        <HBox.margin>
+                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                        </HBox.margin>
+                    </ToggleButton>
+                </HBox>
+            </VBox>
             <HBox alignment="CENTER" styleClass="actionDescriptors" stylesheets="css/guiStyles.css" prefHeight="40.0" prefWidth="60.0">
                 <Label fx:id="groupLabel" style="-fx-text-fill: white"/>
             </HBox>
