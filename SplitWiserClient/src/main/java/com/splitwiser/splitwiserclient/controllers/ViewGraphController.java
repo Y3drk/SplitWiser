@@ -21,7 +21,11 @@ public class ViewGraphController {
     }
 
     public void setGraphView(SmartGraphPanel graphView){
-        this.GraphPane.getChildren().add(new SmartGraphDemoContainer(graphView));
+        graphView.setMinSize(400,400);
+        SmartGraphDemoContainer graphContainer = new SmartGraphDemoContainer(graphView);
+        graphContainer.setMaxHeight(475);
+        graphContainer.setMaxWidth(725);
+        this.GraphPane.getChildren().add(graphContainer);
     }
 
     public void setDescriptionLabel(String description){

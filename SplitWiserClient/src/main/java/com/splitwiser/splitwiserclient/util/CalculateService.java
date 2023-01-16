@@ -109,7 +109,6 @@ public class CalculateService {
             HashMap<User, BigDecimal> relations = new HashMap<>();
             searchPaymentsListForGivenMember(member, allPayments, relations);
             if (!relations.isEmpty()) {
-                //TODO: parse relations into aggregated payments
                 List<User> payers = relations.keySet().stream().toList();
                 for (User payer : payers
                 ) {

@@ -160,6 +160,8 @@ public class SummaryController {
         this.allPayments = allPayments;
         this.currentUsersBalance = new SimpleObjectProperty<>(CalculateService.calculateUserBalance(this.currentUser.get(), this.userInvolvedPaymentsList.getItems()));
         this.userInvolvedBalanceValueLabel.setText(this.currentUsersBalance.get().toString());
+
+
     }
 
     private void disableAllCategoriesButton(){

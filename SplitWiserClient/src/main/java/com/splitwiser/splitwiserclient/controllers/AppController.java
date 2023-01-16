@@ -179,12 +179,10 @@ public class AppController {
                 controller.setDescriptionLabel(ALL_PAYMENTS_GRAPH_DESCRIPTION);
             }
 
-            // Show the dialog and wait until the user closes it
-            dialogStage.showAndWait();
+            dialogStage.show();
 
             graphView.init();
-            //TODO: fix the initial layout
-            // cause, despite all init seeming to work correctly all vertices end up in the exact same spot :((
+
 
         } catch (IOException e) {
             throw new RuntimeException(e);
