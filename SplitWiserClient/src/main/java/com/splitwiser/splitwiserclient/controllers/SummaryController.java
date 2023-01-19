@@ -212,11 +212,12 @@ public class SummaryController {
 
     @FXML
     private void onChangeTransitivityButtonClick(ActionEvent actionEvent) {
+        //TODO: transitivity is not synchronized with category filtering! Figure out if caching is even worth the effort and synchronize both options
         if (this.isTransitivityEnabled) {
             //Disabling
             this.changeTransitivityConnectedButtons(false, "Enable Transitivity", "-fx-background-color: #3BFD02");
 
-            this.currentUsersBalance = new SimpleObjectProperty<>(CalculateService.calculateUserBalance(this.currentUser.get(), this.userInvolvedPaymentsList.getItems()));
+            totalSummaryList.setItems(CalculateService.calculateBalanceBetweenAll(this.currentUser.get(), this.allPayments));
         } else {
             //Enabling
             this.changeTransitivityConnectedButtons(true, "Disable Transitivity","-fx-background-color: orange");
@@ -227,7 +228,7 @@ public class SummaryController {
                 totalSummaryList.setItems(CalculateService.calculateBalanceBetweenAll(this.currentUser.get(), this.cachedTransitivityGraph.getOutputPayments()));
             } else {
                 //otherwise we need to calculate the graph from the beginning
-                this.cachedTransitivityGraph = new GraphMatrixTransformer(this.currentUser.get().getGroup().getMembers(), this.allPayments);
+                this.cachedTransitivityGraph = new GraphMatrixTransformer(this.currentUser.get().getGroup().getMembers(), FXCollections.observableArrayList(CalculateService.calculateAggregatedPayments(this.currentUser.get(), this.allPayments)));
                 this.cachedTransitivityGraph.transformPaymentsToGraph();
 
                 TransitivitySolver solver = new TransitivitySolver(this.cachedTransitivityGraph);

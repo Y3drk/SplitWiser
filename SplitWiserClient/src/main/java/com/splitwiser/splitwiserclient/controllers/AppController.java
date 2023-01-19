@@ -181,7 +181,7 @@ public class AppController {
                     controller.setDescriptionLabel(AGGREGATED_PAYMENTS_GRAPH_DESCRIPTION);
                 }
                 case TRANSITIVE_PAYMENTS -> {
-                    String TRANSITIVE_PAYMENTS_GRAPH_DESCRIPTION = "Arrow represents the total amount of money that someone owes the other person after transition of payments took place. It points towards the borrower.";
+                    String TRANSITIVE_PAYMENTS_GRAPH_DESCRIPTION = "Arrow represents the total amount of money that someone owes the other person after transition of payments took place.\nIt points towards the borrower.";
                     controller.setDescriptionLabel(TRANSITIVE_PAYMENTS_GRAPH_DESCRIPTION);
                 }
             }
