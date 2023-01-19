@@ -1,7 +1,7 @@
 package com.splitwiser.SplitWiser.user;
 
 
-import com.splitwiser.SplitWiser.group.Group;
+import com.splitwiser.SplitWiser.category.Category;
 import com.splitwiser.SplitWiser.group.GroupRepository;
 import com.splitwiser.SplitWiser.payment.Payment;
 import org.springframework.stereotype.Service;
@@ -31,6 +31,11 @@ public class UserService {
     public List<Payment> getUserPayments(int userId) {
         User user = getUserById(userId);
         return userRepository.findAllUserPayments(user.getGroup().getId(), userId);
+    }
+
+    public List<Payment> getUserCategoryPayments(int id, Category category) {
+        return getUserPayments(id).stream().filter(payment ->
+                payment.getCategory() == category).toList();
     }
 
     public int addUser(User user, int groupId) {

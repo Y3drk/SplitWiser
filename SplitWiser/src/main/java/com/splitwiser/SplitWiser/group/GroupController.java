@@ -1,5 +1,6 @@
 package com.splitwiser.SplitWiser.group;
 
+import com.splitwiser.SplitWiser.category.Category;
 import com.splitwiser.SplitWiser.payment.Payment;
 import com.splitwiser.SplitWiser.user.User;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +34,11 @@ public class GroupController {
     @GetMapping("/{id}/payments")
     public List<Payment> getGroupPayments(@PathVariable int id) {
         return groupService.getGroupPayments(id);
+    }
+
+    @GetMapping("/{id}/payments/{category}")
+    public List<Payment> getGroupCategoryPayments(@PathVariable int id, @PathVariable Category category) {
+        return groupService.getGroupCategoryPayments(id, category);
     }
 
     @PostMapping("")
