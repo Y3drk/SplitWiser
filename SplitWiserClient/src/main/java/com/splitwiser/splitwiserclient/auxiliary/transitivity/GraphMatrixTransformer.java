@@ -5,13 +5,9 @@ import com.splitwiser.splitwiserclient.model.payment.Payment;
 import com.splitwiser.splitwiserclient.model.user.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class GraphMatrixTransformer {
 
@@ -51,6 +47,10 @@ public class GraphMatrixTransformer {
         return matrixInitialGraphRepresentation;
     }
 
+    public ObservableList<User> getMembers() {
+        return members;
+    }
+
     public void transformPaymentsToGraph(){
         this.matrixInitialGraphRepresentation = new BigDecimal[this.membersAsVertices.size()][this.membersAsVertices.size()];
 
@@ -77,7 +77,7 @@ public class GraphMatrixTransformer {
         for(int row = 0; row < this.membersAsVertices.size(); row++){
             for(int col = 0; col < this.membersAsVertices.size(); col++){
                 BigDecimal cellValue = this.matrixFinalGraphRepresentation[row][col];
-                if (!cellValue.equals(BigDecimal.valueOf(0))){
+                if (cellValue.compareTo(BigDecimal.valueOf(0)) > 0){
                     outputPayments.add(new Payment(this.members.get(row).getGroup(), cellValue, LocalDate.now(), "",this.members.get(row), this.members.get(col), Category.OTHER));
                 }
             }
