@@ -2,6 +2,7 @@ package com.splitwiser.splitwiserclient.model.payment;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.splitwiser.splitwiserclient.model.category.Category;
 import com.splitwiser.splitwiserclient.model.group.Group;
 import com.splitwiser.splitwiserclient.model.user.User;
 import javafx.beans.property.ObjectProperty;
@@ -34,27 +35,26 @@ public class Payment {
 
     private StringProperty description = new SimpleStringProperty();
 
-//    private ObjectProperty<Category> category;
+    private ObjectProperty<Category> category;
 
     // for Jackson
     public Payment() {
-        this(null, BigDecimal.valueOf(0), LocalDate.now(), "", null, new ArrayList<>());
+        this(null, BigDecimal.valueOf(0), LocalDate.now(), "", null, new ArrayList<>(), Category.OTHER);
     }
 
     //    single payment
-    public Payment(Group group, BigDecimal amount, LocalDate date, String description, User payer, User receiver) {
-        this(group, amount, date, description, payer, List.of(receiver));
+    public Payment(Group group, BigDecimal amount, LocalDate date, String description, User payer, User receiver, Category category) {
+        this(group, amount, date, description, payer, List.of(receiver), category);
     }
 
     //    group payment
-    public Payment(Group group, BigDecimal amount, LocalDate date, String description, User payer, List<User> receivers) {
+    public Payment(Group group, BigDecimal amount, LocalDate date, String description, User payer, List<User> receivers, Category category) {
         this.group = new SimpleObjectProperty<>(group);
         this.amount = new SimpleObjectProperty<>(amount);
         this.date = new SimpleObjectProperty<>(date);
         this.description = new SimpleStringProperty(description);
         this.payer = new SimpleObjectProperty<>(payer);
-//        this.category = new SimpleObjectProperty<>(category);
-
+        this.category = new SimpleObjectProperty<>(category);
         this.receivers.addAll(receivers);
     }
 
@@ -70,12 +70,12 @@ public class Payment {
         return group.get();
     }
 
-    public ObjectProperty<Group> groupProperty() {
-        return group;
-    }
-
     public void setGroup(Group group) {
         this.group.set(group);
+    }
+
+    public ObjectProperty<Group> groupProperty() {
+        return group;
     }
 
     public BigDecimal getAmount() {
@@ -94,6 +94,10 @@ public class Payment {
         return payer.get();
     }
 
+    public void setPayer(User payer) {
+        this.payer.set(payer);
+    }
+
     public ObjectProperty<User> payerProperty() {
         return payer;
     }
@@ -102,12 +106,20 @@ public class Payment {
         return date.get();
     }
 
+    public void setDate(LocalDate date) {
+        this.date.set(date);
+    }
+
     public ObjectProperty<LocalDate> dateProperty() {
         return date;
     }
 
     public String getDescription() {
         return description.get();
+    }
+
+    public void setDescription(String description) {
+        this.description.set(description);
     }
 
     public StringProperty descriptionProperty() {
@@ -122,27 +134,15 @@ public class Payment {
         this.receivers.setAll(receivers);
     }
 
-    public void setPayer(User payer) {
-        this.payer.set(payer);
+    public Category getCategory() {
+        return category.get();
     }
 
-    public void setDate(LocalDate date) {
-        this.date.set(date);
+    public void setCategory(Category category) {
+        this.category.set(category);
     }
 
-    public void setDescription(String description) {
-        this.description.set(description);
+    public ObjectProperty<Category> categoryProperty() {
+        return category;
     }
-
-//    public Category getCategory() {
-//        return category.get();
-//    }
-//
-//    public ObjectProperty<Category> categoryProperty() {
-//        return category;
-//    }
-//
-//    public void setCategory(Category category) {
-//        this.category.set(category);
-//    }
 }

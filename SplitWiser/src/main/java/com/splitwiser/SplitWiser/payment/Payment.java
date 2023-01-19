@@ -1,6 +1,7 @@
 package com.splitwiser.SplitWiser.payment;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.splitwiser.SplitWiser.category.Category;
 import com.splitwiser.SplitWiser.group.Group;
 import com.splitwiser.SplitWiser.user.User;
 import jakarta.persistence.*;
@@ -42,6 +43,27 @@ public class Payment {
 
     private String description;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name="category")
+    private Category category;
+
+    public Payment() {
+    }
+
+    public Payment(BigDecimal amount, LocalDate date, String description) {
+        this.amount = amount;
+        this.date = date;
+        this.description = description;
+        this.category = Category.OTHER;
+    }
+
+    public Payment(BigDecimal amount, LocalDate date, String description, Category category) {
+        this.amount = amount;
+        this.date = date;
+        this.description = description;
+        this.category = category;
+    }
+
     public Payment(User payer, List<User> receivers, Group group, BigDecimal amount, LocalDate date, String description) {
         this.payer = payer;
         this.receivers = receivers;
@@ -49,15 +71,17 @@ public class Payment {
         this.amount = amount;
         this.date = date;
         this.description = description;
+        this.category = Category.OTHER;
     }
 
-    public Payment(BigDecimal amount, LocalDate date, String description) {
+    public Payment(User payer, List<User> receivers, Group group, BigDecimal amount, LocalDate date, String description, Category category) {
+        this.payer = payer;
+        this.receivers = receivers;
+        this.group = group;
         this.amount = amount;
         this.date = date;
         this.description = description;
-    }
-
-    public Payment() {
+        this.category = category;
     }
 
     public BigDecimal getAmount() {
@@ -82,6 +106,10 @@ public class Payment {
 
     public List<User> getReceivers() {
         return receivers;
+    }
+
+    public Category getCategory() {
+        return category;
     }
 
     public User getPayer() {
@@ -114,6 +142,10 @@ public class Payment {
 
     public void setPayer(User payer) {
         this.payer = payer;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.splitwiser.splitwiserclient.model.category.Category;
 import com.splitwiser.splitwiserclient.model.group.Group;
 import com.splitwiser.splitwiserclient.model.payment.Payment;
 import com.splitwiser.splitwiserclient.model.user.User;
@@ -34,8 +35,11 @@ public class DataService {
     }
 
     public Observable<Group> getGroupsInfo() {
-        return this.splitWiserAPI.getGroupsInfo()
-                .flatMap(Observable::fromIterable);
+        return this.splitWiserAPI.getGroupsInfo().flatMap(Observable::fromIterable);
+    }
+
+    public Observable<Payment> getGroupPaymentsByCategory(int groupId, Category category) {
+        return this.splitWiserAPI.getGroupPaymentsByCategory(groupId, category).flatMap(Observable::fromIterable);
     }
 
     public Observable<User> createUser(User user) {

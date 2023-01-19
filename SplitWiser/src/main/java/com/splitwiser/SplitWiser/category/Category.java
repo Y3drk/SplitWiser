@@ -1,4 +1,4 @@
-package com.splitwiser.splitwiserclient.model.category;
+package com.splitwiser.SplitWiser.category;
 
 public enum Category {
     TICKETS,
@@ -6,4 +6,5 @@ public enum Category {
     TRANSPORT,
     ENTERTAINMENT,
     OTHER,
+
 }

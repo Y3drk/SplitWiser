@@ -1,6 +1,7 @@
 package com.splitwiser.SplitWiser.util;
 
 
+import com.splitwiser.SplitWiser.category.Category;
 import com.splitwiser.SplitWiser.group.Group;
 import com.splitwiser.SplitWiser.group.GroupRepository;
 import com.splitwiser.SplitWiser.group.GroupService;
@@ -47,9 +48,9 @@ public class AppConfigurator {
             }
 
             if (paymentRepository.count() == 0) {
-                paymentService.addPayment(new Payment(BigDecimal.valueOf(100), LocalDate.now(), "dinner bill"), 1, 1, List.of(1, 2, 3));
-                paymentService.addPayment(new Payment(BigDecimal.valueOf(300), LocalDate.now(), "bill"), 1, 2, List.of(3));
-                paymentService.addPayment(new Payment(BigDecimal.valueOf(80), LocalDate.now(), "bill 2"), 3, 4, List.of(4, 5, 6));
+                paymentService.addPayment(new Payment(BigDecimal.valueOf(100), LocalDate.now(), "dinner bill", Category.TRANSPORT), 1, 1, List.of(1, 2, 3));
+                paymentService.addPayment(new Payment(BigDecimal.valueOf(300), LocalDate.now(), "bill", Category.TICKETS), 1, 2, List.of(3));
+                paymentService.addPayment(new Payment(BigDecimal.valueOf(80), LocalDate.now(), "bill 2", Category.EATING), 3, 4, List.of(4, 5, 6));
             }
 
             List<Group> allGroups = groupService.getGroups();
@@ -66,7 +67,7 @@ public class AppConfigurator {
             }
             System.out.println("___PAYMENTS___");
             for (Payment payment : allPayments) {
-                System.out.println(" group id: " + payment.getGroup().getId() + " payer name: " + payment.getPayer().getFirstName() + " description: " + payment.getDescription());
+                System.out.println(" group id: " + payment.getGroup().getId() + " payer name: " + payment.getPayer().getFirstName() + " description: " + payment.getDescription() + " category: " + payment.getCategory());
 
             }
         };

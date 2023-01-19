@@ -1,5 +1,6 @@
 package com.splitwiser.splitwiserclient.data;
 
+import com.splitwiser.splitwiserclient.model.category.Category;
 import com.splitwiser.splitwiserclient.model.group.Group;
 import com.splitwiser.splitwiserclient.model.payment.Payment;
 import com.splitwiser.splitwiserclient.model.user.User;
@@ -24,6 +25,12 @@ public interface SplitWiserAPI {
 
     @GET("/api/groups/{id}")
     Observable<Group> getSingleGroupInfo(@Path("id") int groupId);
+
+    @GET("/api/users/{id}/payments/{category}")
+    Observable<List<Payment>> getUserPaymentsByCategory(@Path("id") int id, @Path("category") Category category);
+
+    @GET("/api/groups/{id}/payments/{category}")
+    Observable<List<Payment>> getGroupPaymentsByCategory(@Path("id") int groupId, @Path("category") Category category);
 
     @POST("/api/users/groups/{id}")
     Observable<User> postUser(@Body User user, @Path("id") int groupId);

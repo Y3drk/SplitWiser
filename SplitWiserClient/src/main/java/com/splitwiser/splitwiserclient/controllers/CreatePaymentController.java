@@ -132,6 +132,7 @@ public class CreatePaymentController {
     private void updateModel() {
         this.payment.setDescription(this.descriptionTextField.getText());
         this.payment.setDate(this.datePicker.getValue());
+        this.payment.setCategory(this.categoryListPicker.getSelectionModel().getSelectedItem());
 
         // sets to selected payer only if selected
         if (!this.payerListPicker.getSelectionModel().getSelectedItems().isEmpty()) {

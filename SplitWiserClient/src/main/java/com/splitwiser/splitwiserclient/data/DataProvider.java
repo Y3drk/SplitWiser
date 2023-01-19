@@ -1,5 +1,6 @@
 package com.splitwiser.splitwiserclient.data;
 
+import com.splitwiser.splitwiserclient.model.category.Category;
 import com.splitwiser.splitwiserclient.model.group.Group;
 import com.splitwiser.splitwiserclient.model.payment.Payment;
 import com.splitwiser.splitwiserclient.model.user.User;
@@ -15,7 +16,6 @@ public class DataProvider {
     private final ObservableList<Group> groups = FXCollections.observableArrayList();
     private final ObservableList<Payment> payments = FXCollections.observableArrayList();
 
-
     private final DataService dataService = new DataService();
 
     public DataProvider() {
@@ -27,21 +27,24 @@ public class DataProvider {
         ObservableList<Group> freshGroups = FXCollections.observableArrayList();
         ObservableList<Payment> freshPayments = FXCollections.observableArrayList();
 
-        this.dataService.getGroupsInfo().blockingSubscribe(group -> {
-            freshGroups.add(group);
-            for (User user : group.getMembers()) {
-                user.setGroup(group);
-                freshUsers.add(user);
-            }
-            for (Payment payment : group.getPayments()) {
-                payment.setGroup(group);
-                freshPayments.add(payment);
-            }
-        }, throwable -> AlertGenerator.showErrorAlert("refetch error -> " + throwable.getMessage()));
-
-        this.payments.setAll(freshPayments);
-        this.groups.setAll(freshGroups);
-        this.users.setAll(freshUsers);
+        this.dataService.getGroupsInfo()
+                .blockingSubscribe(group -> {
+                            freshGroups.add(group);
+                            for (User user : group.getMembers()) {
+                                user.setGroup(group);
+                                freshUsers.add(user);
+                            }
+                            for (Payment payment : group.getPayments()) {
+                                payment.setGroup(group);
+                                freshPayments.add(payment);
+                            }
+                        },
+                        throwable -> AlertGenerator.showErrorAlert("refetch error -> " + throwable.getMessage()),
+                        () -> {
+                            this.payments.setAll(freshPayments);
+                            this.groups.setAll(freshGroups);
+                            this.users.setAll(freshUsers);
+                        });
     }
 
     public void refetchSingleGroupData(int groupId) {
@@ -49,18 +52,32 @@ public class DataProvider {
         ObservableList<Group> freshGroups = FXCollections.observableArrayList();
         ObservableList<Payment> freshPayments = FXCollections.observableArrayList();
 
-        this.dataService.getSingleGroupInfo(groupId).firstElement().blockingSubscribe(group -> {
-            freshGroups.add(group);
-            for (User user : group.getMembers()) {
-                user.setGroup(group);
-                freshUsers.add(user);
-            }
-            for (Payment payment : group.getPayments()) {
-                payment.setGroup(group);
-                freshPayments.add(payment);
-            }
-        }, throwable -> AlertGenerator.showErrorAlert("refetch error -> " + throwable.getMessage()));
+        this.dataService.getSingleGroupInfo(groupId)
+                .blockingSubscribe(group -> {
+                            freshGroups.add(group);
+                            for (User user : group.getMembers()) {
+                                user.setGroup(group);
+                                freshUsers.add(user);
+                            }
+                            for (Payment payment : group.getPayments()) {
+                                payment.setGroup(group);
+                                freshPayments.add(payment);
+                            }
+                        },
+                        throwable -> AlertGenerator.showErrorAlert("refetch error -> " + throwable.getMessage()),
+                        () -> {
+                            this.payments.setAll(freshPayments);
+                            this.groups.setAll(freshGroups);
+                            this.users.setAll(freshUsers);
+                        });
+    }
 
+    public void refetchGroupDataByCategory(int groupId, Category category) {
+        ObservableList<Payment> freshPayments = FXCollections.observableArrayList();
+        this.dataService.getGroupPaymentsByCategory(groupId, category)
+                .blockingSubscribe(freshPayments::add,
+                        throwable -> AlertGenerator.showErrorAlert("refetch error -> " + throwable.getMessage()),
+                        () -> this.payments.setAll(freshPayments));
     }
 
     public ObservableList<User> getUsersData() {
@@ -75,19 +92,10 @@ public class DataProvider {
         return payments;
     }
 
-    public Group getGroupData(Group group) {
-        for (Group groupVar : this.groups) {
-            if (groupVar.equals(group))
-                return groupVar;
-        }
-        return null;
-    }
-
     public ObservableList<Payment> getAllUserInvolvedPayments(User user, ObservableList<Payment> allPayments) {
         ObservableList<Payment> userInvolvedPayments = FXCollections.observableArrayList();
 
-        for (Payment payment : allPayments
-        ) {
+        for (Payment payment : allPayments) {
             if (payment.getPayer().equals(user)) {
                 userInvolvedPayments.add(payment);
             } else if (payment.getReceivers().contains(user)) {
