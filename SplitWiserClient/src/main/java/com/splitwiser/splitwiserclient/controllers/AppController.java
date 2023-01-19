@@ -1,5 +1,6 @@
 package com.splitwiser.splitwiserclient.controllers;
 
+import com.splitwiser.splitwiserclient.auxiliary.GraphType;
 import com.splitwiser.splitwiserclient.data.DataProvider;
 import com.splitwiser.splitwiserclient.model.group.Group;
 import com.splitwiser.splitwiserclient.model.payment.Payment;
@@ -159,7 +160,7 @@ public class AppController {
         }
     }
 
-    public void showViewGraphDialog(String name, boolean isAggregated, SmartGraphPanel<String, String> graphView) {
+    public void showViewGraphDialog(String name, GraphType graphType, SmartGraphPanel<String, String> graphView) {
         try {
             FXMLLoader loader = this.getLoaderWithLocation("view-graph-dialog.fxml");
             BorderPane page = loader.load();
@@ -170,13 +171,19 @@ public class AppController {
             ViewGraphController controller = loader.getController();
             controller.setDialogStage(dialogStage);
             controller.setGraphView(graphView);
-            if (isAggregated){
-                String AGGREGATED_PAYMENTS_GRAPH_DESCRIPTION = "Arrow represents the aggregated amount of money that someone owes the other person. It points towards the borrower.";
-                controller.setDescriptionLabel(AGGREGATED_PAYMENTS_GRAPH_DESCRIPTION);
-            }
-           else {
-                String ALL_PAYMENTS_GRAPH_DESCRIPTION = "Arrow represents the amount of money that someone paid for the other person. It points towards the receiver";
-                controller.setDescriptionLabel(ALL_PAYMENTS_GRAPH_DESCRIPTION);
+            switch (graphType){
+                case ALL_PAYMENTS -> {
+                    String ALL_PAYMENTS_GRAPH_DESCRIPTION = "Arrow represents the amount of money that someone paid for the other person. It points towards the receiver";
+                    controller.setDescriptionLabel(ALL_PAYMENTS_GRAPH_DESCRIPTION);
+                }
+                case AGGREGATED_PAYMENTS -> {
+                    String AGGREGATED_PAYMENTS_GRAPH_DESCRIPTION = "Arrow represents the aggregated amount of money that someone owes the other person. It points towards the borrower.";
+                    controller.setDescriptionLabel(AGGREGATED_PAYMENTS_GRAPH_DESCRIPTION);
+                }
+                case TRANSITIVE_PAYMENTS -> {
+                    String TRANSITIVE_PAYMENTS_GRAPH_DESCRIPTION = "Arrow represents the total amount of money that someone owes the other person after transition of payments took place. It points towards the borrower.";
+                    controller.setDescriptionLabel(TRANSITIVE_PAYMENTS_GRAPH_DESCRIPTION);
+                }
             }
 
             dialogStage.show();

@@ -1,7 +1,10 @@
 package com.splitwiser.splitwiserclient.controllers;
 
 import com.splitwiser.splitwiserclient.auxiliary.GraphDrawer;
+import com.splitwiser.splitwiserclient.auxiliary.GraphType;
 import com.splitwiser.splitwiserclient.auxiliary.PaymentCellFactory;
+import com.splitwiser.splitwiserclient.auxiliary.transitivity.GraphMatrixTransformer;
+import com.splitwiser.splitwiserclient.auxiliary.transitivity.TransitivitySolver;
 import com.splitwiser.splitwiserclient.data.DataProvider;
 import com.splitwiser.splitwiserclient.model.category.Category;
 import com.splitwiser.splitwiserclient.model.payment.Payment;
@@ -30,6 +33,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class SummaryController {
+    @FXML
+    private Button transitivityButton;
+    @FXML
+    private Button displayTransitiveGraphButton;
     @FXML
     private ToggleButton otherCategoryButton;
     @FXML
@@ -72,6 +79,10 @@ public class SummaryController {
 
     private DataProvider dataProvider;
 
+    private boolean isTransitivityEnabled;
+
+    private GraphMatrixTransformer cachedTransitivityGraph = null;
+
 
     @FXML
     private void initialize() {
@@ -91,6 +102,9 @@ public class SummaryController {
         this.transportCategoryButton.setToggleGroup(categoryButtons);
         this.entertainmentCategoryButton.setToggleGroup(categoryButtons);
         this.allCategoriesButton.setToggleGroup(categoryButtons);
+
+        this.isTransitivityEnabled = false;
+        this.displayTransitiveGraphButton.setDisable(true);
     }
 
     public void setDataProvider(DataProvider dataProvider) {
@@ -106,16 +120,21 @@ public class SummaryController {
 
     @FXML
     private void onDisplayMainGraphButtonClick(ActionEvent actionEvent) {
-        appController.showViewGraphDialog("All payments Graph", false, createGraphView(this.allPayments));
+        appController.showViewGraphDialog("All payments Graph", GraphType.ALL_PAYMENTS, createGraphView(this.allPayments));
     }
 
     @FXML
     private void onDisplayAggregatedGraphButtonClick(ActionEvent actionEvent) {
-        appController.showViewGraphDialog("Aggregated payments Graph", true, createGraphView(CalculateService.calculateAggregatedPayments(this.currentUser.get(), this.allPayments)));
+        appController.showViewGraphDialog("Aggregated payments Graph", GraphType.AGGREGATED_PAYMENTS, createGraphView(CalculateService.calculateAggregatedPayments(this.currentUser.get(), this.allPayments)));
     }
 
-    private SmartGraphPanel<String, String> createGraphView(List<Payment> payments){
-        GraphDrawer drawer = new GraphDrawer(this.currentUser.get().getGroup().getMembers(), payments); //all payments are temp
+    @FXML
+    private void onDisplayTransitiveGraphButtonClick(ActionEvent actionEvent) {
+        appController.showViewGraphDialog("Transitive payments Graph", GraphType.TRANSITIVE_PAYMENTS, createGraphView(this.cachedTransitivityGraph.getOutputPayments()));
+    }
+
+    private SmartGraphPanel<String, String> createGraphView(List<Payment> payments) {
+        GraphDrawer drawer = new GraphDrawer(this.currentUser.get().getGroup().getMembers(), payments);
         Graph<String, String> graph = drawer.buildGraph();
 
         SmartPlacementStrategy strategy = new SmartCircularSortedPlacementStrategy();
@@ -164,19 +183,18 @@ public class SummaryController {
 
     }
 
-    private void disableAllCategoriesButton(){
+    private void disableAllCategoriesButton() {
         this.allCategoriesButton.setDisable(true);
     }
 
-    private void enableAllCategoriesButton(){
+    private void enableAllCategoriesButton() {
         this.allCategoriesButton.setDisable(false);
     }
 
-    private ToggleButton recognizeSelectedButton(ActionEvent actionEvent){
-        if (actionEvent.getTarget() instanceof ToggleButton){
+    private ToggleButton recognizeSelectedButton(ActionEvent actionEvent) {
+        if (actionEvent.getTarget() instanceof ToggleButton) {
             return (ToggleButton) actionEvent.getTarget();
-        }
-        else {
+        } else {
             throw new RuntimeException("Invalid element Clicked - should never Happen!!!");
         }
     }
@@ -199,5 +217,45 @@ public class SummaryController {
         System.out.println(clickedCategory);
 
         //retrofit action to fetch (or get cached idk) payments -> something similar to initData would be nice -> it would work really nice with graphs
+    }
+
+    @FXML
+    private void onChangeTransitivityButtonClick(ActionEvent actionEvent) {
+        if (this.isTransitivityEnabled) {
+            //Disabling
+            this.changeTransitivityConnectedButtons(false, "Enable Transitivity", "-fx-background-color: #3BFD02");
+
+            this.currentUsersBalance = new SimpleObjectProperty<>(CalculateService.calculateUserBalance(this.currentUser.get(), this.userInvolvedPaymentsList.getItems()));
+        } else {
+            //Enabling
+            this.changeTransitivityConnectedButtons(true, "Disable Transitivity","-fx-background-color: orange");
+
+            // TODO: calculate the transitivity graph -> if it's done the first time it can be cached(?),
+            if (this.cachedTransitivityGraph != null) {
+                //if we have the graph cached we can just summon it
+                totalSummaryList.setItems(CalculateService.calculateBalanceBetweenAll(this.currentUser.get(), this.cachedTransitivityGraph.getOutputPayments()));
+            } else {
+                //otherwise we need to calculate the graph from the beginning
+                this.cachedTransitivityGraph = new GraphMatrixTransformer(this.currentUser.get().getGroup().getMembers(), this.allPayments);
+                this.cachedTransitivityGraph.transformPaymentsToGraph();
+
+                TransitivitySolver solver = new TransitivitySolver(this.cachedTransitivityGraph);
+
+                solver.solve();
+
+                this.cachedTransitivityGraph.transformGraphToPayments();
+
+                totalSummaryList.setItems(CalculateService.calculateBalanceBetweenAll(this.currentUser.get(), this.cachedTransitivityGraph.getOutputPayments()));
+            }
+
+        }
+    }
+
+    private void changeTransitivityConnectedButtons(boolean newValue, String newChangeButtonText, String newChangeButtonStyle) {
+        this.isTransitivityEnabled = newValue;
+        this.displayTransitiveGraphButton.setDisable(!newValue);
+
+        this.transitivityButton.setStyle(newChangeButtonStyle);
+        this.transitivityButton.setText(newChangeButtonText);
     }
 }
