@@ -7,25 +7,22 @@ import com.splitwiser.splitwiserclient.model.category.Category;
 import com.splitwiser.splitwiserclient.model.payment.Payment;
 import com.splitwiser.splitwiserclient.model.user.User;
 import com.splitwiser.splitwiserclient.util.CalculateService;
-import com.splitwiser.splitwiserclient.util.libs.graphs.brunomnsilva.smartgraph.graph.Digraph;
-import com.splitwiser.splitwiserclient.util.libs.graphs.brunomnsilva.smartgraph.graph.DigraphEdgeList;
 import com.splitwiser.splitwiserclient.util.libs.graphs.brunomnsilva.smartgraph.graph.Graph;
 import com.splitwiser.splitwiserclient.util.libs.graphs.brunomnsilva.smartgraph.graphview.SmartCircularSortedPlacementStrategy;
 import com.splitwiser.splitwiserclient.util.libs.graphs.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.splitwiser.splitwiserclient.util.libs.graphs.brunomnsilva.smartgraph.graphview.SmartPlacementStrategy;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ObservableBooleanValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -99,9 +96,10 @@ public class SummaryController {
 
     @FXML
     private void onCreatePaymentButtonClick() {
-        Payment newPayment = new Payment(this.currentUser.get().getGroup(), BigDecimal.valueOf(0), LocalDate.of(2022, 1, 1), "", this.currentUser.get(), this.currentUser.get().getGroup().getMembers());
+        Payment newPayment = new Payment(this.currentUser.get().getGroup(), BigDecimal.valueOf(0), LocalDate.of(2022, 1, 1), "", this.currentUser.get(), this.currentUser.get().getGroup().getMembers(), Category.OTHER);
         appController.showCreatePaymentDialog(newPayment);
-        initData();
+        this.dataProvider.refetchSingleGroupData(this.currentUser.get().getGroup().getId());
+        this.updateView();
     }
 
     @FXML
@@ -114,13 +112,18 @@ public class SummaryController {
         appController.showViewGraphDialog("Aggregated payments Graph", true, createGraphView(CalculateService.calculateAggregatedPayments(this.currentUser.get(), this.allPayments)));
     }
 
-    private SmartGraphPanel<String, String> createGraphView(List<Payment> payments){
+    private SmartGraphPanel<String, String> createGraphView(List<Payment> payments) {
         GraphDrawer drawer = new GraphDrawer(this.currentUser.get().getGroup().getMembers(), payments); //all payments are temp
         Graph<String, String> graph = drawer.buildGraph();
 
         SmartPlacementStrategy strategy = new SmartCircularSortedPlacementStrategy();
 
         return new SmartGraphPanel<>(graph, strategy);
+    }
+
+    public void initData() {
+        this.dataProvider.refetchSingleGroupData(this.currentUser.get().getGroup().getId());
+        this.updateView();
     }
 
 
@@ -147,36 +150,29 @@ public class SummaryController {
         this.groupLabel.setText(this.currentUser.get().getGroup().getName() + " balance");
     }
 
-    public void initData() {
-        this.dataProvider.refetchSingleGroupData(this.currentUser.get().getGroup().getId());
-        ObservableList<Payment> allPayments = dataProvider.getPaymentsData().filtered((elem) -> elem.getGroup().equals(this.currentUser.get().getGroup()));
+    public void updateView() {
+        ObservableList<Payment> allPayments = dataProvider.getPaymentsData();
         ObservableList<Payment> userInvolvedPayments = dataProvider.getAllUserInvolvedPayments(this.currentUser.get(), allPayments);
-
         userInvolvedPaymentsList.setItems(userInvolvedPayments);
-
         otherPaymentList.setItems(allPayments.filtered((payment) -> !userInvolvedPayments.contains(payment)));
         totalSummaryList.setItems(CalculateService.calculateBalanceBetweenAll(this.currentUser.get(), allPayments));
-
         this.allPayments = allPayments;
         this.currentUsersBalance = new SimpleObjectProperty<>(CalculateService.calculateUserBalance(this.currentUser.get(), this.userInvolvedPaymentsList.getItems()));
         this.userInvolvedBalanceValueLabel.setText(this.currentUsersBalance.get().toString());
-
-
     }
 
-    private void disableAllCategoriesButton(){
+    private void disableAllCategoriesButton() {
         this.allCategoriesButton.setDisable(true);
     }
 
-    private void enableAllCategoriesButton(){
+    private void enableAllCategoriesButton() {
         this.allCategoriesButton.setDisable(false);
     }
 
-    private ToggleButton recognizeSelectedButton(ActionEvent actionEvent){
-        if (actionEvent.getTarget() instanceof ToggleButton){
+    private ToggleButton recognizeSelectedButton(ActionEvent actionEvent) {
+        if (actionEvent.getTarget() instanceof ToggleButton) {
             return (ToggleButton) actionEvent.getTarget();
-        }
-        else {
+        } else {
             throw new RuntimeException("Invalid element Clicked - should never Happen!!!");
         }
     }
@@ -184,20 +180,17 @@ public class SummaryController {
     @FXML
     private void onAllCategoriesButtonClick(ActionEvent actionEvent) {
         this.disableAllCategoriesButton();
-        //unselect the other selected button
         this.recognizeSelectedButton(actionEvent);
-
-        //retrofit action to fetch (or get cached idk) payments -> something similar to initData would be nice -> it would work really nice with graphs
+        this.dataProvider.refetchSingleGroupData(this.currentUser.get().getGroup().getId());
+        this.updateView();
     }
 
     @FXML
     private void onFilterBySingleCategoryButtonClick(ActionEvent actionEvent) {
         this.enableAllCategoriesButton();
-
         ToggleButton clickedButton = this.recognizeSelectedButton(actionEvent);
         Category clickedCategory = Category.valueOf(clickedButton.getText());
-        System.out.println(clickedCategory);
-
-        //retrofit action to fetch (or get cached idk) payments -> something similar to initData would be nice -> it would work really nice with graphs
+        this.dataProvider.refetchGroupDataByCategory(this.currentUser.get().getGroup().getId(), clickedCategory);
+        this.updateView();
     }
 }

@@ -1,5 +1,6 @@
 package com.splitwiser.splitwiserclient.mockData;
 
+import com.splitwiser.splitwiserclient.model.category.Category;
 import com.splitwiser.splitwiserclient.model.group.Group;
 import com.splitwiser.splitwiserclient.model.payment.Payment;
 import com.splitwiser.splitwiserclient.model.user.User;
@@ -50,24 +51,24 @@ public class MockDataProvider {
         allG1members.add(user4);
 
         //group payment for Jane Doe
-        Payment payment1 = new Payment(group1, BigDecimal.valueOf(100.50), LocalDate.of(22, 11, 27), "Dinner together", user1, allG1members);
+        Payment payment1 = new Payment(group1, BigDecimal.valueOf(100.50), LocalDate.of(22, 11, 27), "Dinner together", user1, allG1members, Category.OTHER);
 
         //group payment where Jane paid
-        Payment payment2 = new Payment(group1, BigDecimal.valueOf(36.95), LocalDate.of(22, 12, 12), "Bowling alley payment", user3, allG1members);
+        Payment payment2 = new Payment(group1, BigDecimal.valueOf(36.95), LocalDate.of(22, 12, 12), "Bowling alley payment", user3, allG1members,Category.OTHER);
 
         //single person payments for Jane Doe
-        Payment payment3 = new Payment(group1, BigDecimal.valueOf(9.50), LocalDate.of(22, 10, 19), "Butter", user4, user3);
-        Payment payment4 = new Payment(group1, BigDecimal.valueOf(35.50), LocalDate.of(22, 8, 18), "", user1, user3);
-        Payment payment5 = new Payment(group1, BigDecimal.valueOf(17.00), LocalDate.of(22, 9, 23), "Uber", user2, user3);
+        Payment payment3 = new Payment(group1, BigDecimal.valueOf(9.50), LocalDate.of(22, 10, 19), "Butter", user4, user3,Category.OTHER);
+        Payment payment4 = new Payment(group1, BigDecimal.valueOf(35.50), LocalDate.of(22, 8, 18), "", user1, user3,Category.OTHER);
+        Payment payment5 = new Payment(group1, BigDecimal.valueOf(17.00), LocalDate.of(22, 9, 23), "Uber", user2, user3,Category.OTHER);
 
         //single person payment where Jane paid
-        Payment payment6 = new Payment(group1, BigDecimal.valueOf(21.37), LocalDate.of(22, 10, 12), "Drinks at C&U's", user3, user1);
+        Payment payment6 = new Payment(group1, BigDecimal.valueOf(21.37), LocalDate.of(22, 10, 12), "Drinks at C&U's", user3, user1,Category.OTHER);
 
 
         //other single person payments for Jan, Adam and John
-        Payment payment7 = new Payment(group1, BigDecimal.valueOf(10.50), LocalDate.of(22, 8, 27), "Beers", user1, user2);
-        Payment payment8 = new Payment(group1, BigDecimal.valueOf(10.50), LocalDate.of(22, 11, 27), "", user2, user4);
-        Payment payment9 = new Payment(group1, BigDecimal.valueOf(42.00), LocalDate.of(22, 12, 13), "pizza", user1, user4);
+        Payment payment7 = new Payment(group1, BigDecimal.valueOf(10.50), LocalDate.of(22, 8, 27), "Beers", user1, user2,Category.OTHER);
+        Payment payment8 = new Payment(group1, BigDecimal.valueOf(10.50), LocalDate.of(22, 11, 27), "", user2, user4,Category.OTHER);
+        Payment payment9 = new Payment(group1, BigDecimal.valueOf(42.00), LocalDate.of(22, 12, 13), "pizza", user1, user4,Category.OTHER);
 
         payments.add(payment1);
         payments.add(payment2);

@@ -5,5 +5,5 @@ public enum Category {
     EATING,
     TRANSPORT,
     ENTERTAINMENT,
-    OTHER
+    OTHER,
 }

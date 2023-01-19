@@ -20,20 +20,20 @@ public class ViewGraphController {
         this.dialogStage = dialogStage;
     }
 
-    public void setGraphView(SmartGraphPanel graphView){
-        graphView.setMinSize(400,400);
+    public void setGraphView(SmartGraphPanel graphView) {
+        graphView.setMinSize(400, 400);
         SmartGraphDemoContainer graphContainer = new SmartGraphDemoContainer(graphView);
         graphContainer.setMaxHeight(475);
         graphContainer.setMaxWidth(725);
         this.GraphPane.getChildren().add(graphContainer);
     }
 
-    public void setDescriptionLabel(String description){
+    public void setDescriptionLabel(String description) {
         this.descriptionLabel.setText(description);
     }
 
     @FXML
-    private void initialize(){
+    private void initialize() {
     }
 
     @FXML

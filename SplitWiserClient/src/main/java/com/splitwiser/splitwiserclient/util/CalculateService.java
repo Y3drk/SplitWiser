@@ -1,5 +1,6 @@
 package com.splitwiser.splitwiserclient.util;
 
+import com.splitwiser.splitwiserclient.model.category.Category;
 import com.splitwiser.splitwiserclient.model.payment.Payment;
 import com.splitwiser.splitwiserclient.model.user.User;
 import javafx.collections.FXCollections;
@@ -23,7 +24,7 @@ public class CalculateService {
         }
     }
 
-    private static String createNewSummaryLine(HashMap<User, BigDecimal> relations, User member){
+    private static String createNewSummaryLine(HashMap<User, BigDecimal> relations, User member) {
         String newBalance = "";
         List<User> payers = relations.keySet().stream().toList();
         for (User payer : payers
@@ -38,7 +39,7 @@ public class CalculateService {
         return newBalance;
     }
 
-    private static void processMemberAsPayerPayments(HashMap<User, BigDecimal> relations, User member, Payment payment, ObservableList<User> receivers){
+    private static void processMemberAsPayerPayments(HashMap<User, BigDecimal> relations, User member, Payment payment, ObservableList<User> receivers) {
         //if they pay for the whole group
         int amountOfReceivers = receivers.size();
         if (amountOfReceivers > 1) {
@@ -55,7 +56,7 @@ public class CalculateService {
         }
     }
 
-    private static void processMemberAsReceiverPayments(HashMap<User, BigDecimal> relations, User member, Payment payment, User payer, ObservableList<User> receivers){
+    private static void processMemberAsReceiverPayments(HashMap<User, BigDecimal> relations, User member, Payment payment, User payer, ObservableList<User> receivers) {
         int amountOfReceivers = receivers.size();
         //if it's a group payment
         if (amountOfReceivers > 1 && receivers.contains(member)) {
@@ -67,7 +68,7 @@ public class CalculateService {
         }
     }
 
-    private static void searchPaymentsListForGivenMember(User member, List<Payment> allPayments, HashMap<User, BigDecimal> relations){
+    private static void searchPaymentsListForGivenMember(User member, List<Payment> allPayments, HashMap<User, BigDecimal> relations) {
         for (Payment payment : allPayments
         ) {
             User payer = payment.getPayer();
@@ -113,7 +114,7 @@ public class CalculateService {
                 for (User payer : payers
                 ) {
                     if (relations.get(payer).compareTo(BigDecimal.valueOf(0)) > 0) {
-                        aggregatedPayments.add(new Payment(payer.getGroup(), relations.get(payer).setScale(2, RoundingMode.HALF_DOWN), LocalDate.now(), "", payer, member));
+                        aggregatedPayments.add(new Payment(payer.getGroup(), relations.get(payer).setScale(2, RoundingMode.HALF_DOWN), LocalDate.now(), "", payer, member, Category.OTHER));
                     }
                 }
             }
@@ -138,7 +139,7 @@ public class CalculateService {
                 //if the user pays for some other user
                 else {
                     currentBalance = currentBalance.add(payment.getAmount());
-                    
+
                 }
                 //if the user is a group receiver
             } else if (amountOfReceivers > 1 && payment.getReceivers().contains(user)) {

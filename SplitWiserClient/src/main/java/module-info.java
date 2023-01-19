@@ -18,6 +18,7 @@ module com.splitwiser.splitwiserclient {
     exports com.splitwiser.splitwiserclient.model.group;
     exports com.splitwiser.splitwiserclient.model.user;
     exports com.splitwiser.splitwiserclient.model.payment;
+    exports com.splitwiser.splitwiserclient.model.category;
     exports com.splitwiser.splitwiserclient.controllers;
     exports com.splitwiser.splitwiserclient.mockData;
     opens com.splitwiser.splitwiserclient.controllers to javafx.fxml;
