@@ -1,5 +1,10 @@
 ## Changelog
 
+### 19.01.2023
+
+* backend and frontend integration for categories
+* fetching data based on categories
+
 ### 11-13.01.2023
 
 * categories & filtering on frontend
