@@ -25,7 +25,11 @@ public class DataService {
         mapper.registerModule(new JavaTimeModule());
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(JacksonConverterFactory.create(mapper)).addCallAdapterFactory(RxJava3CallAdapterFactory.create()).build();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(JacksonConverterFactory.create(mapper))
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+                .build();
 
         this.splitWiserAPI = retrofit.create(SplitWiserAPI.class);
     }

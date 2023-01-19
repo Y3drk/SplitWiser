@@ -27,21 +27,24 @@ public class DataProvider {
         ObservableList<Group> freshGroups = FXCollections.observableArrayList();
         ObservableList<Payment> freshPayments = FXCollections.observableArrayList();
 
-        this.dataService.getGroupsInfo().blockingSubscribe(group -> {
-            freshGroups.add(group);
-            for (User user : group.getMembers()) {
-                user.setGroup(group);
-                freshUsers.add(user);
-            }
-            for (Payment payment : group.getPayments()) {
-                payment.setGroup(group);
-                freshPayments.add(payment);
-            }
-        }, throwable -> AlertGenerator.showErrorAlert("refetch error -> " + throwable.getMessage()));
-
-        this.payments.setAll(freshPayments);
-        this.groups.setAll(freshGroups);
-        this.users.setAll(freshUsers);
+        this.dataService.getGroupsInfo()
+                .blockingSubscribe(group -> {
+                            freshGroups.add(group);
+                            for (User user : group.getMembers()) {
+                                user.setGroup(group);
+                                freshUsers.add(user);
+                            }
+                            for (Payment payment : group.getPayments()) {
+                                payment.setGroup(group);
+                                freshPayments.add(payment);
+                            }
+                        },
+                        throwable -> AlertGenerator.showErrorAlert("refetch error -> " + throwable.getMessage()),
+                        () -> {
+                            this.payments.setAll(freshPayments);
+                            this.groups.setAll(freshGroups);
+                            this.users.setAll(freshUsers);
+                        });
     }
 
     public void refetchSingleGroupData(int groupId) {
@@ -49,26 +52,32 @@ public class DataProvider {
         ObservableList<Group> freshGroups = FXCollections.observableArrayList();
         ObservableList<Payment> freshPayments = FXCollections.observableArrayList();
 
-        this.dataService.getSingleGroupInfo(groupId).blockingSubscribe(group -> {
-            freshGroups.add(group);
-            for (User user : group.getMembers()) {
-                user.setGroup(group);
-                freshUsers.add(user);
-            }
-            for (Payment payment : group.getPayments()) {
-                payment.setGroup(group);
-                freshPayments.add(payment);
-            }
-        }, throwable -> AlertGenerator.showErrorAlert("refetch error -> " + throwable.getMessage()), () -> {
-            this.payments.setAll(freshPayments);
-            this.groups.setAll(freshGroups);
-            this.users.setAll(freshUsers);
-        });
+        this.dataService.getSingleGroupInfo(groupId)
+                .blockingSubscribe(group -> {
+                            freshGroups.add(group);
+                            for (User user : group.getMembers()) {
+                                user.setGroup(group);
+                                freshUsers.add(user);
+                            }
+                            for (Payment payment : group.getPayments()) {
+                                payment.setGroup(group);
+                                freshPayments.add(payment);
+                            }
+                        },
+                        throwable -> AlertGenerator.showErrorAlert("refetch error -> " + throwable.getMessage()),
+                        () -> {
+                            this.payments.setAll(freshPayments);
+                            this.groups.setAll(freshGroups);
+                            this.users.setAll(freshUsers);
+                        });
     }
 
     public void refetchGroupDataByCategory(int groupId, Category category) {
         ObservableList<Payment> freshPayments = FXCollections.observableArrayList();
-        this.dataService.getGroupPaymentsByCategory(groupId, category).blockingSubscribe(freshPayments::add, throwable -> AlertGenerator.showErrorAlert("refetch error -> " + throwable.getMessage()), () -> this.payments.setAll(freshPayments));
+        this.dataService.getGroupPaymentsByCategory(groupId, category)
+                .blockingSubscribe(freshPayments::add,
+                        throwable -> AlertGenerator.showErrorAlert("refetch error -> " + throwable.getMessage()),
+                        () -> this.payments.setAll(freshPayments));
     }
 
     public ObservableList<User> getUsersData() {
@@ -81,13 +90,6 @@ public class DataProvider {
 
     public ObservableList<Payment> getPaymentsData() {
         return payments;
-    }
-
-    public Group getGroupData(Group group) {
-        for (Group groupVar : this.groups) {
-            if (groupVar.equals(group)) return groupVar;
-        }
-        return null;
     }
 
     public ObservableList<Payment> getAllUserInvolvedPayments(User user, ObservableList<Payment> allPayments) {
