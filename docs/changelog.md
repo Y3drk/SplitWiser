@@ -4,6 +4,7 @@
 
 * backend and frontend integration for categories
 * fetching data based on categories
+* transitivity of payments
 
 ### 11-13.01.2023
 
