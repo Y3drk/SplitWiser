@@ -76,6 +76,8 @@ public class SummaryController {
 
     private boolean isTransitivityEnabled;
 
+    private final HashMap<String, Boolean> needsNewTransitivityGraph = new HashMap<>();
+
     private final HashMap<String, GraphMatrixTransformer> cachedTransitivityGraphs = new HashMap<>();
 
 
@@ -109,7 +111,11 @@ public class SummaryController {
     @FXML
     private void onCreatePaymentButtonClick() {
         Payment newPayment = new Payment(this.currentUser.get().getGroup(), BigDecimal.valueOf(0), LocalDate.of(2022, 1, 1), "", this.currentUser.get(), this.currentUser.get().getGroup().getMembers(), Category.OTHER);
-        appController.showCreatePaymentDialog(newPayment);
+        boolean wasPaymentCreated = appController.showCreatePaymentDialog(newPayment);
+        if (wasPaymentCreated){
+            this.needsNewTransitivityGraph.put(newPayment.getCategory().toString(), true);
+            this.needsNewTransitivityGraph.put("ALL", true);
+        }
         this.dataProvider.refetchSingleGroupData(this.currentUser.get().getGroup().getId());
         this.updateView();
     }
@@ -228,19 +234,18 @@ public class SummaryController {
             ToggleButton selectedCategoryButton = (ToggleButton) this.categoryButtons.getSelectedToggle();
             String categoryString = selectedCategoryButton.getText();
 
-            if (this.cachedTransitivityGraphs.containsKey(categoryString)) {
-                //if we have the graph cached we can just summon it
-                totalSummaryList.setItems(CalculateService.calculateBalanceBetweenAll(this.currentUser.get(), this.cachedTransitivityGraphs.get(categoryString).getOutputPayments()));
-            } else {
+            //if we have the graph cached we can just summon it
+            if (!this.cachedTransitivityGraphs.containsKey(categoryString)) {
                 //otherwise we need to calculate the graph from the beginning
                 this.createNewTransitivityGraphAndPayments(categoryString);
             }
+
+            totalSummaryList.setItems(CalculateService.calculateBalanceBetweenAll(this.currentUser.get(), this.cachedTransitivityGraphs.get(categoryString).getOutputPayments()));
 
         }
     }
 
     private void createNewTransitivityGraphAndPayments(String categoryName) {
-
         GraphMatrixTransformer newGraph = new GraphMatrixTransformer(this.currentUser.get().getGroup().getMembers(), FXCollections.observableArrayList(CalculateService.calculateAggregatedPayments(this.currentUser.get(), this.allPayments)));
         this.cachedTransitivityGraphs.put(categoryName, newGraph);
 
@@ -251,16 +256,19 @@ public class SummaryController {
         solver.solve();
 
         newGraph.transformGraphToPayments();
-
-        totalSummaryList.setItems(CalculateService.calculateBalanceBetweenAll(this.currentUser.get(), newGraph.getOutputPayments()));
     }
 
     private void synchronizeCategoriesWithTransitivity(String categoryName) {
+        if (this.needsNewTransitivityGraph.containsKey(categoryName)){
+            this.createNewTransitivityGraphAndPayments(categoryName);
+            this.needsNewTransitivityGraph.remove(categoryName);
+        }
         if (this.isTransitivityEnabled) {
             if (this.cachedTransitivityGraphs.containsKey(categoryName)) {
                 totalSummaryList.setItems(CalculateService.calculateBalanceBetweenAll(this.currentUser.get(), this.cachedTransitivityGraphs.get(categoryName).getOutputPayments()));
             } else {
                 this.createNewTransitivityGraphAndPayments(categoryName);
+                totalSummaryList.setItems(CalculateService.calculateBalanceBetweenAll(this.currentUser.get(), this.cachedTransitivityGraphs.get(categoryName).getOutputPayments()));
             }
         }
     }

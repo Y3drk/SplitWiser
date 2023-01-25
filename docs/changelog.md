@@ -1,5 +1,9 @@
 ## Changelog
 
+### 25.01.2023
+
+* marginal frontend refactor, caching issues solving
+
 ### 19.01.2023
 
 * backend and frontend integration for categories

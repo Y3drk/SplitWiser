@@ -16,6 +16,9 @@ import java.io.IOException;
 
 public class AppController {
     private Stage primaryStage;
+    private static final String TRANSITIVE_PAYMENTS_GRAPH_DESCRIPTION = "Arrow represents the total amount of money that someone owes the other person after transition of payments took place.\nIt points towards the borrower.";
+    private static final String AGGREGATED_PAYMENTS_GRAPH_DESCRIPTION = "Arrow represents the aggregated amount of money that someone owes the other person. It points towards the borrower.";
+    private static final String ALL_PAYMENTS_GRAPH_DESCRIPTION = "Arrow represents the amount of money that someone paid for the other person. It points towards the receiver";
 
     private DataProvider dataProvider;
 
@@ -173,15 +176,12 @@ public class AppController {
             controller.setGraphView(graphView);
             switch (graphType){
                 case ALL_PAYMENTS -> {
-                    String ALL_PAYMENTS_GRAPH_DESCRIPTION = "Arrow represents the amount of money that someone paid for the other person. It points towards the receiver";
                     controller.setDescriptionLabel(ALL_PAYMENTS_GRAPH_DESCRIPTION);
                 }
                 case AGGREGATED_PAYMENTS -> {
-                    String AGGREGATED_PAYMENTS_GRAPH_DESCRIPTION = "Arrow represents the aggregated amount of money that someone owes the other person. It points towards the borrower.";
                     controller.setDescriptionLabel(AGGREGATED_PAYMENTS_GRAPH_DESCRIPTION);
                 }
                 case TRANSITIVE_PAYMENTS -> {
-                    String TRANSITIVE_PAYMENTS_GRAPH_DESCRIPTION = "Arrow represents the total amount of money that someone owes the other person after transition of payments took place.\nIt points towards the borrower.";
                     controller.setDescriptionLabel(TRANSITIVE_PAYMENTS_GRAPH_DESCRIPTION);
                 }
             }
