@@ -2,6 +2,7 @@ package com.splitwiser.splitwiserclient.auxiliary.transitivity;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TransitivitySolver {
@@ -15,9 +16,17 @@ public class TransitivitySolver {
     public void solve() {
         BigDecimal[][] graphMatrix = this.graphRepresentation.getMatrixInitialGraphRepresentation();
 
+        System.out.println("INITIAL GRAPH:");
+        //diagnostic print
+        for (BigDecimal[] matrix : graphMatrix) {
+            System.out.println(Arrays.toString(matrix));
+        }
+        System.out.println("############################################");
+
+
         for (int vertex = 0; vertex < graphMatrix.length; vertex++) {
             boolean hasUpdated = true;
-//            System.out.println("Working with Vertex: " + this.graphRepresentation.getMembers().get(vertex).getFirstName());
+            System.out.println("Working with Vertex: " + this.graphRepresentation.getMembers().get(vertex).getFirstName());
 
             while (hasUpdated) {
                 hasUpdated = false;
@@ -26,21 +35,21 @@ public class TransitivitySolver {
 
                 BigDecimal minimalEdgeValue = this.findImprovablePath(pathVertices, graphMatrix.length, graphMatrix);
                 if (minimalEdgeValue.compareTo(BigDecimal.valueOf(0)) > 0) {
-//                    System.out.println("Found Path: "
-//                            + this.graphRepresentation.getMembers().get(pathVertices.get(0)).getFirstName() + "->"
-//                            + this.graphRepresentation.getMembers().get(pathVertices.get(1)).getFirstName() + "->"
-//                            + this.graphRepresentation.getMembers().get(pathVertices.get(2)).getFirstName()
-//                    );
+                    System.out.println("Found Path: "
+                            + this.graphRepresentation.getMembers().get(pathVertices.get(0)).getFirstName() + "->"
+                            + this.graphRepresentation.getMembers().get(pathVertices.get(1)).getFirstName() + "->"
+                            + this.graphRepresentation.getMembers().get(pathVertices.get(2)).getFirstName()
+                    );
                     this.adjustPathEdgesValues(pathVertices, minimalEdgeValue, graphMatrix);
                     this.updateBegToEndEdge(pathVertices, minimalEdgeValue, graphMatrix);
                     hasUpdated = true;
 
-//                    System.out.println("The graph has changed to:");
-//                    //diagnostic print
-//                    for (BigDecimal[] matrix : graphMatrix) {
-//                        System.out.println(Arrays.toString(matrix));
-//                    }
-//                    System.out.println("############################################");
+                    System.out.println("The graph has changed to:");
+                    //diagnostic print
+                    for (BigDecimal[] matrix : graphMatrix) {
+                        System.out.println(Arrays.toString(matrix));
+                    }
+                    System.out.println("############################################");
                 }
             }
         }
@@ -79,13 +88,13 @@ public class TransitivitySolver {
         for (int secondVertex = 0; secondVertex < totalAmountOfVertices; secondVertex++) {
             BigDecimal firstEdgeValue = graphMatrix[pathVertices.get(0)][secondVertex];
             if (firstEdgeValue.compareTo(BigDecimal.valueOf(0)) > 0) {
-//                System.out.println("Found First Edge: "+ this.graphRepresentation.getMembers().get(pathVertices.get(0)).getFirstName() + "->" + this.graphRepresentation.getMembers().get(secondVertex).getFirstName());
-                pathVertices.add(secondVertex);
+                System.out.println("Found First Edge: "+ this.graphRepresentation.getMembers().get(pathVertices.get(0)).getFirstName() + "->" + this.graphRepresentation.getMembers().get(secondVertex).getFirstName());
                 minimalEdgeValue = firstEdgeValue;
                 for (int thirdVertex = 0; thirdVertex < totalAmountOfVertices; thirdVertex++) {
                     BigDecimal secondEdgeValue = graphMatrix[secondVertex][thirdVertex];
                     if (secondEdgeValue.compareTo(BigDecimal.valueOf(0)) > 0) {
-//                        System.out.println("Found Second Edge: "+ this.graphRepresentation.getMembers().get(secondVertex).getFirstName() + "->" + this.graphRepresentation.getMembers().get(thirdVertex).getFirstName());
+                        System.out.println("Found Second Edge: "+ this.graphRepresentation.getMembers().get(secondVertex).getFirstName() + "->" + this.graphRepresentation.getMembers().get(thirdVertex).getFirstName());
+                        pathVertices.add(secondVertex);
                         pathVertices.add(thirdVertex);
                         return minimalEdgeValue.min(secondEdgeValue);
                     }
