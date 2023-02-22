@@ -89,6 +89,9 @@ Base url: `/api`
 
 ![Create user](./docs/resources/views/javafx/create-user.jpg)
 
-![Summary](./docs/resources/views/javafx/summary.jpg)
+![image](https://user-images.githubusercontent.com/92650724/218481003-2d6cf69c-4090-406c-8ca2-ce47602c6cd6.png)
 
 ![Create payment](./docs/resources/views/javafx/create-payment.jpg)
+
+![image](https://user-images.githubusercontent.com/92650724/218481256-3f60d466-df37-405f-b879-32dd7925fae0.png)
+
